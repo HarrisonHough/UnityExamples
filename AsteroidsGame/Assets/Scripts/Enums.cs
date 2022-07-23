@@ -1,2 +1,1 @@
-﻿
-public enum AsteroidType {Small, Medium, Large }
+﻿public enum AsteroidType { Small, Medium, Large }

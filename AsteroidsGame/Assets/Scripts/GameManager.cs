@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -12,7 +11,8 @@ using UnityEngine;
 /// <summary>
 /// GameManager is the Central "always alive" singleton class responsible for global events and functions
 /// </summary>
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
     public static GameManager Instance = null;
     public static int Score;
@@ -24,21 +24,22 @@ public class GameManager : MonoBehaviour {
     [SerializeField]
     private SpawnController spawner;
     [SerializeField]
-    private UIControl uiControl;    
+    private UIControl uiControl;
     [SerializeField]
-    private int lives;    
+    private int lives;
     [SerializeField]
     private Player player;
 
     private SoundController soundControl;
     public SoundController SoundControl { get { return soundControl; } }
     private bool gameOver = false;
-    
+
 
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Awake() {
+    void Awake()
+    {
         EnforceSingleton();
         Inititialize();
     }
@@ -46,7 +47,8 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
-    private void EnforceSingleton() {
+    private void EnforceSingleton()
+    {
         //Enforces singleton so there is only one instance, multiples will self delete.
         //Game Manager kept alive throughout scene changes.
         if (Instance == null)
@@ -88,7 +90,8 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// Called on scene start
     /// </summary>
-    void Start() {
+    void Start()
+    {
         //check for null references
         //assign if null
         if (spawner == null)
@@ -101,15 +104,16 @@ public class GameManager : MonoBehaviour {
     /// This function controls the asteroid collision event
     /// </summary>
     /// <param name="asteroid"></param>
-    public void AsteroidHit(Asteroid asteroid) {
+    public void AsteroidHit(Asteroid asteroid)
+    {
         if (!gameOver)
         {
-            int type = (int)asteroid.Type;
+            int type = (int) asteroid.Type;
             switch (type)
             {
                 case 0:
                     AddScore(10);
-                    uiControl.ShowTextAtPosition(""+ Global.SMALL_ASTEROID_POINTS,asteroid.transform.position);
+                    uiControl.ShowTextAtPosition("" + Global.SMALL_ASTEROID_POINTS, asteroid.transform.position);
                     break;
                 case 1:
                     AddScore(25);
@@ -133,7 +137,8 @@ public class GameManager : MonoBehaviour {
     /// Destroys asteroid when it collides with the border
     /// </summary>
     /// <param name="asteroid"></param>
-    public void AsteroidHitBorder(Asteroid asteroid) {
+    public void AsteroidHitBorder(Asteroid asteroid)
+    {
 
         //TODO Remove if not needed
         //Destroy(asteroid.gameObject);
@@ -143,7 +148,8 @@ public class GameManager : MonoBehaviour {
     /// Adds score to global value and updates UI
     /// </summary>
     /// <param name="scoreToAdd"></param>
-    private void AddScore(int scoreToAdd) {
+    private void AddScore(int scoreToAdd)
+    {
         //add to score
         Score += scoreToAdd;
 
@@ -155,7 +161,8 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// Spawns player at zero position
     /// </summary>
-    public void SpawnPlayer() {
+    public void SpawnPlayer()
+    {
         player.transform.position = new Vector3(0, 0, 0);
         player.transform.rotation = Quaternion.identity;
         player.gameObject.SetActive(true);
@@ -165,7 +172,8 @@ public class GameManager : MonoBehaviour {
     /// Called when players dies this function controls lives count
     /// and player spawning
     /// </summary>
-    public void PlayerDeath() {
+    public void PlayerDeath()
+    {
 
         Debug.Log("Player Died!!!!!!");
         //check number of lives
@@ -186,29 +194,32 @@ public class GameManager : MonoBehaviour {
     /// This coroutine is used to spawn the player after a delay (seconds)
     /// </summary>
     /// <returns></returns>
-    IEnumerator DelaySpawn() {
+    IEnumerator DelaySpawn()
+    {
         //1 second delay
         yield return new WaitForSeconds(1);
-        
+
         SpawnPlayer();
     }
     /// <summary>
     /// Stops spawning and enables Home screen, this function is 
     /// called when the games over
     /// </summary>
-    void GameOver() {
+    void GameOver()
+    {
         gameOver = true;
         spawner.StopSpawning();
         uiControl.ShowHomeScreen();
         CheckForHighScore();
 
-        
+
     }
 
     /// <summary>
     /// 
     /// </summary>
-    private void CheckForHighScore() {
+    private void CheckForHighScore()
+    {
         if (Score > HighScore)
         {
             SetHighScore();
@@ -218,7 +229,8 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
-    private void SetHighScore() {
+    private void SetHighScore()
+    {
         HighScore = Score;
         PlayerPrefs.SetInt("HighScore", Score);
         PlayerPrefs.Save();
@@ -249,7 +261,7 @@ public class GameManager : MonoBehaviour {
         PlayerPrefs.Save();
         uiControl.UpdateHomeUIScores();
     }
-    
+
     /// <summary>
     /// 
     /// </summary>
@@ -263,7 +275,8 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
-    private void ResetUIDisplayText() {
+    private void ResetUIDisplayText()
+    {
         //reset ui display text
         uiControl.UpdateScore(0);
         uiControl.UpdateLives(3);
@@ -272,11 +285,14 @@ public class GameManager : MonoBehaviour {
     /// <summary>
     /// Loads scores from file and assigns it to global variables
     /// </summary>
-    public void LoadScores() {
-        if (PlayerPrefs.HasKey("LastScore")) {
+    public void LoadScores()
+    {
+        if (PlayerPrefs.HasKey("LastScore"))
+        {
             LastScore = PlayerPrefs.GetInt("LastScore");
         }
-        if (PlayerPrefs.HasKey("HighScore")) {
+        if (PlayerPrefs.HasKey("HighScore"))
+        {
             HighScore = PlayerPrefs.GetInt("HighScore");
         }
     }

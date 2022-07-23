@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -11,9 +9,10 @@ using UnityEngine;
 
 public enum ItemType { Shield, Bomb, Life };
 
-public class Item : MonoBehaviour {
+public class Item : MonoBehaviour
+{
 
-    
+
     public ItemType Type;
     private ConstantVelocity velocity;
     public Vector2 SpeedRange;
@@ -30,7 +29,8 @@ public class Item : MonoBehaviour {
     }
 
 
-    public void Destroy() {
+    public void Destroy()
+    {
         Destroy(gameObject);
     }
 

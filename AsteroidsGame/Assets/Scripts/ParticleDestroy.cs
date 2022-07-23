@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -13,20 +12,25 @@ using UnityEngine;
 /// Particle Destroy class is used to destroy particles after 
 /// they have finished playing
 /// </summary>
-public class ParticleDestroy : MonoBehaviour {
+public class ParticleDestroy : MonoBehaviour
+{
 
     #region Variables
+
     // Time to wait after particle sim completetion before destroying
-    [SerializeField] 
+    [SerializeField]
     private float timeBuffer = 0.2f;
     private ParticleSystem particle;
+
     #endregion
 
     #region Functions
+
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    private void Start () {
+    private void Start()
+    {
         // store reference to particle system
         particle = GetComponent<ParticleSystem>();
 
@@ -35,7 +39,7 @@ public class ParticleDestroy : MonoBehaviour {
 
         if (!particle.isPlaying)
             particle.Play();
-	}
+    }
 
     /// <summary>
     /// This Coroutine is used to destroy the object after a delay
@@ -45,8 +49,9 @@ public class ParticleDestroy : MonoBehaviour {
     {
         yield return new WaitForSeconds(particle.main.duration + timeBuffer);
         Destroy(gameObject);
-            
+
     }
+
     #endregion
 
 }

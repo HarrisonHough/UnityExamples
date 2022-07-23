@@ -1,8 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
-public static class Global
+﻿public static class Global
 {
     public const int SMALL_ASTEROID_POINTS = 10;
     public const int MEDIUM_ASTEROID_POINTS = 25;

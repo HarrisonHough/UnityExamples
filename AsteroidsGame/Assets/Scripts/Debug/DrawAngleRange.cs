@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -15,9 +13,10 @@ using UnityEngine;
 /// angle range of each spawner. (The Angle Range at which the 
 /// asteroids can spawn with)
 /// </summary>
-public class DrawAngleRange : MonoBehaviour {
+public class DrawAngleRange : MonoBehaviour
+{
 
-    
+
     private SpawnPoint spawnPoint;
     private GameObject left;
     private GameObject right;
@@ -25,7 +24,8 @@ public class DrawAngleRange : MonoBehaviour {
     /// <summary>
     /// Used for Initialization
     /// </summary>
-	private void Start () {
+    private void Start()
+    {
         //get reference
         spawnPoint = GetComponent<SpawnPoint>();
 
@@ -42,13 +42,14 @@ public class DrawAngleRange : MonoBehaviour {
         right.transform.rotation = transform.rotation;
         right.transform.Rotate(0, -spawnPoint.MaxYRotation, 0);
         right.transform.parent = transform;
-	}
+    }
 
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    private void Update () {
+    private void Update()
+    {
 
         //draw max left ray
         Vector3 forward = left.transform.forward * 10;

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -13,7 +11,8 @@ using UnityEngine;
 /// Missile Launcher class handles the shooting (spawning) of 
 /// missiles
 /// </summary>
-public class MissileLauncher : MonoBehaviour {
+public class MissileLauncher : MonoBehaviour
+{
 
     //reference to the prefab to spawn
     [SerializeField]
@@ -23,11 +22,11 @@ public class MissileLauncher : MonoBehaviour {
     private GameObject missileSpawnPoint;
 
     private SoundController soundControl;
-    
+
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Awake ()
+    void Awake()
     {
         InputController.OnPrimaryFireAction += ShootMissile;
         //check for null references
@@ -37,8 +36,7 @@ public class MissileLauncher : MonoBehaviour {
             transform.Find("Missile Spawn Point");
         }
 
-        
-        
+
         //TODO cleanup/optimise if neccessary
         soundControl = FindObjectOfType<SoundController>();
     }
@@ -46,13 +44,14 @@ public class MissileLauncher : MonoBehaviour {
     /// <summary>
     /// Creates missile at SpawnPoint
     /// </summary>
-    public void ShootMissile() {
-     
-        GameObject pooledMissile =  missilePool.GetObject();
+    public void ShootMissile()
+    {
+
+        GameObject pooledMissile = missilePool.GetObject();
         pooledMissile.transform.position = missileSpawnPoint.transform.position;
-        pooledMissile.transform.rotation =  missileSpawnPoint.transform.rotation;
+        pooledMissile.transform.rotation = missileSpawnPoint.transform.rotation;
         pooledMissile.SetActive(true);
-        
+
         soundControl.PlayerShoot();
     }
 }

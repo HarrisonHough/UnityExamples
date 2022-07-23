@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -12,7 +11,8 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class Pool : MonoBehaviour {
+public class Pool : MonoBehaviour
+{
     [SerializeField]
     private GameObject prefabToPool;
     [SerializeField]
@@ -55,7 +55,7 @@ public class Pool : MonoBehaviour {
         for (int i = 0; i < poolSize; i++)
         {
             var pooledObject = Instantiate(prefabToPool);
-            pooledObject.name += " " + (i + lastPoolSize );
+            pooledObject.name += " " + (i + lastPoolSize);
             pooledObject.transform.parent = transform;
             pooledObject.AddComponent<PoolMember>();
 

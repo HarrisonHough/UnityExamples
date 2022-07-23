@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -15,7 +13,8 @@ using UnityEngine;
 /// can spawn in with
 /// </summary>
 /// 
-public class SpawnPoint : MonoBehaviour {
+public class SpawnPoint : MonoBehaviour
+{
 
     //max Y roatation is used to determine the range of Y Rotation asteroids can
     //spawn in with. eg maxYRotation = 40 the range is between -40 and 40

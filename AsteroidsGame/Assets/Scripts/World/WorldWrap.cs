@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -75,9 +73,9 @@ public class WorldWrap : MonoBehaviour
         //Check X position
         if (objectPosition.x > maxPositionX)
         {
-            
+
             //mirror position on X axis and subtract offset to prevent spawning outside world box
-            objectPosition.x = - Mathf.Abs(maxPositionX - worldWrapPositionOffset);
+            objectPosition.x = -Mathf.Abs(maxPositionX - worldWrapPositionOffset);
         }
         else if (objectPosition.x < -maxPositionX)
         {
@@ -106,7 +104,8 @@ public class WorldWrap : MonoBehaviour
     /// 
     /// </summary>
     /// <param name="position"></param>
-    private void SetNewPosition(Vector3 position) {
+    private void SetNewPosition(Vector3 position)
+    {
         transform.position = position;
     }
 }

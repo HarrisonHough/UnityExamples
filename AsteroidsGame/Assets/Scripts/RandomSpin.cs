@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -12,22 +11,24 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class RandomSpin : MonoBehaviour {
+public class RandomSpin : MonoBehaviour
+{
 
     [SerializeField]
-    private Transform rotateTarget;    
+    private Transform rotateTarget;
     [SerializeField]
     private float rotationSpeed = 3;
 
     private bool rotate = false;
     // Use this for initialization
-    private void Start () {
+    private void Start()
+    {
         if (rotateTarget == null)
             rotateTarget = transform.GetChild(0).transform;
 
         StartSpin();
-        
-	}
+
+    }
 
     /// <summary>
     /// 
@@ -52,12 +53,13 @@ public class RandomSpin : MonoBehaviour {
         //Debug.Log("Random rotation = " + xRot + ", " + yRot + ", " + zRot);
 
         return Quaternion.Euler(xRot, yRot, zRot);
-    }    
+    }
 
     /// <summary>
     /// 
     /// </summary>
-    private void OnDestroy() {
+    private void OnDestroy()
+    {
         rotate = false;
         StopAllCoroutines();
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -14,9 +11,11 @@ using UnityEngine;
 /// Collision Effect class is used to spawn an effect
 /// (particles) on collision with particular objects.
 /// </summary>
-public class CollisionEffect : MonoBehaviour {
+public class CollisionEffect : MonoBehaviour
+{
 
     #region Public Variables
+
     //the effect to spawn on collision
     [SerializeField]
     private GameObject particleEffect;
@@ -26,13 +25,16 @@ public class CollisionEffect : MonoBehaviour {
     //the tag to check for on object collision
     [SerializeField]
     private string tagName;
+
     #endregion
 
     #region Functions
+
     /// <summary>
     /// Used for Initialization
     /// </summary>
-    private void Start() {
+    private void Start()
+    {
         //check for null reference
         if (tagName == null)
             Debug.Log("TagName is not assigned");
@@ -41,9 +43,10 @@ public class CollisionEffect : MonoBehaviour {
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag.Contains(tagName)) {
+        if (other.gameObject.tag.Contains(tagName))
+        {
             CreateParticles();
-            if(destroyOnCollision)
+            if (destroyOnCollision)
                 Destroy(gameObject);
         }
     }
@@ -53,12 +56,14 @@ public class CollisionEffect : MonoBehaviour {
     /// Called on collision, triggers CreateParticles function
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
 
         //check for tag
-        if (other.tag.Contains(tagName)) {
+        if (other.tag.Contains(tagName))
+        {
             CreateParticles();
-            if(destroyOnCollision)
+            if (destroyOnCollision)
                 Destroy(gameObject);
         }
     }
@@ -66,9 +71,11 @@ public class CollisionEffect : MonoBehaviour {
     /// <summary>
     /// Creates particles at current position (+ offset)
     /// </summary>
-    private void CreateParticles() {
+    private void CreateParticles()
+    {
         //spawn particles just above object to make more visible from top view
         GameObject particles = Instantiate(particleEffect, transform.position + Vector3.up, transform.rotation);
     }
+
     #endregion
 }

@@ -1,5 +1,4 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -12,7 +11,8 @@ using UnityEngine;
 /// <summary>
 /// Spawn Controller class controls the spawning of asteroids
 /// </summary>
-public class SpawnController : MonoBehaviour {
+public class SpawnController : MonoBehaviour
+{
 
     //different asteroids to spawn (Order is important)
     [SerializeField]
@@ -30,7 +30,7 @@ public class SpawnController : MonoBehaviour {
     private SpawnPoint[] spawnPoints;
     //frequency of spawning
     [SerializeField]
-    private float spawnInterval = 3f;    
+    private float spawnInterval = 3f;
     //keep track of total asteroids spawned
     [SerializeField]
     private int totalAsteroidsSpawned = 0;
@@ -56,7 +56,8 @@ public class SpawnController : MonoBehaviour {
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start () {
+    void Start()
+    {
         AssignSpawnPoints();
         if (smallAsteroidPool == null)
             Debug.Log("Asteroid prefab array not assigned");
@@ -64,7 +65,7 @@ public class SpawnController : MonoBehaviour {
         Instantiate();
 
 
-	}
+    }
 
     /// <summary>
     /// 
@@ -74,12 +75,13 @@ public class SpawnController : MonoBehaviour {
         asteroidParent = new GameObject("Asteroids");
         spawnRotation = new GameObject("Spawn Rotation");
 
-        
+
     }
     /// <summary>
     /// Called at start, used to automatically assign spawn points
     /// </summary>
-    void AssignSpawnPoints() {
+    void AssignSpawnPoints()
+    {
         spawnPoints = new SpawnPoint[transform.childCount];
         for (int i = 0; i < spawnPoints.Length; i++)
         {
@@ -91,7 +93,8 @@ public class SpawnController : MonoBehaviour {
     /// Coroutine used to continuously spawn asteroids
     /// </summary>
     /// <returns>IENumerator : Required for coroutine</returns>
-    IEnumerator AsteroidSpawnLoop() {
+    IEnumerator AsteroidSpawnLoop()
+    {
 
         //used to store time passed
         float timer = 0;
@@ -99,7 +102,7 @@ public class SpawnController : MonoBehaviour {
 
         while (spawning)
         {
-            
+
             timer += Time.deltaTime;
             if (timer > spawnInterval && Asteroid.CurrentAsteroidCount < activeAsteroidLimit)
             {
@@ -126,19 +129,19 @@ public class SpawnController : MonoBehaviour {
 
     private void SpawnRandomAsteroidAtPosition(SpawnPoint spawnPoint)
     {
-        AsteroidType type = (AsteroidType)Random.Range(0, 3);
+        AsteroidType type = (AsteroidType) Random.Range(0, 3);
         GameObject pooledObject;
         switch (type)
-        { 
+        {
             case AsteroidType.Small:
-                pooledObject  = smallAsteroidPool.GetObject();
-            break;
+                pooledObject = smallAsteroidPool.GetObject();
+                break;
             case AsteroidType.Medium:
-                pooledObject  = mediumAsteroidPool.GetObject();
-            break;            
+                pooledObject = mediumAsteroidPool.GetObject();
+                break;
             case AsteroidType.Large:
-                pooledObject  = largeAsteroidPool.GetObject();
-            break;
+                pooledObject = largeAsteroidPool.GetObject();
+                break;
             default:
                 pooledObject = largeAsteroidPool.GetObject();
                 break;
@@ -156,7 +159,8 @@ public class SpawnController : MonoBehaviour {
     public void StartSpawning()
     {
         Debug.Log("Start spawning");
-        if (!spawning) { 
+        if (!spawning)
+        {
             spawning = true;
             StartCoroutine(AsteroidSpawnLoop());
         }
@@ -165,7 +169,8 @@ public class SpawnController : MonoBehaviour {
     /// <summary>
     /// Stops the spawning coroutine
     /// </summary>
-    public void StopSpawning() {
+    public void StopSpawning()
+    {
         if (spawning)
         {
             spawning = false;
@@ -179,7 +184,7 @@ public class SpawnController : MonoBehaviour {
     /// <param name="position">Vector3 : Position to spawn two asteroids</param>
     public void SpawnSmallAsteroid(Vector3 position)
     {
-       
+
         //need offset to ensure both asteriods don't spawn in same spot causing a collision/destruction
         Vector3 offset = new Vector3(smallAsteroidSpawnOffset, 0, smallAsteroidSpawnOffset);
 
@@ -191,7 +196,7 @@ public class SpawnController : MonoBehaviour {
             rotation.z = -rotation.z;
             offset = -offset;
 
-            
+
             GameObject pooledObject = smallAsteroidPool.GetObject();
             pooledObject.transform.position = position - offset;
             pooledObject.transform.rotation = rotation;
@@ -207,7 +212,8 @@ public class SpawnController : MonoBehaviour {
     /// Spawns Medium asteroid
     /// </summary>
     /// <param name="position">Vector3 : Position to spawn asteroid at</param>
-    public void SpawnMediumAsteroid(Vector3 position) {
+    public void SpawnMediumAsteroid(Vector3 position)
+    {
 
         //need offset to ensure both asteroids don't spawn in same spot causing a collision/destruction
         Vector3 offset = new Vector3(mediumAsteroidSpawnOffset, 0, mediumAsteroidSpawnOffset);
@@ -246,7 +252,8 @@ public class SpawnController : MonoBehaviour {
     /// Randomly selects and returns spawn point
     /// </summary>
     /// <returns>SpawnPoint : Used to determine spawn position and rotation of Asteroid</returns>
-    public SpawnPoint RandomSpawnPoint() {
+    public SpawnPoint RandomSpawnPoint()
+    {
 
         int index = Random.Range(0, spawnPoints.Length);
         while (index == lastSpawnPoint)

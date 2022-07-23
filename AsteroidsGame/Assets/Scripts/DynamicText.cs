@@ -1,5 +1,5 @@
-﻿using UnityEngine;
-using TMPro;
+﻿using TMPro;
+using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -8,18 +8,20 @@ using TMPro;
 * SCRIPT: Dynamic Text Class
 */
 
-public class DynamicText : MonoBehaviour {
-    
+public class DynamicText : MonoBehaviour
+{
+
     private TextMeshProUGUI text;
     private RectTransform rectTransform;
     [SerializeField]
     private float displayTime = 2f;
 
-	// Use this for initialization
-	void Start () {
+    // Use this for initialization
+    void Start()
+    {
         text = GetComponent<TextMeshProUGUI>();
         rectTransform = GetComponent<RectTransform>();
-	}
+    }
 
     public void SetTextAndPosition(string textToDisplay, Vector3 worldPosition)
     {

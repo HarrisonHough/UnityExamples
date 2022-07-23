@@ -1,6 +1,4 @@
 ﻿using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 /*
@@ -14,19 +12,21 @@ using UnityEngine;
 /// Input Controller class handles all of the user Input 
 /// (other than UI Events)
 /// </summary>
-public class InputController : MonoBehaviour {
+public class InputController : MonoBehaviour
+{
 
     public static Action OnPrimaryFireAction;
     public static Action OnSecondaryFireAction;
     public static Action OnYInputEndAction;
 
     private bool NoInputY = false;
-    
+
     public float xInput
     {
         get;
         private set;
     }
+
     public float yInput
     {
         get;
@@ -36,7 +36,8 @@ public class InputController : MonoBehaviour {
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start () {
+    void Start()
+    {
 
         Initialize();
     }
@@ -46,7 +47,7 @@ public class InputController : MonoBehaviour {
     /// </summary>
     void Initialize()
     {
-        
+
     }
 
     /// <summary>
@@ -65,13 +66,14 @@ public class InputController : MonoBehaviour {
     /// </summary>
     void KeyboardInput()
     {
-        
+
         xInput = Input.GetAxis("Horizontal");
         yInput = Input.GetAxis("Vertical");
-        if(!NoInputY && yInput < 0.05f)
+        if (!NoInputY && yInput < 0.05f)
             OnYInputEndAction?.Invoke();
-        
-        if (Input.GetButtonDown("Shoot")) {
+
+        if (Input.GetButtonDown("Shoot"))
+        {
 
             OnPrimaryFireAction?.Invoke();
         }
@@ -82,7 +84,8 @@ public class InputController : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
-    void OnDestroy() {
+    void OnDestroy()
+    {
         //must unsubscribe before destroying
         OnPrimaryFireAction = null;
         OnSecondaryFireAction = null;

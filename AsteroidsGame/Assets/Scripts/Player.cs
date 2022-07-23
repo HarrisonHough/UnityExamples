@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -15,16 +12,18 @@ using UnityEngine;
 /// player object
 /// </summary>
 /// 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
 
     private Item item;
 
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start () {
+    void Start()
+    {
         Initialize();
-	}
+    }
 
     /// <summary>
     /// 
@@ -45,14 +44,15 @@ public class Player : MonoBehaviour {
     /// Called on collision to trigger Death function
     /// </summary>
     /// <param name="other"></param>
-    void OnTriggerEnter(Collider other) 
+    void OnTriggerEnter(Collider other)
     {
         if (other.tag == "Enemy")
         {
             Death();
         }
-        else if (other.tag == "Item") {
-           item = other.gameObject.GetComponent<Item>();
+        else if (other.tag == "Item")
+        {
+            item = other.gameObject.GetComponent<Item>();
             CheckItem();
         }
     }
@@ -60,10 +60,12 @@ public class Player : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
-    void CheckItem() {
-        
+    void CheckItem()
+    {
+
         //TODO move to more appropriate class
-        switch (item.Type) {
+        switch (item.Type)
+        {
             case ItemType.Shield:
                 //TurnOnShield();
                 break;
@@ -81,7 +83,8 @@ public class Player : MonoBehaviour {
     /// Called PlayerDeath function in GameManager before destroying
     /// self
     /// </summary>
-    public void Death() {
+    public void Death()
+    {
 
         GameManager.Instance.PlayerDeath();
         gameObject.SetActive(false);

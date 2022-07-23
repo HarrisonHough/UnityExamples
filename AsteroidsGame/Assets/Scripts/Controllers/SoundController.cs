@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,7 +7,8 @@ using UnityEngine;
 * SCRIPT: Sound Controller Class
 */
 
-public class SoundController : MonoBehaviour {
+public class SoundController : MonoBehaviour
+{
 
     public AudioClip[] Audio;
     private AudioSource source;
@@ -26,37 +25,42 @@ public class SoundController : MonoBehaviour {
     /// <summary>
     /// 
     /// </summary>
-    private void Start() {
-       source = GetComponent<AudioSource>();
+    private void Start()
+    {
+        source = GetComponent<AudioSource>();
     }
 
     /// <summary>
     /// Play collision sound
     /// </summary>
-    public void Collision() {
-        int i = Random.Range(1,2);
-       PlaySound(i);
+    public void Collision()
+    {
+        int i = Random.Range(1, 2);
+        PlaySound(i);
     }
 
     /// <summary>
     /// Play button press sound
     /// </summary>
-    public void ButtonPress() {
-       PlaySound(0);
+    public void ButtonPress()
+    {
+        PlaySound(0);
     }
 
     /// <summary>
     /// Play player shoot sound
     /// </summary>
-    public void PlayerShoot() {
+    public void PlayerShoot()
+    {
         PlaySound(5);
     }
 
     /// <summary>
     /// Play Player explode sound
     /// </summary>
-    public void PlayerExplode() {
-        int i = Random.Range(3,4);
+    public void PlayerExplode()
+    {
+        int i = Random.Range(3, 4);
         PlaySound(i);
     }
 

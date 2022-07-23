@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -15,8 +13,9 @@ using UnityEngine;
 /// and missiles
 /// </summary>
 /// 
-public class ConstantVelocity : MonoBehaviour {
-       
+public class ConstantVelocity : MonoBehaviour
+{
+
     [SerializeField]
     private float constantSpeed = 10f;
     public float ConstantSpeed { get { return constantSpeed; } set { constantSpeed = value; } }
@@ -27,15 +26,17 @@ public class ConstantVelocity : MonoBehaviour {
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start () {
+    void Start()
+    {
         rigidbody = GetComponent<Rigidbody>();
-	}
-	
-	/// <summary>
+    }
+
+    /// <summary>
     /// Called every fixed frame
     /// </summary>
-	void FixedUpdate () {
+    void FixedUpdate()
+    {
         //applied within FixedUpdate for accurate physics
         rigidbody.velocity = transform.forward * ConstantSpeed;
-	}
+    }
 }

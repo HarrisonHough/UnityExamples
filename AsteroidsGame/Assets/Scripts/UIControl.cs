@@ -1,8 +1,7 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
+using UnityEditor;
 using UnityEngine;
-using UnityEngine.UI;
-using TMPro;
+
 /*
 * AUTHOR: Harrison Hough   
 * COPYRIGHT: Harrison Hough 2018
@@ -14,9 +13,11 @@ using TMPro;
 /// UI Control class controls the display canvas and
 /// all events
 /// </summary>
-public class UIControl : MonoBehaviour {
+public class UIControl : MonoBehaviour
+{
 
     #region Local Variables
+
     [SerializeField]
     private TextMeshProUGUI scoreText;
     [SerializeField]
@@ -44,10 +45,11 @@ public class UIControl : MonoBehaviour {
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    private void Start () {
+    private void Start()
+    {
         UpdateHomeUIScores();
         CreateTextArray();
-	}
+    }
 
     private void CreateTextArray()
     {
@@ -89,8 +91,9 @@ public class UIControl : MonoBehaviour {
     /// Updates Score text element
     /// </summary>
     /// <param name="score">Int: Score value to display</param>
-    public void UpdateScore(int score) {
-        
+    public void UpdateScore(int score)
+    {
+
         scoreText.text = "Score: " + score;
     }
 
@@ -106,7 +109,8 @@ public class UIControl : MonoBehaviour {
     /// <summary>
     /// Updates Score on HomeUI (menu) panel
     /// </summary>
-    public void UpdateHomeUIScores() {
+    public void UpdateHomeUIScores()
+    {
         lastScoreText.text = "Last Score : " + GameManager.LastScore;
         highScoreText.text = "Best Score : " + GameManager.HighScore;
     }
@@ -114,14 +118,16 @@ public class UIControl : MonoBehaviour {
     /// <summary>
     /// Enables Home screen panel
     /// </summary>
-    public void ShowHomeScreen() {
+    public void ShowHomeScreen()
+    {
         homeScreenPanel.SetActive(true);
     }
 
     /// <summary>
     /// Triggers game start/ restart
     /// </summary>
-    public void StartGame() {
+    public void StartGame()
+    {
         homeScreenPanel.SetActive(false);
         GameManager.Instance.StartGame();
     }
@@ -132,7 +138,7 @@ public class UIControl : MonoBehaviour {
     public void ExitGame()
     {
 #if UNITY_EDITOR
-        UnityEditor.EditorApplication.isPlaying = false;
+        EditorApplication.isPlaying = false;
 #else
             Application.Quit();
 #endif

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -14,8 +11,9 @@ using UnityEngine;
 /// Asteroid class controls the collision events on the
 /// asteroids in the game
 /// </summary>
-public class Asteroid : Enemy {
-    
+public class Asteroid : Enemy
+{
+
     public AsteroidType Type;
     public static int CurrentAsteroidCount;
     public static int TotalAsteroidCount;
@@ -57,10 +55,11 @@ public class Asteroid : Enemy {
     /// Triggers events when colliding with objects
     /// </summary>
     /// <param name="other"></param>
-    private void OnTriggerEnter(Collider other) {
+    private void OnTriggerEnter(Collider other)
+    {
         CurrentAsteroidCount--;
 
-        
+
         switch (other.tag)
         {
             case "Player":
@@ -86,13 +85,13 @@ public class Asteroid : Enemy {
         //if (other.tag == "Player" || other.tag == "Missile")
 
 
-        
     }
 
     /// <summary>
     /// Hides object and triggers Asteroid Hit function in GameManager
     /// </summary>
-    private void HitByMissile() {
+    private void HitByMissile()
+    {
 
         Debug.Log("Missile hit an asteroid");
 
@@ -118,7 +117,8 @@ public class Asteroid : Enemy {
     /// <summary>
     /// Hides object and trigger Border Hit function in GameManager
     /// </summary>
-    private void BorderHit() {
+    private void BorderHit()
+    {
 
         //Debug.Log("Asteroid hit the border");
 
@@ -129,7 +129,7 @@ public class Asteroid : Enemy {
 
     private void OnDisable()
     {
-        
+
     }
 
     private void Destroy()

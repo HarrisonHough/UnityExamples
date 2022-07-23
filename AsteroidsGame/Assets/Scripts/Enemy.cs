@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -10,8 +8,9 @@ using UnityEngine;
 */
 
 
-public class Enemy : MonoBehaviour {
-       
+public class Enemy : MonoBehaviour
+{
+
     [SerializeField]
     private Vector2 speedRange;
     [SerializeField]
@@ -27,16 +26,17 @@ public class Enemy : MonoBehaviour {
         velocity = GetComponent<ConstantVelocity>();
         SetInitialVelocity();
 
-        
+
     }
 
     /// <summary>
     /// Sets the initial velocity
     /// </summary>
-    private void SetInitialVelocity() {
+    private void SetInitialVelocity()
+    {
         float speed = Random.Range(speedRange.x, speedRange.y);
         velocity.ConstantSpeed = speed;
     }
 
-    
+
 }
