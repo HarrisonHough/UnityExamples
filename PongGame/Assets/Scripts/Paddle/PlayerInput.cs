@@ -1,25 +1,22 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(PaddleMotor))]
 public class PlayerInput : MonoBehaviour
 {
-    private PaddleMotor _motor;
-    // Start is called before the first frame update
-    void Start()
+    private PaddleMotor motor;
+
+    private void Start()
     {
-        _motor = GetComponent<PaddleMotor>();
+        motor = GetComponent<PaddleMotor>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
         GetInput();
     }
 
-    void GetInput()
+    private void GetInput()
     {
-        _motor.SetDirection(Input.GetAxis("Horizontal"));
+        motor.SetDirection(Input.GetAxis("Horizontal"));
     }
 }

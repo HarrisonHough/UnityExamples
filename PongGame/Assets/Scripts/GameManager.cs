@@ -1,18 +1,17 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
-public enum GameState {InMenu,InGame, Finished}
-//used to ID which player has scored the goal
+public enum GameState { InMenu, InGame, Finished }
 public enum PlayerID { P1, P2 };
+
 public class GameManager : MonoBehaviour
 {
     public static GameManager Instance { get; private set; }
     [SerializeField]
-    private int _maxScore = 10;
-    private GameScene GameScene;
-    public GameState State;
+    private int maxScore = 10;
+    private GameScene gameScene;
+    public GameState state;
 
     private void Awake()
     {
@@ -24,50 +23,39 @@ public class GameManager : MonoBehaviour
         else
         {
             Destroy(gameObject);
-            return;
         }
     }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="gameScene"></param>
-    public void OnGameSceneStart(GameScene gameScene)
+    
+    public void OnGameSceneStart(GameScene newGameScene)
     {
-        //set reference to scene
-        this.GameScene = gameScene;
-        //reset game state
-        State = GameState.InMenu;
+
+        gameScene = newGameScene;
+        state = GameState.InMenu;
         StopAllCoroutines();
         StartCoroutine(GameRoutine());
     }
 
     private bool CheckForWinner()
     {
-        if (GameScene.Player1.Score >= _maxScore || GameScene.Player2.Score >= _maxScore)
-        {
-            return true;
-        }
-        return false;
+        return gameScene.Player1.Score >= maxScore || gameScene.Player2.Score >= maxScore;
     }
 
     public void AddToPlayerScore(PlayerID id)
     {
         if (id == PlayerID.P1)
         {
-            GameScene.Player1.AddToScore();
+            gameScene.Player1.AddToScore();
         }
         else
         {
-            GameScene.Player2.AddToScore();
+            gameScene.Player2.AddToScore();
 
         }
-
-        //update UI
-        GameScene.GameUI.UpdateScores(GameScene.Player1.Score, GameScene.Player2.Score);
+        
+        gameScene.GameUI.UpdateScores(gameScene.Player1.Score, gameScene.Player2.Score);
     }
 
-    IEnumerator GameRoutine()
+    private IEnumerator GameRoutine()
     {
         yield return WaitForStart();
         yield return RunCountdown();
@@ -76,33 +64,29 @@ public class GameManager : MonoBehaviour
 
     }
 
-    IEnumerator WaitForStart()
+    private IEnumerator WaitForStart()
     {
-        while (State == GameState.InGame)
+        while (state == GameState.InGame)
         {
             yield return null;
         }
     }
 
-    IEnumerator RunCountdown()
+    private IEnumerator RunCountdown()
     {
-        //3
         yield return new WaitForSeconds(1);
-        //2
         yield return new WaitForSeconds(1);
-        //1
         yield return new WaitForSeconds(1);
-        //go
     }
 
-    IEnumerator WaitForWinner()
+    private IEnumerator WaitForWinner()
     {
         while (CheckForWinner() == false)
         {
             yield return null;
         }
 
-        if (GameScene.Player1.Score >= _maxScore)
+        if (gameScene.Player1.Score >= maxScore)
         {
             //winner is player 1
         }
@@ -110,15 +94,13 @@ public class GameManager : MonoBehaviour
         {
             //winner is player 2
         }
-        
     }
 
-    IEnumerator GameOver()
+    private IEnumerator GameOver()
     {
-        while(State == GameState.Finished)
+        while (state == GameState.Finished)
         {
             yield return null;
         }
-        
     }
 }

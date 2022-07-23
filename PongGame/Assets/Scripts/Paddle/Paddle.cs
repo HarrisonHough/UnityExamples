@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Paddle : MonoBehaviour
 {
     [SerializeField]
-    private string _name;
-    public string Name { get { return _name; } }
+    private string paddleName;
+    public string PaddleName => paddleName;
     public float SizeX { get; set; }
+
     public int Score { get; set; }
-    // Start is called before the first frame update
-    void Start()
+
+    private void Start()
     {
         SizeX = GetComponent<BoxCollider2D>().size.x;
     }

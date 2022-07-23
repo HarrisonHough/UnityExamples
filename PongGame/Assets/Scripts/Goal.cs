@@ -1,26 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Goal : MonoBehaviour
 {
-    
-    public PlayerID Id;
+    public PlayerID id;
 
     private void OnTriggerEnter2D(Collider2D other)
     {
-        Ball ball = other.GetComponent<Ball>();
+        var ball = other.GetComponent<Ball>();
         if (ball != null)
         {
             HandleBallCollision(ball);
         }
     }
 
-
     private void HandleBallCollision(Ball ball)
     {
         ball.Disable();
-        GameManager.Instance.AddToPlayerScore(Id);
+        GameManager.Instance.AddToPlayerScore(id);
     }
 
 }

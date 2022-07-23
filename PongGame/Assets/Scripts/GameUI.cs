@@ -1,24 +1,17 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using TMPro;
 using UnityEngine;
-using TMPro;
+using UnityEngine.Serialization;
 
 public class GameUI : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI _player1Score;
+    private TextMeshProUGUI player1Score;
     [SerializeField]
-    private TextMeshProUGUI _player2Score;
-
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private TextMeshProUGUI player2Score;
 
     public void UpdateScores(int score1, int score2)
     {
-        _player1Score.text = score1.ToString();
-        _player2Score.text = score2.ToString();
+        player1Score.text = score1.ToString();
+        player2Score.text = score2.ToString();
     }
 }

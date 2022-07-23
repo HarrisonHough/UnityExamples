@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
+
 /*
 * AUTHOR: Harrison Hough   
 * COPYRIGHT: Harrison Hough 2018
@@ -19,33 +19,33 @@ public class PlaySpace : MonoBehaviour
 
     //reference to all 4 wall colliders
     [SerializeField]
-    private BoxCollider2D _topWall;
+    private BoxCollider2D topWall;
     [SerializeField]
-    private BoxCollider2D _bottomWall;
+    private BoxCollider2D bottomWall;
     [SerializeField]
-    private BoxCollider2D _leftWall;
+    private BoxCollider2D leftWall;
     [SerializeField]
-    private BoxCollider2D _rightWall;
+    private BoxCollider2D rightWall;
 
     //used to determine width of walls, can be changed in editor
     [SerializeField]
-    private float _wallWidth = 1f;
+    private float wallWidth = 1f;
 
     [SerializeField]
-    private bool _adjustSprite = false;
-    public static float XMin;
-    public static float XMax;
-    public static float YMin;
-    public static float YMax;
+    private bool adjustSprite;
+    public static float MinX;
+    public static float MaxX;
+    public static float MinY;
+    public static float MaxY;
+    private Camera gameCamera;
 
     /// <summary>
     /// Used for initialization on scene start
     /// </summary>
     private void Start()
     {
-
+        gameCamera = Camera.main;
         SetupPlaySpace();
-
     }
 
     /// <summary>
@@ -65,14 +65,13 @@ public class PlaySpace : MonoBehaviour
     /// </summary>
     private void SetupTopWall()
     {
-
-        Vector2 size = new Vector2(XMax - XMin, _wallWidth);
+        var size = new Vector2(MaxX - MinX, wallWidth);
         size.x += 2;
-        Vector2 offset = new Vector3(size.x / 2f, _wallWidth / 2);
+        Vector2 offset = new Vector3(size.x / 2f, wallWidth / 2);
 
-        _topWall.size = size;
-        _topWall.offset = offset;
-        _topWall.transform.position = new Vector3(XMin - 1, YMax, 0f);
+        topWall.size = size;
+        topWall.offset = offset;
+        topWall.transform.position = new Vector3(MinX - 1, MaxY, 0f);
     }
 
     /// <summary>
@@ -81,15 +80,14 @@ public class PlaySpace : MonoBehaviour
     private void SetupBottomWall()
     {
 
-        Vector2 size = new Vector2(XMax - XMin, _wallWidth);
+        var size = new Vector2(MaxX - MinX, wallWidth);
         size.x += 2;
-        Vector2 offset = new Vector3(size.x / 2f, -_wallWidth / 2);
+        Vector2 offset = new Vector3(size.x / 2f, -wallWidth / 2);
 
         //Bottom wall position logic
-        _bottomWall.size = size;
-        _bottomWall.offset = offset;
-        _bottomWall.transform.position = new Vector3(XMin - 1, YMin, 0f);
-
+        bottomWall.size = size;
+        bottomWall.offset = offset;
+        bottomWall.transform.position = new Vector3(MinX - 1, MinY, 0f);
     }
 
     /// <summary>
@@ -97,12 +95,12 @@ public class PlaySpace : MonoBehaviour
     /// </summary>
     private void SetupLeftWall()
     {
-        Vector2 size = new Vector2(_wallWidth, YMax - YMin);
-        Vector2 offset = new Vector3(-_wallWidth / 2, size.y / 2);
+        var size = new Vector2(wallWidth, MaxY - MinY);
+        var offset = new Vector2(-wallWidth / 2, size.y / 2);
 
-        _leftWall.size = size;
-        _leftWall.offset = offset;
-        _leftWall.transform.position = new Vector3(XMin, YMin);
+        leftWall.size = size;
+        leftWall.offset = offset;
+        leftWall.transform.position = new Vector3(MinX, MinY);
     }
 
     /// <summary>
@@ -110,12 +108,12 @@ public class PlaySpace : MonoBehaviour
     /// </summary>
     private void SetupRightWall()
     {
-        Vector2 size = new Vector2(_wallWidth, YMax - YMin);
-        Vector2 offset = new Vector3(_wallWidth / 2, size.y / 2);
+        var size = new Vector2(wallWidth, MaxY - MinY);
+        var offset = new Vector3(wallWidth / 2, size.y / 2);
 
-        _rightWall.size = size;
-        _rightWall.offset = offset;
-        _rightWall.transform.position = new Vector3(XMax, YMin);
+        rightWall.size = size;
+        rightWall.offset = offset;
+        rightWall.transform.position = new Vector3(MaxX, MinY);
 
     }
 
@@ -125,10 +123,9 @@ public class PlaySpace : MonoBehaviour
     /// </summary>
     private void GetWorldPositionValues()
     {
-        XMin = Camera.main.ViewportToWorldPoint(Vector3.zero).x;
-        XMax = Camera.main.ViewportToWorldPoint(Vector3.right).x;
-        YMin = Camera.main.ViewportToWorldPoint(Vector3.zero).y;
-        YMax = Camera.main.ViewportToWorldPoint(Vector3.up).y;
+        MinX = gameCamera.ViewportToWorldPoint(Vector3.zero).x;
+        MaxX = gameCamera.ViewportToWorldPoint(Vector3.right).x;
+        MinY = gameCamera.ViewportToWorldPoint(Vector3.zero).y;
+        MaxY = gameCamera.ViewportToWorldPoint(Vector3.up).y;
     }
-
 }

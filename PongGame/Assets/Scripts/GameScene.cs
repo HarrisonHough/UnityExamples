@@ -1,25 +1,23 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class GameScene : MonoBehaviour
 {
     [SerializeField]
-    private Paddle _player1;
-    public Paddle Player1 { get { return _player1; } }
+    private Paddle player1;
+    public Paddle Player1 => player1;
     [SerializeField]
-    private Paddle _player2;
-    public Paddle Player2 { get { return _player2; } }
+    private Paddle player2;
+    public Paddle Player2 => player2;
     [SerializeField]
-    private Ball _ball;
-    public Ball Ball { get { return _ball; } }
+    private Ball ball;
+    public Ball Ball => ball;
     [SerializeField]
-    private GameUI _gameUI;
-    public GameUI GameUI { get { return _gameUI; } }
+    private GameUI gameUI;
+    public GameUI GameUI { get { return gameUI; } }
 
     private void Start()
     {
         GameManager.Instance.OnGameSceneStart(this);
     }
-
 }

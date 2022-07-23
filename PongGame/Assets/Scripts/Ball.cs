@@ -1,26 +1,24 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class Ball : MonoBehaviour
 {
-    private Rigidbody2D _rigidbody;
+    private Rigidbody2D ballRigidbody;
     [SerializeField]
-    private Transform _spawnPoint;
+    private Transform spawnPoint;
     [SerializeField]
-    private float _speed = 6f;
-    // Start is called before the first frame update
-    void Start()
+    private float speed = 6f;
+    
+    private void Start()
     {
-        _rigidbody = GetComponent<Rigidbody2D>();
+        ballRigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+
+    private void Update()
     {
-       
-        if(Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space))
         {
             SpawnBallWithVelocity();
         }
@@ -28,25 +26,24 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        Vector2 velocity = _rigidbody.velocity;
-        velocity.x = Mathf.Clamp(velocity.x, -_speed, _speed);
+        Vector2 velocity = ballRigidbody.velocity;
+        velocity.x = Mathf.Clamp(velocity.x, -speed, speed);
     }
 
     private void OnCollisionExit2D(Collision2D collision)
     {
-        Paddle paddle = collision.gameObject.GetComponent<Paddle>();
-        if (paddle != null)
-        {
-            float yDirection = 1;
-            //if this ball is below paddle at collision then it must
-            //be heading back in -y direction
-            if (transform.position.y < paddle.transform.position.y)
-                yDirection = -1;
+        var paddle = collision.gameObject.GetComponent<Paddle>();
+        if (paddle == null) return;
+        
+        var yDirection = 1f;
+        //if this ball is below paddle at collision then it must
+        //be heading back in -y direction
+        if (transform.position.y < paddle.transform.position.y)
+            yDirection = -1;
 
-            //calculate direction
-            Vector2 direction = new Vector2(BounceFactor(paddle.transform.position,paddle.SizeX), yDirection).normalized;
-            _rigidbody.velocity = direction * _speed;
-        }
+        //calculate direction
+        Vector2 direction = new Vector2(BounceFactor(paddle.transform.position, paddle.SizeX), yDirection).normalized;
+        ballRigidbody.velocity = direction * speed;
     }
 
     private float BounceFactor(Vector2 paddlePosition, float paddleWidth)
@@ -56,33 +53,31 @@ public class Ball : MonoBehaviour
 
     public void SpawnBallWithVelocity()
     {
-        _rigidbody.velocity = Vector2.zero;
-        transform.position = _spawnPoint.position;
+        ballRigidbody.velocity = Vector2.zero;
+        transform.position = spawnPoint.position;
         gameObject.SetActive(true);
-        _rigidbody.velocity = RandomStartDirection() * _speed;
+        ballRigidbody.velocity = RandomStartDirection() * speed;
     }
 
     private Vector2 RandomStartDirection()
     {
-        float randomDirection = 1;
-
-        //randomly negative
+        var randomDirection = 1f;
+        
         if (Random.Range(0, 2f) < 1)
         {
             randomDirection = -1;
         }
 
-        Vector2 newVelocity = new Vector2(0, randomDirection * _speed);
+        var newVelocity = new Vector2(0, randomDirection * speed);
         //get random X amount
         randomDirection = Random.Range(-1f, 1f);
-        newVelocity.x = randomDirection * _speed;
-        //apply ratio
+        newVelocity.x = randomDirection * speed;
 
-       float pythagoras = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
-        if (pythagoras > (_speed * _speed))
+        var pythagoras = ((newVelocity.x * newVelocity.x) + (newVelocity.y * newVelocity.y));
+        if (pythagoras > (speed * speed))
         {
             float magnitude = Mathf.Sqrt(pythagoras);
-            float multiplier = _speed / magnitude;
+            float multiplier = speed / magnitude;
             newVelocity.x *= multiplier;
             newVelocity.y *= multiplier;
         }
@@ -92,8 +87,8 @@ public class Ball : MonoBehaviour
 
     public void Disable()
     {
-        _rigidbody.velocity = Vector2.zero;
+        ballRigidbody.velocity = Vector2.zero;
         gameObject.SetActive(false);
-        transform.position = _spawnPoint.position;
+        transform.position = spawnPoint.position;
     }
 }

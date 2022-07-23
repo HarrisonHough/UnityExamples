@@ -1,47 +1,45 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PaddleMotor : MonoBehaviour
 {
     [SerializeField]
-    private Rigidbody2D _rigidbody2D;
+    private Rigidbody2D paddleRigidbody2D;
     [SerializeField]
-    private float _moveSpeed = 5f;
-    private BoxCollider2D _collider;
+    private float moveSpeed = 5f;
+    private BoxCollider2D paddleCollider;
 
-    private float _directionX = 0f;
-    private Vector3 _destination;
-    // Start is called before the first frame update
-    void Start()
+    private float directionX;
+    private Vector3 destination;
+
+    private void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _collider = GetComponent<BoxCollider2D>();
-        _destination = transform.position;
+        paddleRigidbody2D = GetComponent<Rigidbody2D>();
+        paddleCollider = GetComponent<BoxCollider2D>();
+        destination = transform.position;
     }
 
     private void FixedUpdate()
     {
-        _rigidbody2D.MovePosition(_destination);
+        paddleRigidbody2D.MovePosition(destination);
     }
 
     public void SetDirection(float xAxisInput)
     {
-        _directionX = xAxisInput;
-        MoveInDirection(_directionX);
+        directionX = xAxisInput;
+        MoveInDirection(directionX);
     }
 
     public void MoveToPosition(Vector3 position)
     {
         Vector3 direction = (position - transform.position).normalized;
-        _destination = transform.position + transform.right * direction.x * _moveSpeed * Time.deltaTime;
-        _destination.x = Mathf.Clamp(_destination.x, PlaySpace.XMin + (_collider.size.x / 2), PlaySpace.XMax - (_collider.size.x / 2));
+        destination = transform.position + transform.right * direction.x * moveSpeed * Time.deltaTime;
+        destination.x = Mathf.Clamp(destination.x, PlaySpace.MinX + (paddleCollider.size.x / 2), PlaySpace.MaxX - (paddleCollider.size.x / 2));
     }
 
     public void MoveInDirection(float MoveDirection)
     {
-        _destination = transform.position + transform.right * MoveDirection * _moveSpeed * Time.deltaTime;
-        _destination.x = Mathf.Clamp(_destination.x, PlaySpace.XMin + (_collider.size.x / 2), PlaySpace.XMax - (_collider.size.x / 2));
-        
+        destination = transform.position + transform.right * MoveDirection * moveSpeed * Time.deltaTime;
+        destination.x = Mathf.Clamp(destination.x, PlaySpace.MinX + (paddleCollider.size.x / 2), PlaySpace.MaxX - (paddleCollider.size.x / 2));
     }
 }
