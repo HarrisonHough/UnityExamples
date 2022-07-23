@@ -19,7 +19,7 @@ public class UIControl : MonoBehaviour
     [SerializeField]
     private Image windArrow;
 
-    private const string ScorePrefix = "Score\n";
+    private const string SCORE_PREFIX = "Score\n";
     void Start()
     {
         Wind.RandomWindStrength(true);
@@ -46,7 +46,7 @@ public class UIControl : MonoBehaviour
 
     public void UpdateScore(int score)
     {
-        scoreText.text = ScorePrefix + score;
+        scoreText.text = SCORE_PREFIX + score;
         Wind.RandomWindStrength(true);
         UpdateWindPanel();
     }

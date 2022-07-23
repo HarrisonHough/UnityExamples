@@ -9,36 +9,37 @@
 
 public static class Wind
 {
-    private static readonly float minSpeed = 0f;
-    private static readonly float maxSpeed = 2f;
+    private const float MIN_SPEED = 0f;
+    private const float MAX_SPEED = 2f;
 
-    private static readonly Vector3 windDirection = Vector3.right;
-    private static float windSpeed = 0;
+    private static readonly Vector3 WindDirection = Vector3.right;
+    private static float windSpeed;
 
-    public static Vector3 windForce;
+    public static Vector3 WindForce;
+    private const string SPEED_TEXT_FORMAT = "F1";
     public static float WindSpeed
     {
         get => windSpeed;
         set => windSpeed = value;
     }
 
-    public static bool windActive = false;
+    public static bool WindActive = false;
 
     public static string GetReadableWindSpeed()
     {
-        var speed = Mathf.Abs(windSpeed).Remap(minSpeed, maxSpeed, 0, 6);
-        return speed.ToString("F1");
+        var speed = Mathf.Abs(windSpeed).Remap(MIN_SPEED, MAX_SPEED, 0, 6);
+        return speed.ToString(SPEED_TEXT_FORMAT);
     }
 
     public static void RandomWindStrength(bool randomDirection)
     {
-        windSpeed = Random.Range(minSpeed, maxSpeed);
+        windSpeed = Random.Range(MIN_SPEED, MAX_SPEED);
 
         if (randomDirection && Random.Range(0, 2) < 1)
         {
             windSpeed *= -1;
         }
 
-        windForce = windDirection * windSpeed;
+        WindForce = WindDirection * windSpeed;
     }
 }

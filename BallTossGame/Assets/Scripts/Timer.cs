@@ -4,18 +4,22 @@ using UnityEngine.Events;
 
 public class Timer : MonoBehaviour
 {
-    public float timeRemaining { get; private set; }
+    public float TimeRemaining { get; private set; }
     private bool pauseTime;
-    public UnityAction onTimerCompleted;
+    public UnityAction OnTimerCompleted;
+    public Timer(bool pauseTime)
+    {
+        this.pauseTime = pauseTime;
+    }
 
     public void AddTime(float seconds)
     {
-        SetDuration(timeRemaining + seconds);
+        SetDuration(TimeRemaining + seconds);
     }
 
     public void SetDuration(float seconds)
     {
-        timeRemaining = seconds;
+        TimeRemaining = seconds;
     }
 
     public void StartTimer(float seconds)
@@ -38,19 +42,19 @@ public class Timer : MonoBehaviour
 
     private IEnumerator RunTimerAsync()
     {
-        while (timeRemaining > Mathf.Epsilon)
+        while (TimeRemaining > Mathf.Epsilon)
         {
             if (!pauseTime)
             {
-                timeRemaining -= Time.deltaTime;
+                TimeRemaining -= Time.deltaTime;
             }
             yield return null;
         }
-        onTimerCompleted?.Invoke();
+        OnTimerCompleted?.Invoke();
     }
 
     private void OnDestroy()
     {
-        onTimerCompleted = null;
+        OnTimerCompleted = null;
     }
 }

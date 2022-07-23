@@ -12,7 +12,7 @@ using UnityEngine.Events;
 public class GoalTrigger : MonoBehaviour
 {
     public UnityAction OnGoalTrigger;
-    private List<Ball> overlapBallList = new List<Ball>();
+    private readonly List<Ball> overlapBallList = new List<Ball>();
 
     private void OnTriggerEnter(Collider other)
     {
@@ -33,9 +33,9 @@ public class GoalTrigger : MonoBehaviour
         CheckBallCollision(other, false);
     }
 
-    private void CheckBallCollision(Collider collider, bool isEntering)
+    private void CheckBallCollision(Collider otherCollider, bool isEntering)
     {
-        var ball = collider.gameObject.GetComponent<Ball>();
+        var ball = otherCollider.gameObject.GetComponent<Ball>();
         if (ball == null)
             return;
 

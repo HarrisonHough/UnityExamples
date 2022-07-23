@@ -23,17 +23,17 @@ public class Ball : MonoBehaviour
     [SerializeField] private int pointValue = 1;
 
     private Rigidbody ballRigidbody;
-    private ConstantForce constantForce;
-    private const string GoalTag = "Goal";
-    private bool hasScored = false;
+    private new ConstantForce constantForce;
+    private const string GOAL_TAG = "Goal";
+    private bool hasScored;
 
-    Vector3 startPosition;
-    Quaternion startRotation;
+    private Vector3 startPosition;
+    private Quaternion startRotation;
 
     [SerializeField] private float initialAngle = 45;
     [SerializeField] private Transform goalTransform;
 
-    void Awake()
+    private void Awake()
     {
         startPosition = transform.position;
         startRotation = transform.rotation;
@@ -49,13 +49,13 @@ public class Ball : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (Wind.windActive && ballRigidbody.useGravity)
+        if (Wind.WindActive && ballRigidbody.useGravity)
         {
-            AddForce(Wind.windForce);
+            AddForce(Wind.WindForce);
         }
     }
 
-    public Vector3 CalclateTargetForce(Vector3 force)
+    public Vector3 CalculateTargetForce(Vector3 force)
     {
         Vector3 targetPosition = goalTransform.position;
         Vector3 ballPosition = transform.position;
@@ -91,9 +91,9 @@ public class Ball : MonoBehaviour
         hasScored = false;
         ballRigidbody.useGravity = true;
 
-        ballRigidbody.AddForce(CalclateTargetForce(force) * ballRigidbody.mass, ForceMode.Impulse);
+        ballRigidbody.AddForce(CalculateTargetForce(force) * ballRigidbody.mass, ForceMode.Impulse);
         //AddForce(CalculateForce(force));
-        Wind.windActive = true;
+        Wind.WindActive = true;
         var ballRecycle = GetComponent<BallRecycle>();
         if (ballRecycle)
         {
@@ -117,20 +117,14 @@ public class Ball : MonoBehaviour
 
     public void DisableGravity()
     {
-        Wind.windActive = false;
+        Wind.WindActive = false;
         ballRigidbody.useGravity = false;
         ballRigidbody.velocity = Vector3.zero;
     }
-
-    private void OnCollisionEnter(Collision collision)
-    {
-        //WindZone.windActive = false;
-        //constantForce.enabled = false;
-    }
-
+    
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Contains(GoalTag) && !hasScored)
+        if (other.tag.Contains(GOAL_TAG) && !hasScored)
         {
             hasScored = true;
             GameManager.Instance.UpdateScore(pointValue);

@@ -1,12 +1,19 @@
+using System;
 using UnityEngine;
 
 public class FlickInput : TouchInput
 {
-    private bool ballIsGrabbed = false;
-    public static Ball activeBall;
-    private const int MouseButtonIndex = 0;
+    private bool ballIsGrabbed;
+    public static Ball ActiveBall;
+    private const int MOUSE_BUTTON_INDEX = 0;
+    private const string PLAYER_TAG = "Player";
     private Vector3 lastFramePosition;
+    private Camera camera;
 
+    private void Awake()
+    {
+        camera = Camera.main;
+    }
     protected override void Update()
     {
 #if UNITY_EDITOR || UNITY_STANDALONE
@@ -18,19 +25,19 @@ public class FlickInput : TouchInput
 
     private void HandleMouseInput()
     {
-        if (Input.GetMouseButtonDown(MouseButtonIndex))
+        if (Input.GetMouseButtonDown(MOUSE_BUTTON_INDEX))
         {
             TouchStart(Input.mousePosition);
         }
-        else if (Input.GetMouseButtonUp(MouseButtonIndex))
+        else if (Input.GetMouseButtonUp(MOUSE_BUTTON_INDEX))
         {
-            lastTouchDuration = Time.time - touchStartTime;
+            LastTouchDuration = Time.time - TouchStartTime;
             var delta = Input.mousePosition - lastFramePosition;
             Debug.Log($"Delta = {delta}");
             TouchRelease(Input.mousePosition, delta);
         }
 
-        if (Input.GetMouseButton(MouseButtonIndex))
+        if (Input.GetMouseButton(MOUSE_BUTTON_INDEX))
         {
             TouchHold(Input.mousePosition);
         }
@@ -39,7 +46,7 @@ public class FlickInput : TouchInput
 
     protected override void HandleTouches()
     {
-        var touches = Input.touches;
+        Touch[] touches = Input.touches;
         if (touches.Length > 0)
         {
             HandleTouch(touches[0]);
@@ -49,14 +56,14 @@ public class FlickInput : TouchInput
     protected override void TouchStart(Vector3 touchPosition)
     {
         base.TouchStart(touchPosition);
-        activeBall = null;
-        Ray ray = Camera.main.ScreenPointToRay(startPoint);
+        ActiveBall = null;
+        Ray ray = camera.ScreenPointToRay(StartPoint);
         RaycastHit hit;
         if (Physics.Raycast(ray, out hit))
         {
-            if (hit.transform.tag.Contains("Player"))
+            if (hit.transform.tag.Contains(PLAYER_TAG))
             {
-                activeBall = hit.transform.gameObject.GetComponent<Ball>();
+                ActiveBall = hit.transform.gameObject.GetComponent<Ball>();
                 ballIsGrabbed = true;
             }
         }
@@ -65,29 +72,28 @@ public class FlickInput : TouchInput
     protected override void TouchRelease(Vector3 touchPosition, Vector3 deltaPosition)
     {
         base.TouchRelease(touchPosition, deltaPosition);
-        var distanceY = (endPoint.y - startPoint.y) / Screen.height;
+        var distanceY = (EndPoint.y - StartPoint.y) / Screen.height;
 
-        var speedY = distanceY / lastTouchDuration;
+        var speedY = distanceY / LastTouchDuration;
 
-        var distanceX = (endPoint.x - startPoint.x) / Screen.width;
+        var distanceX = (EndPoint.x - StartPoint.x) / Screen.width;
 
-        var speedX = Mathf.Abs(distanceX / lastTouchDuration);
+        var speedX = Mathf.Abs(distanceX / LastTouchDuration);
 
         Debug.Log($"speedY = {speedY} distanceY = {distanceY}");
-        Debug.Log($"lastTouchDuration = {lastTouchDuration}");
+        Debug.Log($"lastTouchDuration = {LastTouchDuration}");
         Debug.Log($"speedX = {speedY} distanceX = {distanceX}");
         ballIsGrabbed = false;
         var dragVector = CalculateDragVector();
         dragVector.x = dragVector.x.Remap(0, Screen.width, 0, 1) * (1 + speedX);
         dragVector.y = dragVector.y.Remap(0, Screen.height, 0, 1) * (1 + speedY);
-        //dragVector.y += speedY;
-        if (activeBall != null && Vector3.Distance(startPoint, endPoint) > minimumSwipeDistance)
+        if (ActiveBall != null && Vector3.Distance(StartPoint, EndPoint) > MinimumSwipeDistance)
         {
-            activeBall.Shoot(dragVector);
+            ActiveBall.Shoot(dragVector);
         }
         else
         {
-            Debug.Log("Swip was less than minimum swipe distance");
+            Debug.Log("Swipe was less than minimum swipe distance");
         }
     }
 }

@@ -11,13 +11,8 @@ public class GameManager : GenericSingleton<GameManager>
 {
 
     private UIControl uiControl;
-    private int score = 0;
+    private int score;
     public static UnityAction<int> OnScoreUpdated;
-
-    public override void Awake()
-    {
-        base.Awake();
-    }
 
     public void UpdateScore(int value)
     {

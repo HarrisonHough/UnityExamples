@@ -3,12 +3,12 @@ using UnityEngine;
 
 public class TouchInput : MonoBehaviour
 {
-    protected Vector3 startPoint;
-    protected Vector3 endPoint;
-    protected float touchStartTime = 0f;
-    protected float lastTouchDuration = 0f;
-    protected Vector3 touchDeltaPosition;
-    protected float minimumSwipeDistance = 20;
+    protected Vector3 StartPoint;
+    protected Vector3 EndPoint;
+    protected float TouchStartTime;
+    protected float LastTouchDuration;
+    protected Vector3 TouchDeltaPosition;
+    protected float MinimumSwipeDistance = 20;
     public static Action<float, Vector3> OnTouchRelease;
     public static Action<Vector3> OnTouchStart;
 
@@ -16,12 +16,11 @@ public class TouchInput : MonoBehaviour
     protected virtual void Update()
     {
         HandleTouches();
-
     }
     protected virtual void HandleTouches()
     {
-        var touches = Input.touches;
-        for (int i = 0; i < touches.Length; i++)
+        Touch[] touches = Input.touches;
+        if (touches.Length > 0)
         {
             HandleTouch(touches[0]);
         }
@@ -36,22 +35,22 @@ public class TouchInput : MonoBehaviour
         }
         else if (touch.phase == TouchPhase.Ended)
         {
-            endPoint = touch.position;
+            EndPoint = touch.position;
             TouchRelease(touch.position, touch.deltaPosition);
         }
     }
 
     protected virtual void TouchStart(Vector3 touchPosition)
     {
-        touchStartTime = Time.time;
-        startPoint = touchPosition;
+        TouchStartTime = Time.time;
+        StartPoint = touchPosition;
     }
 
     protected virtual void TouchRelease(Vector3 touchPosition, Vector3 deltaPosition)
     {
-        endPoint = touchPosition;
-        touchDeltaPosition = deltaPosition;
-        lastTouchDuration = Time.time - touchStartTime;
+        EndPoint = touchPosition;
+        TouchDeltaPosition = deltaPosition;
+        LastTouchDuration = Time.time - TouchStartTime;
     }
 
     protected virtual void TouchHold(Vector3 touchPosition)
@@ -60,8 +59,8 @@ public class TouchInput : MonoBehaviour
 
     protected Vector3 CalculateDragVector()
     {
-        endPoint = Input.mousePosition;
-        Vector3 dragVector = endPoint - startPoint;
+        EndPoint = Input.mousePosition;
+        Vector3 dragVector = EndPoint - StartPoint;
         return dragVector;
     }
 }

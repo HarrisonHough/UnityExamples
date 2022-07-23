@@ -13,7 +13,6 @@ public class BallRecycle : MonoBehaviour
     public float recycleTime = 3f;
     private Ball ball;
 
-
     private void Awake()
     {
         ball = GetComponent<Ball>();
