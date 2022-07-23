@@ -8,9 +8,6 @@ using UnityEngine;
 * SCRIPT: Random Spin Class
 */
 
-/// <summary>
-/// 
-/// </summary>
 public class RandomSpin : MonoBehaviour
 {
 
@@ -19,8 +16,8 @@ public class RandomSpin : MonoBehaviour
     [SerializeField]
     private float rotationSpeed = 3;
 
-    private bool rotate = false;
-    // Use this for initialization
+    private bool rotate;
+    
     private void Start()
     {
         if (rotateTarget == null)
@@ -50,7 +47,6 @@ public class RandomSpin : MonoBehaviour
         float xRot = Random.Range(0, 360);
         float yRot = Random.Range(0, 360);
         float zRot = Random.Range(0, 360);
-        //Debug.Log("Random rotation = " + xRot + ", " + yRot + ", " + zRot);
 
         return Quaternion.Euler(xRot, yRot, zRot);
     }
@@ -69,12 +65,12 @@ public class RandomSpin : MonoBehaviour
     /// 
     /// </summary>
     /// <returns></returns>
-    IEnumerator Spin()
+    private IEnumerator Spin()
     {
         rotateTarget.rotation = RandomRotation();
         while (rotate)
         {
-            rotateTarget.Rotate(rotateTarget.forward * Time.deltaTime * rotationSpeed * 50);
+            rotateTarget.Rotate(rotateTarget.forward * (Time.deltaTime * rotationSpeed * 50));
             yield return null;
         }
     }

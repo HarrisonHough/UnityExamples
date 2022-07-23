@@ -11,10 +11,9 @@ public class ShipMotor : MonoBehaviour
     [SerializeField]
     private float maxSpeed = 5f;
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-
     }
     public void Thrust(float thrust)
     {
@@ -29,8 +28,6 @@ public class ShipMotor : MonoBehaviour
     /// </summary>
     public void Slow()
     {
-
-        //slows down rigidbody (self)
         rigidbody.velocity = Vector3.Lerp(rigidbody.velocity, Vector3.zero, Time.deltaTime * stopSpeed);
     }
 }

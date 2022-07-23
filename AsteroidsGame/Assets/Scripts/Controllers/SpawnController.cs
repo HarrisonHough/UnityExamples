@@ -33,7 +33,7 @@ public class SpawnController : MonoBehaviour
     private float spawnInterval = 3f;
     //keep track of total asteroids spawned
     [SerializeField]
-    private int totalAsteroidsSpawned = 0;
+    private int totalAsteroidsSpawned;
     //limit number of active asteroids (for performance)
     [SerializeField]
     private int activeAsteroidLimit = 50;
@@ -56,7 +56,7 @@ public class SpawnController : MonoBehaviour
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start()
+    private void Start()
     {
         AssignSpawnPoints();
         if (smallAsteroidPool == null)
@@ -80,7 +80,7 @@ public class SpawnController : MonoBehaviour
     /// <summary>
     /// Called at start, used to automatically assign spawn points
     /// </summary>
-    void AssignSpawnPoints()
+    private void AssignSpawnPoints()
     {
         spawnPoints = new SpawnPoint[transform.childCount];
         for (int i = 0; i < spawnPoints.Length; i++)
@@ -93,10 +93,9 @@ public class SpawnController : MonoBehaviour
     /// Coroutine used to continuously spawn asteroids
     /// </summary>
     /// <returns>IENumerator : Required for coroutine</returns>
-    IEnumerator AsteroidSpawnLoop()
+    private IEnumerator AsteroidSpawnLoop()
     {
 
-        //used to store time passed
         float timer = 0;
         SpawnAsteroid();
 
@@ -107,7 +106,6 @@ public class SpawnController : MonoBehaviour
             if (timer > spawnInterval && Asteroid.CurrentAsteroidCount < activeAsteroidLimit)
             {
                 timer = 0;
-                Debug.Log("Spawn 1 asteroid");
                 SpawnAsteroid();
             }
 
@@ -171,11 +169,9 @@ public class SpawnController : MonoBehaviour
     /// </summary>
     public void StopSpawning()
     {
-        if (spawning)
-        {
-            spawning = false;
-            StopCoroutine(AsteroidSpawnLoop());
-        }
+        if (!spawning) return;
+        spawning = false;
+        StopCoroutine(AsteroidSpawnLoop());
     }
 
     /// <summary>
@@ -186,10 +182,10 @@ public class SpawnController : MonoBehaviour
     {
 
         //need offset to ensure both asteriods don't spawn in same spot causing a collision/destruction
-        Vector3 offset = new Vector3(smallAsteroidSpawnOffset, 0, smallAsteroidSpawnOffset);
+        var offset = new Vector3(smallAsteroidSpawnOffset, 0, smallAsteroidSpawnOffset);
 
         Quaternion rotation = RandomYRotation();
-        for (int i = 0; i < 2; i++)
+        for (var i = 0; i < 2; i++)
         {
             rotation.x = -rotation.x;
             rotation.y = -rotation.y;
@@ -216,11 +212,11 @@ public class SpawnController : MonoBehaviour
     {
 
         //need offset to ensure both asteroids don't spawn in same spot causing a collision/destruction
-        Vector3 offset = new Vector3(mediumAsteroidSpawnOffset, 0, mediumAsteroidSpawnOffset);
+        var offset = new Vector3(mediumAsteroidSpawnOffset, 0, mediumAsteroidSpawnOffset);
 
         Quaternion rotation = RandomYRotation();
         //create 2 asteroids
-        for (int i = 0; i < 2; i++)
+        for (var i = 0; i < 2; i++)
         {
             rotation.x = -rotation.x;
             rotation.y = -rotation.y;

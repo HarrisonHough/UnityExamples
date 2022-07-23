@@ -3,15 +3,14 @@ using UnityEngine;
 
 public class Shield : MonoBehaviour
 {
-
     [SerializeField]
     private GameObject shield;
     [SerializeField]
     private float shieldDuration;
 
     private bool isSecondaryFire = false;
-    // Start is called before the first frame update
-    void Awake()
+    
+    private void Awake()
     {
         shield.SetActive(false);
         if (isSecondaryFire)
@@ -31,7 +30,7 @@ public class Shield : MonoBehaviour
     /// 
     /// </summary>
     /// <returns></returns>
-    IEnumerator ShieldOn()
+    private IEnumerator ShieldOn()
     {
         shield.SetActive(true);
         yield return new WaitForSeconds(shieldDuration);

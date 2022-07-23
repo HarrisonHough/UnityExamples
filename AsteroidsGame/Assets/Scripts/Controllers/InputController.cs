@@ -19,35 +19,18 @@ public class InputController : MonoBehaviour
     public static Action OnSecondaryFireAction;
     public static Action OnYInputEndAction;
 
-    private bool NoInputY = false;
+    private bool noInputY;
 
-    public float xInput
+    public float XInput
     {
         get;
         private set;
     }
 
-    public float yInput
+    public float YInput
     {
         get;
         private set;
-    }
-
-    /// <summary>
-    /// Use this for initialization
-    /// </summary>
-    void Start()
-    {
-
-        Initialize();
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    void Initialize()
-    {
-
     }
 
     /// <summary>
@@ -55,7 +38,7 @@ public class InputController : MonoBehaviour
     /// Input is checked in here to ensure that physics are
     /// calculated correctly (player movement collisions)
     /// </summary>
-    void Update()
+    private void Update()
     {
         KeyboardInput();
     }
@@ -64,12 +47,12 @@ public class InputController : MonoBehaviour
     /// Listens for Keyboard input
     /// Used for Keyboard control scheme
     /// </summary>
-    void KeyboardInput()
+    private void KeyboardInput()
     {
 
-        xInput = Input.GetAxis("Horizontal");
-        yInput = Input.GetAxis("Vertical");
-        if (!NoInputY && yInput < 0.05f)
+        XInput = Input.GetAxis("Horizontal");
+        YInput = Input.GetAxis("Vertical");
+        if (!noInputY && YInput < 0.05f)
             OnYInputEndAction?.Invoke();
 
         if (Input.GetButtonDown("Shoot"))
@@ -78,13 +61,13 @@ public class InputController : MonoBehaviour
             OnPrimaryFireAction?.Invoke();
         }
 
-        NoInputY = yInput < 0.05f;
+        noInputY = YInput < 0.05f;
     }
 
     /// <summary>
     /// 
     /// </summary>
-    void OnDestroy()
+    private void OnDestroy()
     {
         //must unsubscribe before destroying
         OnPrimaryFireAction = null;

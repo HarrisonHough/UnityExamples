@@ -60,12 +60,10 @@ public class CollisionEffect : MonoBehaviour
     {
 
         //check for tag
-        if (other.tag.Contains(tagName))
-        {
-            CreateParticles();
-            if (destroyOnCollision)
-                Destroy(gameObject);
-        }
+        if (!other.tag.Contains(tagName)) return;
+        CreateParticles();
+        if (destroyOnCollision)
+            Destroy(gameObject);
     }
 
     /// <summary>

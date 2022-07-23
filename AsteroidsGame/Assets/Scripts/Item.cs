@@ -13,9 +13,9 @@ public class Item : MonoBehaviour
 {
 
 
-    public ItemType Type;
+    public ItemType type;
     private ConstantVelocity velocity;
-    public Vector2 SpeedRange;
+    public Vector2 speedRange;
 
     /// <summary>
     /// Used for initialization
@@ -23,9 +23,8 @@ public class Item : MonoBehaviour
     void Start()
     {
         velocity = GetComponent<ConstantVelocity>();
-        float speed = Random.Range(SpeedRange.x, SpeedRange.y);
+        var speed = Random.Range(speedRange.x, speedRange.y);
         velocity.ConstantSpeed = speed;
-
     }
 
 
@@ -33,6 +32,5 @@ public class Item : MonoBehaviour
     {
         Destroy(gameObject);
     }
-
 
 }

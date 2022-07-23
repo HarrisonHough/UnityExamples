@@ -15,22 +15,24 @@ public class DynamicText : MonoBehaviour
     private RectTransform rectTransform;
     [SerializeField]
     private float displayTime = 2f;
+    private Camera mainCamera;
 
     // Use this for initialization
     void Start()
     {
         text = GetComponent<TextMeshProUGUI>();
         rectTransform = GetComponent<RectTransform>();
+        mainCamera = Camera.main;
     }
 
     public void SetTextAndPosition(string textToDisplay, Vector3 worldPosition)
     {
-        Vector2 screenPosition = Camera.main.WorldToScreenPoint(worldPosition);
+        Vector2 screenPosition = mainCamera.WorldToScreenPoint(worldPosition);
 
         text.text = textToDisplay;
         rectTransform.position = screenPosition;
         //clear after delay
-        Invoke("ClearDynamicText", displayTime);
+        Invoke(nameof(ClearDynamicText), displayTime);
     }
 
     private void ClearDynamicText()

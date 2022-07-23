@@ -10,24 +10,22 @@ public class PlayerMovement : MonoBehaviour
     private InputController inputController;
     [SerializeField]
     private ParticleSystem thrustParticles;
-    // Start is called before the first frame update
 
-    void Start()
+    private void Start()
     {
         inputController = GetComponent<InputController>();
         shipMotor = GetComponent<ShipMotor>();
         if (thrustParticles == null)
             thrustParticles = transform.GetComponentInChildren<ParticleSystem>();
     }
-
-    // Update is called once per frame
-    void FixedUpdate()
+    
+    private void FixedUpdate()
     {
-        Rotate(inputController.xInput);
+        Rotate(inputController.XInput);
 
-        if (inputController.yInput > 0)
+        if (inputController.YInput > 0)
         {
-            shipMotor.Thrust(inputController.yInput);
+            shipMotor.Thrust(inputController.YInput);
             if (!thrustParticles.isPlaying)
                 thrustParticles.Play();
         }
@@ -45,7 +43,6 @@ public class PlayerMovement : MonoBehaviour
     /// <param name="value"></param>
     public void Rotate(float value)
     {
-
         transform.Rotate(0, Time.deltaTime * value * (rotateSpeed * 100), 0);
     }
 

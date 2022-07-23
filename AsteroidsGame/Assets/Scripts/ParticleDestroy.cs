@@ -49,7 +49,6 @@ public class ParticleDestroy : MonoBehaviour
     {
         yield return new WaitForSeconds(particle.main.duration + timeBuffer);
         Destroy(gameObject);
-
     }
 
     #endregion

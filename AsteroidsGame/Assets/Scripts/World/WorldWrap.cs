@@ -28,8 +28,10 @@ public class WorldWrap : MonoBehaviour
     void Start()
     {
         rigidbody = GetComponent<Rigidbody>();
-        maxPositionX = Mathf.Abs(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 8)).x);
-        maxPositionZ = Mathf.Abs(Camera.main.ScreenToWorldPoint(new Vector3(Screen.width, 0, 8)).z);
+        var mainCamera = Camera.main;
+        if (mainCamera == null) return;
+        maxPositionX = Mathf.Abs(mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, Screen.height, 8)).x);
+        maxPositionZ = Mathf.Abs(mainCamera.ScreenToWorldPoint(new Vector3(Screen.width, 0, 8)).z);
     }
 
     /// <summary>
@@ -49,10 +51,9 @@ public class WorldWrap : MonoBehaviour
     /// Triggers CheckPosition function
     /// </summary>
     /// <param name="other">Collider: Collider of the object trigger</param>
-    void OnTriggerExit(Collider other)
+    private void OnTriggerExit(Collider other)
     {
         Debug.Log("ON TRIGGER EXIT CALLED");
-        //Debug.Log("Exited World");
         //Check when leaving world box
         if (other.tag.Contains(COLLISION_TAG))
         {
@@ -65,7 +66,7 @@ public class WorldWrap : MonoBehaviour
     /// Jumps / Moves player to opposite side of the screen
     /// causing "world wrap" effect
     /// </summary>
-    void CheckPositionAndWrap()
+    private void CheckPositionAndWrap()
     {
         //store this objects position
         Vector3 objectPosition = transform.position;

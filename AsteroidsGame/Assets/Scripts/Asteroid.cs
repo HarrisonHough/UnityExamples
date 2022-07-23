@@ -14,7 +14,7 @@
 public class Asteroid : Enemy
 {
 
-    public AsteroidType Type;
+    public AsteroidType type;
     public static int CurrentAsteroidCount;
     public static int TotalAsteroidCount;
 
@@ -79,12 +79,6 @@ public class Asteroid : Enemy
                 break;
 
         }
-
-
-        //if (other.tag != "WorldBox" && other.tag != "Untagged")
-        //if (other.tag == "Player" || other.tag == "Missile")
-
-
     }
 
     /// <summary>
@@ -92,10 +86,6 @@ public class Asteroid : Enemy
     /// </summary>
     private void HitByMissile()
     {
-
-        Debug.Log("Missile hit an asteroid");
-
-        //send asteroid hit to GameManager
         GameManager.Instance.AsteroidHit(this);
         Destroy();
     }
@@ -105,10 +95,6 @@ public class Asteroid : Enemy
     /// </summary>
     private void Hit()
     {
-
-        //Debug.Log("Missile hit an asteroid");
-
-        //send asteroid hit to GameManager
         GameManager.Instance.SoundControl.PlayerExplode();
         Destroy();
 
@@ -119,17 +105,7 @@ public class Asteroid : Enemy
     /// </summary>
     private void BorderHit()
     {
-
-        //Debug.Log("Asteroid hit the border");
-
-        //send asteroid hit to GameManager
-        //GameManager.instance.AsteroidHitBorder(this);
         Destroy();
-    }
-
-    private void OnDisable()
-    {
-
     }
 
     private void Destroy()

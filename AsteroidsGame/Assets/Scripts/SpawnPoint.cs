@@ -21,6 +21,4 @@ public class SpawnPoint : MonoBehaviour
     //Make this public so that I can adjust it per spawn point in inspector as 
     //each point will need to be adjusted according to their position
     public float MaxYRotation;
-
-
 }

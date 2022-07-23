@@ -14,8 +14,8 @@ using UnityEngine;
 /// </summary>
 public class Missile : MonoBehaviour
 {
-
-    public float MaxDuration = 10f;
+    public float maxDuration = 10f;
+    private const string ENEMY_TAG = "Enemy";
 
     void OnEnable()
     {
@@ -33,7 +33,7 @@ public class Missile : MonoBehaviour
     /// <param name="other">Collider : The collider of the object trigger</param>
     void OnTriggerEnter(Collider other)
     {
-        if (other.tag.Contains("Enemy"))
+        if (other.tag.Contains(ENEMY_TAG))
         {
             Destroy();
         }
@@ -43,16 +43,13 @@ public class Missile : MonoBehaviour
     IEnumerator DestroyTimer()
     {
         float time = 0;
-        while (time < MaxDuration)
+        while (time < maxDuration)
         {
             time += Time.deltaTime;
             yield return null;
         }
-
-        Debug.Log("Max duration reached, Destroy missile");
+        
         Destroy();
-
-
     }
 
     void Destroy()

@@ -34,8 +34,8 @@ public class UIControl : MonoBehaviour
     private GameObject homeScreenPanel;
 
     [SerializeField]
-    private int dynamicTextArrayLength = 10;
-    private int dynamicTextArrayIndex = 0;
+    private int dynamicTextArrayLength = 20;
+    private int dynamicTextArrayIndex;
     [SerializeField]
     private GameObject dynamicTextArrayHolder;
     private DynamicText[] dynamicTextArray;
@@ -63,7 +63,6 @@ public class UIControl : MonoBehaviour
             //create new dynamic text by duplicating the existing one and parent to dynamicTextArrayHolder
             dynamicTextArray[i] = Instantiate(dynamicTextObject, dynamicTextArrayHolder.transform).GetComponent<DynamicText>();
         }
-
     }
 
     public void ShowTextAtPosition(string textToDisplay, Vector3 worldPosition)
@@ -93,7 +92,6 @@ public class UIControl : MonoBehaviour
     /// <param name="score">Int: Score value to display</param>
     public void UpdateScore(int score)
     {
-
         scoreText.text = "Score: " + score;
     }
 

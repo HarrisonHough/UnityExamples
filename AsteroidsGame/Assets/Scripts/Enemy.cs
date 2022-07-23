@@ -25,8 +25,6 @@ public class Enemy : MonoBehaviour
     {
         velocity = GetComponent<ConstantVelocity>();
         SetInitialVelocity();
-
-
     }
 
     /// <summary>

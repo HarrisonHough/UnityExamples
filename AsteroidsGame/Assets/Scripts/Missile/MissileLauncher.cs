@@ -37,7 +37,7 @@ public class MissileLauncher : MonoBehaviour
         }
 
 
-        //TODO cleanup/optimise if neccessary
+        //TODO cleanup/optimise if necessary
         soundControl = FindObjectOfType<SoundController>();
     }
 

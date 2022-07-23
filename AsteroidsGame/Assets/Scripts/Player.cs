@@ -13,28 +13,13 @@
 /// </summary>
 /// 
 public class Player : MonoBehaviour
-{
-
+{ 
     private Item item;
-
-    /// <summary>
-    /// Use this for initialization
-    /// </summary>
-    void Start()
-    {
-        Initialize();
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    void Initialize()
-    {
-    }
+    private const string ENEMY_TAG = "Enemy";
 
     private void OnCollisionEnter(Collision other)
     {
-        if (other.gameObject.tag.Contains("Enemy"))
+        if (other.gameObject.tag.Contains(ENEMY_TAG))
         {
             Death();
         }
@@ -44,13 +29,13 @@ public class Player : MonoBehaviour
     /// Called on collision to trigger Death function
     /// </summary>
     /// <param name="other"></param>
-    void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Enemy")
+        if (other.CompareTag(ENEMY_TAG))
         {
             Death();
         }
-        else if (other.tag == "Item")
+        else if (other.CompareTag("Item"))
         {
             item = other.gameObject.GetComponent<Item>();
             CheckItem();
@@ -60,11 +45,10 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    void CheckItem()
+    private void CheckItem()
     {
-
         //TODO move to more appropriate class
-        switch (item.Type)
+        switch (item.type)
         {
             case ItemType.Shield:
                 //TurnOnShield();
@@ -85,7 +69,6 @@ public class Player : MonoBehaviour
     /// </summary>
     public void Death()
     {
-
         GameManager.Instance.PlayerDeath();
         gameObject.SetActive(false);
     }

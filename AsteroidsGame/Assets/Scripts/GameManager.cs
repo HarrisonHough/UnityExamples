@@ -14,7 +14,7 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
 
-    public static GameManager Instance = null;
+    public static GameManager Instance;
     public static int Score;
     public static int LastScore;
     public static int HighScore;
@@ -30,18 +30,20 @@ public class GameManager : MonoBehaviour
     [SerializeField]
     private Player player;
 
-    private SoundController soundControl;
-    public SoundController SoundControl { get { return soundControl; } }
-    private bool gameOver = false;
+    public SoundController SoundControl { get; private set; }
+    private bool gameOver;
+
+    private const string PREF_LAST_SCORE = "LastScore";
+    private const string PREF_HIGH_SCORE = "HighScore";
 
 
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Awake()
+    private void Awake()
     {
         EnforceSingleton();
-        Inititialize();
+        Initialize();
     }
 
     /// <summary>
@@ -56,35 +58,34 @@ public class GameManager : MonoBehaviour
         else if (Instance != null)
         {
             Destroy(gameObject);
-            return;
         }
     }
 
     /// <summary>
     /// 
     /// </summary>
-    private void Inititialize()
+    private void Initialize()
     {
-        if (!PlayerPrefs.HasKey("LastScore"))
+        if (!PlayerPrefs.HasKey(PREF_LAST_SCORE))
         {
-            PlayerPrefs.SetInt("LastScore", 0);
+            PlayerPrefs.SetInt(PREF_LAST_SCORE, 0);
             PlayerPrefs.Save();
         }
         else
-            LastScore = PlayerPrefs.GetInt("LastScore");
+            LastScore = PlayerPrefs.GetInt(PREF_LAST_SCORE);
 
-        if (!PlayerPrefs.HasKey("HighScore"))
+        if (!PlayerPrefs.HasKey(PREF_HIGH_SCORE))
         {
-            PlayerPrefs.SetInt("HighScore", 0);
+            PlayerPrefs.SetInt(PREF_HIGH_SCORE, 0);
             PlayerPrefs.Save();
         }
         else
-            HighScore = PlayerPrefs.GetInt("HighScore");
+            HighScore = PlayerPrefs.GetInt(PREF_HIGH_SCORE);
 
         if (player == null)
             player = FindObjectOfType<Player>();
         player.gameObject.SetActive(false);
-        soundControl = GetComponent<SoundController>();
+        SoundControl = GetComponent<SoundController>();
     }
 
     /// <summary>
@@ -108,7 +109,7 @@ public class GameManager : MonoBehaviour
     {
         if (!gameOver)
         {
-            int type = (int) asteroid.Type;
+            int type = (int) asteroid.type;
             switch (type)
             {
                 case 0:
@@ -128,7 +129,7 @@ public class GameManager : MonoBehaviour
 
             }
         }
-        soundControl.PlayerExplode();
+        SoundControl.PlayerExplode();
 
         Destroy(asteroid.gameObject);
     }
@@ -163,8 +164,9 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void SpawnPlayer()
     {
-        player.transform.position = new Vector3(0, 0, 0);
-        player.transform.rotation = Quaternion.identity;
+        var playerTransform = player.transform;
+        playerTransform.position = new Vector3(0, 0, 0);
+        playerTransform.rotation = Quaternion.identity;
         player.gameObject.SetActive(true);
     }
 
@@ -174,16 +176,10 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void PlayerDeath()
     {
-
-        Debug.Log("Player Died!!!!!!");
-        //check number of lives
         if (lives > 0)
         {
-            //decrement lives count
             lives--;
-            //update lives UI
             uiControl.UpdateLives(lives);
-            //spawn player after a delay
             StartCoroutine(DelaySpawn());
         }
         else
@@ -201,6 +197,7 @@ public class GameManager : MonoBehaviour
 
         SpawnPlayer();
     }
+    
     /// <summary>
     /// Stops spawning and enables Home screen, this function is 
     /// called when the games over
@@ -211,8 +208,6 @@ public class GameManager : MonoBehaviour
         spawner.StopSpawning();
         uiControl.ShowHomeScreen();
         CheckForHighScore();
-
-
     }
 
     /// <summary>
@@ -232,7 +227,7 @@ public class GameManager : MonoBehaviour
     private void SetHighScore()
     {
         HighScore = Score;
-        PlayerPrefs.SetInt("HighScore", Score);
+        PlayerPrefs.SetInt(PREF_HIGH_SCORE, Score);
         PlayerPrefs.Save();
 
         uiControl.UpdateHomeUIScores();
@@ -257,7 +252,7 @@ public class GameManager : MonoBehaviour
     private void SetLastScore()
     {
         LastScore = Score;
-        PlayerPrefs.SetInt("LastScore", LastScore);
+        PlayerPrefs.SetInt(PREF_LAST_SCORE, LastScore);
         PlayerPrefs.Save();
         uiControl.UpdateHomeUIScores();
     }
@@ -287,13 +282,13 @@ public class GameManager : MonoBehaviour
     /// </summary>
     public void LoadScores()
     {
-        if (PlayerPrefs.HasKey("LastScore"))
+        if (PlayerPrefs.HasKey(PREF_LAST_SCORE))
         {
-            LastScore = PlayerPrefs.GetInt("LastScore");
+            LastScore = PlayerPrefs.GetInt(PREF_LAST_SCORE);
         }
-        if (PlayerPrefs.HasKey("HighScore"))
+        if (PlayerPrefs.HasKey(PREF_HIGH_SCORE))
         {
-            HighScore = PlayerPrefs.GetInt("HighScore");
+            HighScore = PlayerPrefs.GetInt(PREF_HIGH_SCORE);
         }
     }
 }

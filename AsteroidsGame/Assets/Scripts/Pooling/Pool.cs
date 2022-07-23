@@ -18,13 +18,13 @@ public class Pool : MonoBehaviour
     [SerializeField]
     private int poolSize = 50;
 
-    private Queue<GameObject> objectsQueue = new Queue<GameObject>();
-    private List<GameObject> objectPool = new List<GameObject>();
+    private readonly Queue<GameObject> objectsQueue = new Queue<GameObject>();
+    private readonly List<GameObject> objectPool = new List<GameObject>();
 
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Start()
+    private void Start()
     {
         GrowPool();
 
