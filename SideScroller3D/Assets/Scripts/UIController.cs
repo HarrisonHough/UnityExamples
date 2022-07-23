@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 /*
@@ -11,15 +9,10 @@ using UnityEngine.UI;
 */
 
 
-public class UIController : MonoBehaviour {
-
+public class UIController : MonoBehaviour
+{
     [SerializeField]
     private Slider gliderBar;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 
     public void ResetGliderBar(float maxValue)
     {
@@ -31,5 +24,4 @@ public class UIController : MonoBehaviour {
     {
         gliderBar.value = value;
     }
-	
 }

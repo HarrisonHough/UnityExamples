@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.Events;
 
 /*
@@ -10,14 +8,16 @@ using UnityEngine.Events;
 * SCRIPT: Trigger Class 
 */
 
-public class Trigger : MonoBehaviour {
+public class Trigger : MonoBehaviour
+{
 
-    public UnityEvent TriggerEvent; 
-    
-	// Use this for initialization
-	void Start () {
-		
-	}
+    public UnityEvent TriggerEvent;
+
+    // Use this for initialization
+    void Start()
+    {
+
+    }
 
     public void TriggerAction()
     {

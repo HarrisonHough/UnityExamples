@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,12 +7,15 @@ using UnityEngine;
 * SCRIPT: Switch Class 
 */
 
-public class Switch : MonoBehaviour {
+public class Switch : MonoBehaviour
+{
 
     [SerializeField]
     private Animator anim;
     [SerializeField]
     private Animator bridge;
+    private static readonly int SwitchOn = Animator.StringToHash("SwitchOn");
+    private static readonly int BridgeOut = Animator.StringToHash("BridgeOut");
 
     private void Reset()
     {
@@ -22,14 +23,9 @@ public class Switch : MonoBehaviour {
             anim = GetComponent<Animator>();
     }
 
-    // Use this for initialization
-    void Start () {
-		
-	}
-
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Player")
+        if (other.CompareTag("Player"))
         {
             TriggerSwitch();
         }
@@ -40,10 +36,10 @@ public class Switch : MonoBehaviour {
         Debug.Log("Switch Triggered");
 
         // Play switch animation or particles
-        if(anim!= null)
-            anim.SetBool("SwitchOn", true);
+        if (anim != null)
+            anim.SetBool(SwitchOn, true);
 
         // Run function on Trigger
-        bridge.SetBool("BridgeOut", true);
+        bridge.SetBool(BridgeOut, true);
     }
 }

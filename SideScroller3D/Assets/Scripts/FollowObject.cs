@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,15 +7,11 @@ using UnityEngine;
 * SCRIPT: Follow Object Class 
 */
 
-public class FollowObject : MonoBehaviour {
+public class FollowObject : MonoBehaviour
+{
 
     [SerializeField]
     private Transform target;
-
-	// Use this for initialization
-	void Start () {
-		
-	}
 
     private void Update()
     {

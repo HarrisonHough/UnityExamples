@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,14 +7,15 @@ using UnityEngine;
 * SCRIPT: Level Block Spawner Class 
 */
 
-public class LevelBlockSpawner : MonoBehaviour {
+public class LevelBlockSpawner : MonoBehaviour
+{
 
     public int numberOfLevelBlocks = 10;
     public LevelBlock[] levelBlocks;
     private GameObject attachPoint;
 
-	// Use this for initialization
-	void Start () {
+    private void Start()
+    {
 
         if (attachPoint == null)
             attachPoint = FindObjectOfType<AttachPoint>().gameObject;
@@ -24,19 +23,19 @@ public class LevelBlockSpawner : MonoBehaviour {
         SpawnLevelBlocks(numberOfLevelBlocks);
     }
 
-    void SpawnLevelBlocks(int numberToSpawn)
+    private void SpawnLevelBlocks(int numberToSpawn)
     {
-        for (int i = 0; i < numberToSpawn; i++)
+        for (var i = 0; i < numberToSpawn; i++)
         {
-                SpawnLevelBlock();
+            SpawnLevelBlock();
         }
     }
 
-    void SpawnLevelBlock()
+    private void SpawnLevelBlock()
     {
         if (attachPoint == null) return;
 
-        GameObject block = Instantiate(levelBlocks[Random.Range(0, levelBlocks.Length)].gameObject, attachPoint.transform.position, attachPoint.transform.rotation) as GameObject;
+        var block = Instantiate(levelBlocks[Random.Range(0, levelBlocks.Length)].gameObject, attachPoint.transform.position, attachPoint.transform.rotation) as GameObject;
         attachPoint = block.GetComponent<LevelBlock>().GetAttachPoint().gameObject;
     }
 }

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,21 +7,22 @@ using UnityEngine;
 * SCRIPT: Touch Input Class 
 */
 
-public class TouchInput : MonoBehaviour {
+public class TouchInput : MonoBehaviour
+{
 
     public PlayerMovement playerMovement;
-    // Use this for initialization
-    void Start()
+
+    private void Start()
     {
         playerMovement = GetComponent<PlayerMovement>();
     }
 
-    // Update is called once per frame
-    void Update () {
+    private void Update()
+    {
         GetTouches();
     }
 
-    void GetTouches()
+    private void GetTouches()
     {
 
         if (Input.touchCount > 0)
@@ -37,19 +36,10 @@ public class TouchInput : MonoBehaviour {
                     TouchEnd();
                     break;
             }
-
-            /*Touch[] touches = Input.touches;
-            for (int i = 0; i < Input.touchCount; i++)
-            {
-
-            }*/
-
         }
 
         if (playerMovement.IsGrounded())
         {
-
-            //playerMovement.ResetGlidePower();
             playerMovement.GlideRecharge();
             playerMovement.SetMoveDirection();
 
@@ -66,12 +56,6 @@ public class TouchInput : MonoBehaviour {
                 }
             }
         }
-        else
-        {
-
-
-        }
-
         playerMovement.Move();
     }
 

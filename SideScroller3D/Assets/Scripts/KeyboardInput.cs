@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,20 +7,23 @@ using UnityEngine;
 * SCRIPT: Keyboard Input Class 
 */
 
-public class KeyboardInput : MonoBehaviour {
+public class KeyboardInput : MonoBehaviour
+{
 
     public PlayerMovement playerMovement;
-	// Use this for initialization
-	void Start () {
-       playerMovement =  GetComponent<PlayerMovement>();
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        InputCheck();
-	}
 
-    void InputCheck()
+    private void Start()
+    {
+        playerMovement = GetComponent<PlayerMovement>();
+    }
+
+    // Update is called once per frame
+    private void Update()
+    {
+        InputCheck();
+    }
+
+    private void InputCheck()
     {
         /*
         if (Input.GetKey(KeyCode.D))

@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /*
@@ -10,21 +8,22 @@ using UnityEngine.SceneManagement;
 * SCRIPT: Game Manager Class 
 */
 
-public class GameManager : MonoBehaviour {
+public class GameManager : MonoBehaviour
+{
 
-    public static GameManager instance;
-	// Use this for initialization
-	void Awake () {
-        if (instance == null)
+    public static GameManager Instance;
+    // Use this for initialization
+    private void Awake()
+    {
+        if (Instance == null)
         {
-            instance = this;
+            Instance = this;
         }
         else
         {
             Destroy(gameObject);
-            return;
         }
-	}
+    }
 
     public void GameOver()
     {

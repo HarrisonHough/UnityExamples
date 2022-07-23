@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,23 +7,24 @@ using UnityEngine;
 * SCRIPT: Player Class 
 */
 
-public class Player : MonoBehaviour {
+public class Player : MonoBehaviour
+{
     private int score;
 
-    SoundManager soundControl;
-    // Use this for initialization
-    void Start()
+    private SoundManager soundControl;
+
+    private void Start()
     {
         soundControl = FindObjectOfType<SoundManager>();
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Coin")
+        if (other.CompareTag("Coin"))
         {
             CoinCollected(other.gameObject);
         }
-        else if (other.tag == "Danger")
+        else if (other.CompareTag("Danger"))
         {
             Death();
         }
@@ -35,19 +34,16 @@ public class Player : MonoBehaviour {
     {
         return score;
     }
-    void CoinCollected(GameObject coin)
+
+    private void CoinCollected(GameObject coin)
     {
-        //add to score
         score++;
-        //play sound
         soundControl.PlayCoinCollect();
-        //destroy coin
         Destroy(coin);
     }
 
-    void Death()
+    private void Death()
     {
-        //GameManager.instance.LoadLevel(0);
         soundControl.PlayDeath();
         gameObject.SetActive(false);
     }

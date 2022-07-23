@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,7 +7,8 @@ using UnityEngine;
 * SCRIPT: Sound Manager Class 
 */
 
-public class SoundManager : MonoBehaviour {
+public class SoundManager : MonoBehaviour
+{
 
     [SerializeField]
     private AudioSource sfxAudio;
@@ -19,15 +18,13 @@ public class SoundManager : MonoBehaviour {
     public AudioClip[] sfxClips;
     public AudioClip[] musicClips;
 
-    
-
-	// Use this for initialization
-	void Start () {
+    private void Start()
+    {
 
         //TODO make this safer
-        if(sfxAudio == null)
+        if (sfxAudio == null)
             sfxAudio = transform.GetChild(0).GetComponent<AudioSource>();
-        if(musicAudio == null)
+        if (musicAudio == null)
             musicAudio = transform.GetChild(1).GetComponent<AudioSource>();
     }
 

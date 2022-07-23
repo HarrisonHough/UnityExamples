@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,17 +7,19 @@ using UnityEngine;
 * SCRIPT: Coin COllection Class 
 */
 
-public class CoinCollection : MonoBehaviour {
+public class CoinCollection : MonoBehaviour
+{
 
-    SoundManager soundControl;
-	// Use this for initialization
-	void Start () {
+    private SoundManager soundControl;
+
+    private void Start()
+    {
         soundControl = FindObjectOfType<SoundManager>();
-	}
+    }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "Coin")
+        if (other.CompareTag("Coin"))
         {
             CoinCollected(other.gameObject);
         }
