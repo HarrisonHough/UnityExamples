@@ -1,93 +1,88 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class Player : MonoBehaviour, IKillable
 {
-    public string playerName { get { return playerData.name; } private set { playerData.name = value; } }
-    public int score { get { return playerData.score; } private set { playerData.score = value; } }
-    public int coins { get { return playerData.coins; } private set { playerData.coins = value; } }
+    public string PlayerName { get => PlayerData.name; private set => PlayerData.name = value; }
+    public int Score { get => PlayerData.score; private set => PlayerData.score = value; }
+    public int Coins { get => PlayerData.coins; private set => PlayerData.coins = value; }
 
-    public PlayerData playerData { get; private set; }
-    private int _lives;
+    public PlayerData PlayerData { get; private set; }
+    private int lives;
     [SerializeField]
-    private int _maxLives;
+    private int maxLives;
 
-    private float _timeRemaining;
+    private float timeRemaining;
     [SerializeField]
-    private float _maxTime;
+    private float maxTime;
+
+    public bool IsDead { get; private set; }
+
+    private UIController uiController;
+    private CameraShake cameraShake;
     
-    public bool isDead { get; private set; }
-
-    private UIController _uiController;
-    private CameraShake _cameraShake;
     private void Start()
     {
-        playerData = new PlayerData();
+        PlayerData = new PlayerData();
         GameManager.Instance.SetPlayer(this);
-        _uiController = FindObjectOfType<UIController>();
-        _cameraShake = FindObjectOfType<CameraShake>();
-
+        uiController = FindObjectOfType<UIController>();
+        cameraShake = FindObjectOfType<CameraShake>();
     }
 
     private void Update()
     {
-        if (GameManager.Instance.currentState != GameState.InGame)
+        if (GameManager.Instance.CurrentState != GameState.InGame)
             return;
-        _timeRemaining -= Time.deltaTime;
-        _uiController.UpdateTimeText(_timeRemaining);
+        timeRemaining -= Time.deltaTime;
+        uiController.UpdateTimeText(timeRemaining);
 
 
-        if (_timeRemaining <= 0)
+        if (timeRemaining <= 0)
         {
             //game over;
             GameManager.Instance.GameOver();
         }
     }
 
-    public void SetPlayerName(string name)
+    public void SetPlayerName(string newName)
     {
-        playerName = name;
+        PlayerName = newName;
     }
 
     public void Kill()
     {
-        //play death effects
-        _lives--;
-        _uiController.UpdateLivesText(_lives);
-        if (_lives <= 0)
+        lives--;
+        uiController.UpdateLivesText(lives);
+        if (lives <= 0)
         {
-            //game over
             GameManager.Instance.GameOver();
             return;
         }
-        _cameraShake.StartShakeEffect();
-        ParticleEffect particles = GameManager.Instance.destroyParticlesPool.GetObject().GetComponent<ParticleEffect>();
+        cameraShake.StartShakeEffect();
+        var particles = GameManager.Instance.destroyParticlesPool.GetObject().GetComponent<ParticleEffect>();
         particles.PlayAtPosition(transform.position);
-        isDead = true;
+        IsDead = true;
     }
 
     public void AddToScore(int scoreToAdd)
     {
-        score += scoreToAdd;
-        _uiController.UpdateScoreText(score);
+        Score += scoreToAdd;
+        uiController.UpdateScoreText(Score);
     }
 
     public void Respawn(Vector3 spawnPoint)
     {
-        isDead = false;
-        score = 0;
-        _timeRemaining = _maxTime;
+        IsDead = false;
+        Score = 0;
+        timeRemaining = maxTime;
         transform.position = spawnPoint;
     }
 
     public void Reset()
     {
-        score = 0;
-        coins = 0;
-        _lives = _maxLives;
-        _timeRemaining = _maxTime;
+        Score = 0;
+        Coins = 0;
+        lives = maxLives;
+        timeRemaining = maxTime;
     }
-
-
 }

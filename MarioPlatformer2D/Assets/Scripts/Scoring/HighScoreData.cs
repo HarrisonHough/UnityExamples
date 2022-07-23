@@ -1,9 +1,7 @@
-﻿using System.Collections;
+﻿using System;
 using System.Collections.Generic;
-using UnityEngine;
 
-
-[System.Serializable]
+[Serializable]
 public class HighScoreData
 {
     public PlayerData[] highScoreArray;
@@ -11,7 +9,7 @@ public class HighScoreData
     public HighScoreData(List<PlayerData> dataList)
     {
         highScoreArray = new PlayerData[dataList.Count];
-        for (int i = 0; i < dataList.Count; i++)
+        for (var i = 0; i < dataList.Count; i++)
         {
             highScoreArray[i] = dataList[i];
         }

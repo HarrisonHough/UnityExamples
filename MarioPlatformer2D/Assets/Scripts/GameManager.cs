@@ -1,91 +1,84 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public enum GameState {InMenu, InGame, Respawning}
+public enum GameState { InMenu, InGame, Respawning }
 public class GameManager : GenericSingleton<GameManager>
 {
-    public GameState currentState { get; private set; }
-    public bool isGameOver { get; private set; }
-    public bool isLevelComplete { get; private set; }
+    public GameState CurrentState { get; private set; }
+    public bool IsGameOver { get; private set; }
+    public bool IsLevelComplete { get; private set; }
 
-    private Vector3 _spawnPoint = Vector3.zero;
-    private Player _player = null;
-    public UIController uiController { get; private set; }
+    private Vector3 spawnPoint = Vector3.zero;
+    private Player player;
+    public UIController UIController { get; private set; }
     public HighScores highScores;
     public Pool destroyParticlesPool;
 
-    // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        uiController = FindObjectOfType<UIController>();
+        UIController = FindObjectOfType<UIController>();
         highScores = FindObjectOfType<HighScores>();
     }
 
     public void UpdateSpawnPoint(Vector3 newSpawnPoint)
     {
-        _spawnPoint = newSpawnPoint;
+        spawnPoint = newSpawnPoint;
     }
 
-    public void SetPlayer(Player player)
+    public void SetPlayer(Player targetPlayer)
     {
-        _player = player;
+        player = targetPlayer;
     }
 
     public void StartGame(string playerName)
     {
-        _player.SetPlayerName(playerName);
+        player.SetPlayerName(playerName);
         StartCoroutine(GameLoop());
     }
 
     public void GameOver()
     {
-        isGameOver = true;
+        IsGameOver = true;
     }
 
     public void LevelComplete()
     {
-        isGameOver = true;
-        isLevelComplete = true;
-        _player.AddToScore(1);
-        highScores.AddNewScore(_player.playerData);
+        IsGameOver = true;
+        IsLevelComplete = true;
+        player.AddToScore(1);
+        highScores.AddNewScore(player.PlayerData);
     }
 
-
-
-    IEnumerator GameLoop()
+    private IEnumerator GameLoop()
     {
-        isLevelComplete = false;
-        isGameOver = false;
+        IsLevelComplete = false;
+        IsGameOver = false;
         //need to reset if new game
-        _spawnPoint = Vector3.zero;
-        _player.Reset();
+        spawnPoint = Vector3.zero;
+        player.Reset();
 
-        while(!isGameOver)
+        while (!IsGameOver)
         {
             yield return StartCoroutine(LevelLoop());
-            if(!isGameOver)
+            if (!IsGameOver)
                 yield return new WaitForSeconds(2);
         }
-        currentState = GameState.InMenu;
+        CurrentState = GameState.InMenu;
 
-        if (isLevelComplete)
-            uiController.ToggleLevelCompletePanel(true);
+        if (IsLevelComplete)
+            UIController.ToggleLevelCompletePanel(true);
         else
-            uiController.ToggleGameOverPanel(true);
-
-
+            UIController.ToggleGameOverPanel(true);
     }
 
-    IEnumerator LevelLoop()
+    private IEnumerator LevelLoop()
     {
-        _player.Respawn(_spawnPoint);
-        currentState = GameState.InGame;
-        while (!_player.isDead && !isGameOver)
+        player.Respawn(spawnPoint);
+        CurrentState = GameState.InGame;
+        while (!player.IsDead && !IsGameOver)
         {
             yield return null;
         }
-        currentState = GameState.Respawning;
+        CurrentState = GameState.Respawning;
     }
-
 }

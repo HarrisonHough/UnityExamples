@@ -8,22 +8,12 @@ using UnityEngine;
 * SCRIPT: Pool Member Class
 */
 
-/// <summary>
-/// 
-/// </summary>
-public class PoolMember : MonoBehaviour {
-
-    //
+public class PoolMember : MonoBehaviour
+{
     public event Action OnDestroyEvent;
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void OnDisable()
     {
-        if (OnDestroyEvent != null)
-            OnDestroyEvent();
+        OnDestroyEvent?.Invoke();
     }
-
-
 }

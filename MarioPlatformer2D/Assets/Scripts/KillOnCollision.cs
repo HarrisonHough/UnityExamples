@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Collider2D))]
 public class KillOnCollision : MonoBehaviour
@@ -9,9 +7,6 @@ public class KillOnCollision : MonoBehaviour
     {
         var killableObject = collision.gameObject.GetComponent<IKillable>();
 
-        if (killableObject != null)
-        {
-            killableObject.Kill();
-        }
+        killableObject?.Kill();
     }
 }

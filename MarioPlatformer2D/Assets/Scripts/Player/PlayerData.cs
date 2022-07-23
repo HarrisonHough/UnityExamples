@@ -1,8 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System;
 
-[System.Serializable]
+[Serializable]
 public class PlayerData
 {
     public string name;
@@ -19,8 +17,8 @@ public class PlayerData
     public PlayerData(Player player)
     {
         name = player.name;
-        score = player.score;
-        coins = player.coins;
+        score = player.Score;
+        coins = player.Coins;
 
     }
 

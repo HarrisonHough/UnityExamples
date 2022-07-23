@@ -1,30 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 [ExecuteInEditMode]
 public class CameraFollow2D : MonoBehaviour
 {
+    [SerializeField]
+    private GameObject targetToFollow;
 
     [SerializeField]
-    private GameObject _targetToFollow;
+    private bool follow = true;
 
     [SerializeField]
-    private bool _follow = true;
-
+    private float cameraZOffset = -10f;
     [SerializeField]
-    private float _cameraZOffset = -10f;
-    [SerializeField]
-    private float _cameraXOffset = -5f;
+    private float cameraXOffset = -5f;
 
-    // Use this for initialization
-    void Start()
+    private void Start()
     {
-        if (_targetToFollow == null)
-        {
-            Debug.Log("No target set - Camera follow disabled");
-            _follow = false;
-        }
+        if (targetToFollow != null) return;
+        Debug.Log("No target set - Camera follow disabled");
+        follow = false;
     }
 
     private void LateUpdate()
@@ -34,10 +29,9 @@ public class CameraFollow2D : MonoBehaviour
 
     private void Follow()
     {
-        if (_follow)
+        if (follow)
         {
-            //follow ONLY on the X axis
-            transform.position = new Vector3(_targetToFollow.transform.position.x + _cameraXOffset, 0, _cameraZOffset);
+            transform.position = new Vector3(targetToFollow.transform.position.x + cameraXOffset, 0, cameraZOffset);
         }
     }
 }

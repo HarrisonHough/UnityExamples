@@ -1,84 +1,81 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 [RequireComponent(typeof(Rigidbody2D))]
 public class ObjectMovement : MonoBehaviour
 {
     [SerializeField]
-    private Vector2[] _localWaypoints;
-    private Vector3[] _globalWaypoints;
+    private Vector2[] localWaypoints;
+    private Vector3[] globalWaypoints;
 
     [SerializeField]
-    private float _speed = 1f;
+    private float speed = 1f;
     [SerializeField]
-    private bool _cyclic = false;
+    private bool cyclic;
     [SerializeField]
-    private float _waitTime;
+    private float waitTime;
     [Range(0, 2)]
-    public float easeAmout;
-    private float _nextMoveTime;
-    private int _fromWaypointIndex;
-    private float _percentBetweenWaypoints;
+    public float easeAmount;
+    private float nextMoveTime;
+    private int fromWaypointIndex;
+    private float percentBetweenWaypoints;
 
-    private Vector3 _velocity;
-    private Rigidbody2D _rigidbody2D;
+    private Vector3 velocity;
+    private Rigidbody2D objectRigidbody;
 
     private void Awake()
     {
-        _globalWaypoints = new Vector3[_localWaypoints.Length];
-        for (int i = 0; i < _globalWaypoints.Length; i++)
+        globalWaypoints = new Vector3[localWaypoints.Length];
+        for (var i = 0; i < globalWaypoints.Length; i++)
         {
-            _globalWaypoints[i] = (Vector3)_localWaypoints[i] + transform.position;
+            globalWaypoints[i] = (Vector3) localWaypoints[i] + transform.position;
         }
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        objectRigidbody = GetComponent<Rigidbody2D>();
     }
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        _velocity = CalculatePlatformMovement();
-        
+        velocity = CalculatePlatformMovement();
     }
 
     private void FixedUpdate()
     {
-        //transform.Translate(_velocity);
-        _rigidbody2D.MovePosition(transform.position + _velocity);
+        objectRigidbody.MovePosition(transform.position + velocity);
     }
 
     private Vector3 CalculatePlatformMovement()
     {
-        if (Time.time < _nextMoveTime)
+        if (Time.time < nextMoveTime)
         {
             return Vector3.zero;
         }
 
-        _fromWaypointIndex %= _globalWaypoints.Length;
-        int toWaypointIndex = (_fromWaypointIndex + 1) % _globalWaypoints.Length;
+        fromWaypointIndex %= globalWaypoints.Length;
+        var toWaypointIndex = (fromWaypointIndex + 1) % globalWaypoints.Length;
 
-        float distanceBetweenWaypoints = Vector3.Distance(_globalWaypoints[_fromWaypointIndex], _globalWaypoints[toWaypointIndex]);
-        _percentBetweenWaypoints += Time.deltaTime * _speed / distanceBetweenWaypoints;
-        _percentBetweenWaypoints = Mathf.Clamp01(_percentBetweenWaypoints);
-        float easedPercentBetweenWaypoints = Ease(_percentBetweenWaypoints);
+        var distanceBetweenWaypoints = Vector3.Distance(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex]);
+        percentBetweenWaypoints += Time.deltaTime * speed / distanceBetweenWaypoints;
+        percentBetweenWaypoints = Mathf.Clamp01(percentBetweenWaypoints);
+        var easedPercentBetweenWaypoints = Ease(percentBetweenWaypoints);
 
-        Vector3 newPos = Vector3.Lerp(_globalWaypoints[_fromWaypointIndex], _globalWaypoints[toWaypointIndex], easedPercentBetweenWaypoints);
+        Vector3 newPos = Vector3.Lerp(globalWaypoints[fromWaypointIndex], globalWaypoints[toWaypointIndex], easedPercentBetweenWaypoints);
 
-        if (_percentBetweenWaypoints >= 1)
+        if (percentBetweenWaypoints >= 1)
         {
 
-            _percentBetweenWaypoints = 0;
-            _fromWaypointIndex++;
+            percentBetweenWaypoints = 0;
+            fromWaypointIndex++;
             //have to reverse array order if cyclic
-            if (!_cyclic)
+            if (!cyclic)
             {
-                if (_fromWaypointIndex >= _globalWaypoints.Length - 1)
+                if (fromWaypointIndex >= globalWaypoints.Length - 1)
                 {
-                    _fromWaypointIndex = 0;
-                    System.Array.Reverse(_globalWaypoints);
+                    fromWaypointIndex = 0;
+                    Array.Reverse(globalWaypoints);
                 }
             }
-            _nextMoveTime = Time.time + _waitTime;
+            nextMoveTime = Time.time + waitTime;
         }
 
         return newPos - transform.position;
@@ -86,18 +83,18 @@ public class ObjectMovement : MonoBehaviour
 
     private float Ease(float x)
     {
-        float a = easeAmout + 1;
+        var a = easeAmount + 1;
         return Mathf.Pow(x, a) / (Mathf.Pow(x, a) + Mathf.Pow(1 - x, a));
     }
 
     private void OnDrawGizmos()
     {
         Gizmos.color = Color.red;
-        float size = 0.3f;
+        const float size = 0.3f;
 
-        for (int i = 0; i < _localWaypoints.Length; i++)
+        for (var i = 0; i < localWaypoints.Length; i++)
         {
-            Vector3 globalWaypointPosition = (Application.isPlaying) ? _globalWaypoints[i] : (Vector3)_localWaypoints[i] + transform.position;
+            Vector3 globalWaypointPosition = (Application.isPlaying) ? globalWaypoints[i] : (Vector3) localWaypoints[i] + transform.position;
             Gizmos.DrawLine(globalWaypointPosition - Vector3.up * size, globalWaypointPosition + Vector3.up * size);
             Gizmos.DrawLine(globalWaypointPosition - Vector3.left * size, globalWaypointPosition + Vector3.left * size);
         }

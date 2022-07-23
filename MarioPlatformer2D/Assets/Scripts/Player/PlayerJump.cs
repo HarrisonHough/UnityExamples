@@ -1,27 +1,26 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 public class PlayerJump : MonoBehaviour
 {
 
     [SerializeField]
-    private float _jumpPower = 10f;
+    private float jumpPower = 10f;
     public LayerMask platformLayer;
 
-    private Rigidbody2D _rigidbody2D;
-    private CircleCollider2D _CircleCollider2D;
+    private Rigidbody2D playerRigidbody2D;
+    private CircleCollider2D circleCollider2D;
 
-    public bool isGrounded { get; private set; }
-    // Start is called before the first frame update
-    void Start()
+    public bool IsGrounded { get; private set; }
+
+    private void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _CircleCollider2D = GetComponent<CircleCollider2D>();
-        PlayerController playerController = GetComponent<PlayerController>();
+        playerRigidbody2D = GetComponent<Rigidbody2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
+        var playerController = GetComponent<PlayerController>();
         if (playerController != null)
         {
-            playerController.onJumpEvent += Jump;
+            playerController.OnJumpEvent += Jump;
         }
     }
 
@@ -30,18 +29,17 @@ public class PlayerJump : MonoBehaviour
         if (!CheckIsGrounded())
             return;
 
-        _rigidbody2D.AddForce(Vector2.up * _jumpPower, ForceMode2D.Impulse);
+        playerRigidbody2D.AddForce(Vector2.up * jumpPower, ForceMode2D.Impulse);
     }
 
     public bool CheckIsGrounded()
     {
-        bool isGrounded = false;
-        Vector3 playerBottomLeft = new Vector3(transform.position.x - (_CircleCollider2D.radius), transform.position.y - (_CircleCollider2D.radius), 0);
+        var playerBottomLeft = new Vector3(transform.position.x - (circleCollider2D.radius), transform.position.y - (circleCollider2D.radius), 0);
         for (int i = 0; i < 3; i++)
         {
-            if (Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector3.up), (_CircleCollider2D.radius) + 0.1f, platformLayer))
-                isGrounded = true;
+            if (Physics2D.Raycast(transform.position, transform.TransformDirection(-Vector3.up), (circleCollider2D.radius) + 0.1f, platformLayer))
+                IsGrounded = true;
         }
-        return isGrounded;
+        return IsGrounded;
     }
 }

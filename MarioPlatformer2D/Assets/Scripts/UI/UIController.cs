@@ -1,42 +1,41 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using System.Collections.Generic;
 using TMPro;
-
+using UnityEngine;
+using UnityEngine.Serialization;
 
 public class UIController : MonoBehaviour
 {
     [SerializeField]
-    private TextMeshProUGUI _scoreText;
+    private TextMeshProUGUI scoreText;
     [SerializeField]
-    private TextMeshProUGUI _coinsText;
+    private TextMeshProUGUI coinsText;
     [SerializeField]
-    private TextMeshProUGUI _worldText;
+    private TextMeshProUGUI worldText;
     [SerializeField]
-    private TextMeshProUGUI _timeText;
+    private TextMeshProUGUI timeText;
     [SerializeField]
-    private TextMeshProUGUI _livesText;
+    private TextMeshProUGUI livesText;
 
     [SerializeField]
-    private GameObject _gameOverPanel;
+    private GameObject gameOverPanel;
     [SerializeField]
-    private GameObject _levelCompletePanel;
+    private GameObject levelCompletePanel;
     [SerializeField]
-    private GameObject _highScoresPanel;
+    private GameObject highScoresPanel;
     [SerializeField]
-    private GameObject _newGamePanel;
+    private GameObject newGamePanel;
 
     [SerializeField]
-    private ScoreLabel[] _scoreLabels;
+    private ScoreLabel[] scoreLabels;
 
-    private HighScores _highScores;
+    private HighScores highScores;
     [SerializeField]
-    private TMP_InputField _nameInput;
+    private TMP_InputField nameInput;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _highScores = FindObjectOfType<HighScores>();
+        highScores = FindObjectOfType<HighScores>();
         InitalizeText();
     }
 
@@ -50,41 +49,41 @@ public class UIController : MonoBehaviour
 
     public void UpdateScoreText(int score)
     {
-        _scoreText.text = "SCORE \n" + score;
+        scoreText.text = "SCORE \n" + score;
     }
     public void UpdateCoinsText(int coins)
     {
-        _coinsText.text = "COINS \n" + coins;
+        coinsText.text = "COINS \n" + coins;
     }
 
     public void UpdateTimeText(float timeRemaining)
     {
-        _timeText.text = "TIME \n" + (int)timeRemaining;
+        timeText.text = "TIME \n" + (int) timeRemaining;
     }
     public void UpdateLivesText(int lives)
     {
-        _livesText.text = "LIVES \n" + lives;
+        livesText.text = "LIVES \n" + lives;
     }
 
     public void ToggleGameOverPanel(bool show)
     {
-        _gameOverPanel.SetActive(show);
+        gameOverPanel.SetActive(show);
     }
 
     public void ToggleLevelCompletePanel(bool show)
     {
-        _levelCompletePanel.SetActive(show);
+        levelCompletePanel.SetActive(show);
     }
     public void ToggleHighScoresPanel(bool show)
     {
         if (show)
-            UpdateHighScores(_highScores.highScoreList);
-        _highScoresPanel.SetActive(show);
+            UpdateHighScores(highScores.highScoreList);
+        highScoresPanel.SetActive(show);
     }
 
     public void ToggleNewGamePanel(bool show)
     {
-        _newGamePanel.SetActive(show);
+        newGamePanel.SetActive(show);
     }
 
     public void RetryButtonClick()
@@ -103,25 +102,25 @@ public class UIController : MonoBehaviour
     }
     public void StartButtonClick()
     {
-        string playerName = string.IsNullOrEmpty(_nameInput.text) ? _nameInput.placeholder.GetComponent<TextMeshProUGUI>().text : _nameInput.text ;
+        var playerName = string.IsNullOrEmpty(nameInput.text) ? nameInput.placeholder.GetComponent<TextMeshProUGUI>().text : nameInput.text;
         GameManager.Instance.StartGame(playerName);
         ToggleNewGamePanel(false);
     }
 
     public void UpdateHighScores(IList<PlayerData> highScoreList)
     {
-        if (_scoreLabels.Length != highScoreList.Count)
+        if (scoreLabels.Length != highScoreList.Count)
         {
             Debug.LogError("score label array length does not match high score list count");
-            Debug.Log("highscorelist count is " + highScoreList.Count + " scorelabels array length is " + _scoreLabels.Length);
+            Debug.Log("highscorelist count is " + highScoreList.Count + " scorelabels array length is " + scoreLabels.Length);
             return;
         }
         for (int i = 0; i < highScoreList.Count; i++)
         {
             Debug.Log("setting text label " + i);
-            _scoreLabels[i].nameText.text = highScoreList[i].name;
-            _scoreLabels[i].scoreText.text = highScoreList[i].score.ToString();
-            _scoreLabels[i].coinsText.text = highScoreList[i].coins.ToString();
+            scoreLabels[i].nameText.text = highScoreList[i].name;
+            scoreLabels[i].scoreText.text = highScoreList[i].score.ToString();
+            scoreLabels[i].coinsText.text = highScoreList[i].coins.ToString();
         }
     }
 }

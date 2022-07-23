@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class FallingPlatform : MonoBehaviour
 {
@@ -16,7 +14,7 @@ public class FallingPlatform : MonoBehaviour
         }
     }
 
-    IEnumerator FallCoroutine()
+    private IEnumerator FallCoroutine()
     {
         float timeToFall = Time.time + fallDelay;
         while (Time.time < timeToFall)
@@ -27,6 +25,6 @@ public class FallingPlatform : MonoBehaviour
         //apply gravity
 
         //then destroy after time
-       
+
     }
 }

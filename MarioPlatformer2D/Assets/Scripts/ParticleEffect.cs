@@ -1,11 +1,11 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class ParticleEffect : MonoBehaviour
 {
     [SerializeField]
-    private ParticleSystem _particles;
+    private ParticleSystem particles;
 
     public void PlayAtPosition(Vector3 position)
     {
@@ -14,10 +14,10 @@ public class ParticleEffect : MonoBehaviour
         StartCoroutine(PlayThenDisable());
     }
 
-    IEnumerator PlayThenDisable()
+    private IEnumerator PlayThenDisable()
     {
-        _particles.Play();
-        while (_particles.isPlaying)
+        particles.Play();
+        while (particles.isPlaying)
         {
             yield return null;
         }

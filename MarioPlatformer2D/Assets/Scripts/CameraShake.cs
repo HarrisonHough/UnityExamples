@@ -1,13 +1,13 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 public class CameraShake : MonoBehaviour
 {
     [SerializeField]
-    private float _shakeDuration = 0.2f;
+    private float shakeDuration = 0.2f;
     [SerializeField]
-    private float _shakeMagnitude = 0.4f;
+    private float shakeMagnitude = 0.4f;
 
     public void StartShakeEffect()
     {
@@ -22,22 +22,22 @@ public class CameraShake : MonoBehaviour
         }
     }
 
-    IEnumerator ShakeRoutine()
+    private IEnumerator ShakeRoutine()
     {
         Vector3 startPosition = transform.localPosition;
 
-        float elapsedTime = 0.0f;
+        var elapsedTime = 0.0f;
 
-        while (elapsedTime < _shakeDuration)
+        while (elapsedTime < shakeDuration)
         {
-            float x = Random.Range(-1f, 1f) * _shakeMagnitude;
-            float y = Random.Range(-1f, 1f) * _shakeMagnitude;
+            var x = Random.Range(-1f, 1f) * shakeMagnitude;
+            var y = Random.Range(-1f, 1f) * shakeMagnitude;
 
             transform.localPosition = new Vector3(x, y, startPosition.z);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         transform.localPosition = startPosition;
-       
+
     }
 }

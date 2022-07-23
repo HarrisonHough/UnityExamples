@@ -1,13 +1,10 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 public class PlayerController : MonoBehaviour
 {
 
     public delegate void JumpEvent();
-    public JumpEvent onJumpEvent;
+    public JumpEvent OnJumpEvent;
     public delegate void MovementStartEvent(float xInput);
     public MovementStartEvent onMovementStartEvent;
     public delegate void MovementStopEvent();
@@ -15,25 +12,17 @@ public class PlayerController : MonoBehaviour
     public delegate void MovementInputUpdate(float xInput);
     public MovementInputUpdate onMovementInputUpdate;
 
-    private bool _isGrounded = false;
-    
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    private bool isGrounded = false;
 
-    // Update is called once per frame
-    void Update()
+    private void Update()
     {
-        if (GameManager.Instance.currentState != GameState.InGame)
+        if (GameManager.Instance.CurrentState != GameState.InGame)
         {
-            //to ensure movement stops
             onMovementInputUpdate?.Invoke(0);
             return;
         }
 
-        float xInput = Input.GetAxisRaw("Horizontal") * Time.deltaTime;
+        var xInput = Input.GetAxisRaw("Horizontal") * Time.deltaTime;
 
         onMovementInputUpdate?.Invoke(xInput);
 
@@ -56,9 +45,7 @@ public class PlayerController : MonoBehaviour
 
         if (Input.GetButtonDown("Jump"))
         {
-            onJumpEvent?.Invoke();
+            OnJumpEvent?.Invoke();
         }
     }
-
-
 }

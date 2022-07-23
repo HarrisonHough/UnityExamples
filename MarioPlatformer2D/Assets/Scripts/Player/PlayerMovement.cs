@@ -1,33 +1,30 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody2D), typeof(PlayerController))]
 public class PlayerMovement : MonoBehaviour
 {
+    private const int SPEED_MULTIPLIER = 200;
     [SerializeField]
-    private float _moveSpeed = 5f;
-    private Vector3 _targetVelocity;
-    private Rigidbody2D _rigidbody2D;
-    private float _xInput = 0f;
-
-    // Start is called before the first frame update
-    void Start()
+    private float moveSpeed = 5f;
+    private Vector3 targetVelocity;
+    private Rigidbody2D playerRigidbody2D;
+    private float xInput;
+    
+    private void Start()
     {
-        _targetVelocity = Vector3.zero;
-        _rigidbody2D = GetComponent<Rigidbody2D>();
+        targetVelocity = Vector3.zero;
+        playerRigidbody2D = GetComponent<Rigidbody2D>();
 
-        PlayerController playerController = GetComponent<PlayerController>();
+        var playerController = GetComponent<PlayerController>();
         if (playerController != null)
         {
             playerController.onMovementInputUpdate += UpdateVelocity;
         }
     }
 
-
     public void UpdateVelocity(float xInput)
     {
-        _xInput = xInput;
+        this.xInput = xInput;
     }
 
     public void MatchVelocity()
@@ -35,12 +32,10 @@ public class PlayerMovement : MonoBehaviour
 
     }
 
-
     private void FixedUpdate()
     {
-        //_rigidbody2D.transform.Translate(_velocity * _moveSpeed );
-        _targetVelocity = Vector2.zero;
-        _targetVelocity = new Vector2(_xInput * _moveSpeed * 200, _rigidbody2D.velocity.y);
-        _rigidbody2D.velocity = _targetVelocity;
+        targetVelocity = Vector2.zero;
+        targetVelocity = new Vector2(xInput * moveSpeed * SPEED_MULTIPLIER, playerRigidbody2D.velocity.y);
+        playerRigidbody2D.velocity = targetVelocity;
     }
 }
