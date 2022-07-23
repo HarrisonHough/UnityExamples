@@ -9,7 +9,7 @@ namespace FirstPersonController
     {
         private CharacterController controller;
 
-        private const float Gravity = -18.81f;
+        private const float GRAVITY = -18.81f;
         private Vector3 velocity;
         private bool isGrounded;
 
@@ -18,14 +18,14 @@ namespace FirstPersonController
         private PlayerInput playerInput;
         private GroundCheck groundCheck;
 
-        void Awake()
+        private void Awake()
         {
             groundCheck = GetComponent<GroundCheck>();
             playerInput = GetComponent<PlayerInput>();
             controller = GetComponent<CharacterController>();
         }
 
-        void Update()
+        private void Update()
         {
             isGrounded = groundCheck.IsGrounded;
             if (isGrounded && velocity.y < 0)
@@ -34,11 +34,11 @@ namespace FirstPersonController
             }
 
             Vector3 moveVector = transform.right * playerInput.MoveInput.x + transform.forward * playerInput.MoveInput.y;
-            controller.Move(moveVector * speed * Time.deltaTime);
-            velocity.y += Gravity * Time.deltaTime;
+            controller.Move(moveVector * (speed * Time.deltaTime));
+            velocity.y += GRAVITY * Time.deltaTime;
             if (playerInput.Jump && isGrounded)
             {
-                velocity.y = Mathf.Sqrt(jumpHeight * -2f * Gravity);
+                velocity.y = Mathf.Sqrt(jumpHeight * -2f * GRAVITY);
                 playerInput.ResetJump();
             }
         }

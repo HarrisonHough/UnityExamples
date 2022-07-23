@@ -1,6 +1,5 @@
 using UnityEngine;
 
-
 namespace FirstPersonController
 {
     public class MouseLook : MonoBehaviour
@@ -8,22 +7,20 @@ namespace FirstPersonController
         [SerializeField] private float mouseSensitivityX = 800;
         [SerializeField] private float mouseSensitivityY = 600;
         [SerializeField] private Transform playerBody;
-        private float xRotation = 0f;
+        private float xRotation;
         private PlayerInput playerInput;
 
-        // Start is called before the first frame update
-        void Start()
+        private void Start()
         {
             playerInput = GetComponentInParent<PlayerInput>();
             Cursor.lockState = CursorLockMode.Locked;
             xRotation = 0;
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            float mouseX = playerInput.MouseInput.x * mouseSensitivityX * Time.deltaTime;
-            float mouseY = playerInput.MouseInput.y * mouseSensitivityY * Time.deltaTime;
+            var mouseX = playerInput.MouseInput.x * mouseSensitivityX * Time.deltaTime;
+            var mouseY = playerInput.MouseInput.y * mouseSensitivityY * Time.deltaTime;
             xRotation -= mouseY;
             xRotation = Mathf.Clamp(xRotation, -90f, 90f);
             transform.localRotation = Quaternion.Euler(xRotation, 0, 0);

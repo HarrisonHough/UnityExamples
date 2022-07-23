@@ -9,16 +9,14 @@ namespace FirstPersonController
         private static PlayerInput instance;
         private Vector2 moveInput;
         public Vector2 MoveInput => !inputDisabled ? moveInput : Vector2.zero;
-        private Vector2 mouseInput; 
+        private Vector2 mouseInput;
         public Vector2 MouseInput => !inputDisabled ? mouseInput : Vector2.zero;
         private bool inputDisabled = false;
         public bool InputDisabled => inputDisabled;
-        
+
         private bool jump;
         public bool Jump => jump && !inputDisabled;
 
-
-        // Start is called before the first frame update
         void Awake()
         {
             if (instance == null)
@@ -31,11 +29,10 @@ namespace FirstPersonController
             }
         }
 
-        // Update is called once per frame
-        void Update()
+        private void Update()
         {
-            mouseInput.Set(Input.GetAxis("Mouse X"),Input.GetAxis("Mouse Y"));
-            moveInput.Set(Input.GetAxis("Horizontal"),Input.GetAxis("Vertical"));
+            mouseInput.Set(Input.GetAxis("Mouse X"), Input.GetAxis("Mouse Y"));
+            moveInput.Set(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical"));
             jump = Input.GetButtonDown("Jump");
         }
 
