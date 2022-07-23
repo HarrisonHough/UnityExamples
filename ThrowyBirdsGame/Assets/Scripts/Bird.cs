@@ -1,6 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,14 +9,11 @@ using UnityEngine;
 * SCRIPT: Bird Class
 */
 
-/// <summary>
-/// 
-/// </summary>
 public class Bird : MonoBehaviour
 {
-    private Rigidbody2D _rigidbody2D;
-    private CircleCollider2D _circleCollider2D;
-    public LayerMask BirdLayer;
+    private Rigidbody2D birdRigidbody2D;
+    private CircleCollider2D circleCollider2D;
+    [FormerlySerializedAs("BirdLayer")] public LayerMask birdLayer;
 
     public float Mass { get; set; }
 
@@ -24,15 +21,15 @@ public class Bird : MonoBehaviour
     private float disableDelay = 3f;
     private bool hasHitGround = false;
 
-    PhysicsMaterial2D birdMaterial;
+    private PhysicsMaterial2D birdMaterial;
 
     private GameObject trail;
 
     // Start is called before the first frame update
-    void Start()
+    private void Start()
     {
-        _rigidbody2D = GetComponent<Rigidbody2D>();
-        _circleCollider2D = GetComponent<CircleCollider2D>();
+        birdRigidbody2D = GetComponent<Rigidbody2D>();
+        circleCollider2D = GetComponent<CircleCollider2D>();
     }
 
     /// <summary>
@@ -42,8 +39,7 @@ public class Bird : MonoBehaviour
     /// <param name="collision"></param>
     private void OnCollisionEnter2D(Collision2D collision)
     {
-       
-        if (collision.gameObject.tag.Contains("Ground") || collision.gameObject.tag.Contains("Brick") || collision.gameObject.tag.Contains("Pig"))
+        if (collision.gameObject.CompareTag("Ground") || collision.gameObject.CompareTag("Brick") || collision.gameObject.CompareTag("Pig"))
         {
             //before disable unparent trailrenderer
             if (trail != null)
@@ -53,11 +49,9 @@ public class Bird : MonoBehaviour
             }
         }
 
-        if (collision.gameObject.tag.Contains("Ground") && !hasHitGround)
-        {
-            hasHitGround = true;
-            StartCoroutine(DisableAfterDelay());
-        }
+        if (!collision.gameObject.CompareTag("Ground") || hasHitGround) return;
+        hasHitGround = true;
+        StartCoroutine(DisableAfterDelay());
     }
 
     /// <summary>
@@ -67,29 +61,27 @@ public class Bird : MonoBehaviour
     /// <returns></returns>
     public bool IsCursorOverBird(Vector3 location)
     {
-        if (_circleCollider2D == Physics2D.OverlapPoint(location, BirdLayer))
+        if (circleCollider2D == Physics2D.OverlapPoint(location, birdLayer))
         {
             Debug.Log("TRUE");
             return true;
         }
         Debug.Log("FALSE");
-        return false; 
+        return false;
     }
 
-    public void OnThrow(Vector2 velocity, GameObject newtrail)
+    public void OnThrow(Vector2 velocity, GameObject newTrail)
     {
-        _rigidbody2D.isKinematic = false;
+        birdRigidbody2D.isKinematic = false;
 
         GetComponent<Rigidbody2D>().velocity = velocity;
 
-        trail = newtrail;
+        trail = newTrail;
         trail.transform.position = transform.position;
         trail.transform.parent = transform;
-        TrailRenderer thisTrail = trail.GetComponent<TrailRenderer>();
+        var thisTrail = trail.GetComponent<TrailRenderer>();
         thisTrail.Clear();
         thisTrail.enabled = true;
-        
-
     }
 
     /// <summary>
@@ -97,25 +89,25 @@ public class Bird : MonoBehaviour
     /// this game object after a delay
     /// </summary>
     /// <returns></returns>
-    IEnumerator DisableAfterDelay()
+    private IEnumerator DisableAfterDelay()
     {
-        while (_rigidbody2D.velocity.y != 0)
+        while (birdRigidbody2D.velocity.y != 0)
         {
             yield return null;
         }
 
-        float timeToDisable = Time.time + 2;
-        while(timeToDisable > Time.time)
+        var timeToDisable = Time.time + 2;
+        while (timeToDisable > Time.time)
         {
             yield return null;
         }
 
-        Vector3 startVelocity = _rigidbody2D.velocity;
+        Vector3 startVelocity = birdRigidbody2D.velocity;
         //wait until velocity is slow
-        while (Mathf.Abs( _rigidbody2D.velocity.x) > 0.5 )
+        while (Mathf.Abs(birdRigidbody2D.velocity.x) > 0.5)
         {
             Debug.Log("Waiting to slow down");
-            _rigidbody2D.velocity = _rigidbody2D.velocity * 0.95f * Time.deltaTime;
+            birdRigidbody2D.velocity = birdRigidbody2D.velocity * 0.95f * Time.deltaTime;
             yield return null;
         }
         //wait few seconds
@@ -128,10 +120,6 @@ public class Bird : MonoBehaviour
 
         //TODO notify GameManager
         GameManager.Instance.DestroyBird();
-
-        
-        
-        //disable
         gameObject.SetActive(false);
     }
 }

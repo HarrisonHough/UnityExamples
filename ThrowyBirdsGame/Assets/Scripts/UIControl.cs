@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 using UnityEngine.UI;
 
 /*
@@ -10,82 +9,45 @@ using UnityEngine.UI;
 * SCRIPT: UIControl Class
 */
 
-/// <summary>
-/// 
-/// </summary>
 public class UIControl : MonoBehaviour
 {
-    [SerializeField]
-    private GameObject _levelFailedPanel;
-    [SerializeField]
-    private GameObject _levelCompletePanel;
-    [SerializeField]
-    private Text _finalScore;
+    [FormerlySerializedAs("_levelFailedPanel"), SerializeField]
+    private GameObject levelFailedPanel;
+    [FormerlySerializedAs("_levelCompletePanel"), SerializeField]
+    private GameObject levelCompletePanel;
+    [FormerlySerializedAs("_finalScore"), SerializeField]
+    private Text finalScore;
 
-    /// <summary>
-    /// Start is called before the first frame update
-    /// </summary>
-    void Start()
-    {
-        
-    }
-
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="score"></param>
     public void SetFinalScore(int score)
     {
-        _finalScore.text = score.ToString();
+        finalScore.text = score.ToString();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="enable"></param>
     public void ToggleLevelFailed(bool enable)
     {
-        _levelFailedPanel.SetActive(enable);
+        levelFailedPanel.SetActive(enable);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="enable"></param>
     public void ToggleLevelComplete(bool enable)
     {
-        _levelCompletePanel.SetActive(enable);
+        levelCompletePanel.SetActive(enable);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void PauseButtonPress()
     {
 
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void RestartButtonPress()
     {
         GameManager.Instance.ReloadCurrentScene();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void NextButtonPress()
     {
-        //go to next level
         GameManager.Instance.LoadNextScene();
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <param name="index"></param>
     public void LoadScene(int index)
     {
         //load home menu screen

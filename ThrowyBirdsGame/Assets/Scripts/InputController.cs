@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -15,13 +14,19 @@ using UnityEngine;
 public class InputController : MonoBehaviour
 {
     //store reference to slingshot
-    [SerializeField]
-    private Slingshot _slingshot;
+    [FormerlySerializedAs("_slingshot"), SerializeField]
+    private Slingshot slingshot;
+    private Camera camera;
+
+    private void Awake()
+    {
+        camera = Camera.main;
+    }
 
     /// <summary>
     /// Update is called once per frame
     /// </summary>
-    void Update()
+    private void Update()
     {
         GetInput();
     }
@@ -29,12 +34,11 @@ public class InputController : MonoBehaviour
     /// <summary>
     /// Get user input depending on game state
     /// </summary>
-    void GetInput()
+    private void GetInput()
     {
-        switch (GameManager.Instance.CurrentState)
+        switch (GameManager.Instance.currentState)
         {
             case GameState.InMenu:
-                
                 break;
             case GameState.InGame:
                 SlingShotControls();
@@ -42,7 +46,6 @@ public class InputController : MonoBehaviour
             case GameState.GameOver:
                 break;
         }
-        
     }
 
     /// <summary>
@@ -52,27 +55,24 @@ public class InputController : MonoBehaviour
     {
         if (Input.GetMouseButtonDown(0))
         {
-            Vector3 location = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            if (_slingshot.BirdToThrow.IsCursorOverBird(location))
-                _slingshot.OnMouseDown();
+            Vector3 location = camera.ScreenToWorldPoint(Input.mousePosition);
+            if (slingshot.BirdToThrow.IsCursorOverBird(location))
+                slingshot.OnMouseDown();
 
         }
         if (Input.GetMouseButton(0))
         {
-            Vector3 location = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            _slingshot.OnMouseHold(location);
+            Vector3 location = camera.ScreenToWorldPoint(Input.mousePosition);
+            slingshot.OnMouseHold(location);
         }
 
         if (Input.GetMouseButtonUp(0))
         {
-            Vector3 location = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-            _slingshot.OnMouseRelease(location);
+            Vector3 location = camera.ScreenToWorldPoint(Input.mousePosition);
+            slingshot.OnMouseRelease(location);
         }
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     private void CameraMovementControls()
     {
         if (Input.touchCount == 1)

@@ -11,9 +11,8 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class PoolMember : MonoBehaviour {
-
-    //
+public class PoolMember : MonoBehaviour
+{
     public event Action OnDestroyEvent;
 
     /// <summary>
@@ -21,9 +20,6 @@ public class PoolMember : MonoBehaviour {
     /// </summary>
     private void OnDisable()
     {
-        if (OnDestroyEvent != null)
-            OnDestroyEvent();
+        OnDestroyEvent?.Invoke();
     }
-
-
 }

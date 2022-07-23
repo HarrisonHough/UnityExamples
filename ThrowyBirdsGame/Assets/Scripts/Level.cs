@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -18,28 +17,22 @@ using UnityEngine;
 public class Level : MonoBehaviour
 {
     //store reference to birds array
-    [SerializeField]
-    private Bird[] _birds;
-    public Bird[] Birds { get { return _birds; } }
+    [FormerlySerializedAs("_birds"), SerializeField]
+    private Bird[] birds;
+    public Bird[] Birds => birds;
 
     //store reference to enemy array
-    [SerializeField]
-    private Enemy[] _enemies;
-    public Enemy[] Enemies { get { return _enemies; } }
+    [FormerlySerializedAs("_enemies"), SerializeField]
+    private Enemy[] enemies;
+    public Enemy[] Enemies => enemies;
 
     //store reference to UI Control
-    [SerializeField]
-    private UIControl _uiControl;
-    public UIControl UIControl { get { return _uiControl; } }
-    
-    /// <summary>
-    /// 
-    /// </summary>
-    void Awake()
+    [FormerlySerializedAs("_uiControl"), SerializeField]
+    private UIControl uiControl;
+    public UIControl UIControl => uiControl;
+
+    private void Awake()
     {
-        //run on level start when scene loads
         GameManager.Instance.OnLevelStart(this);
     }
-
-
 }

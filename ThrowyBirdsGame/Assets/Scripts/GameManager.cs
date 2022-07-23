@@ -1,7 +1,6 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -13,23 +12,15 @@ using UnityEngine.SceneManagement;
 /// <summary>
 /// 
 /// </summary>
-public class GameManager : GenericSingleton<GameManager> 
+public class GameManager : GenericSingleton<GameManager>
 {
-    public GameState CurrentState;
-    private Level _currentLevel;
+    [FormerlySerializedAs("CurrentState")] public GameState currentState;
+    private Level currentLevel;
 
-    private int _birdsDestroyed;
-    private int _enemiesKilled;
+    private int birdsDestroyed;
+    private int enemiesKilled;
 
-    private bool _levelComplete = false;
-
-    /// <summary>
-    /// Start is called before the first frame update
-    /// </summary>
-    void Start()
-    {
-        //Reset();
-    }
+    private bool levelComplete;
 
     /// <summary>
     /// 
@@ -37,8 +28,8 @@ public class GameManager : GenericSingleton<GameManager>
     /// <param name="level"></param>
     public void OnLevelStart(Level level)
     {
-        _currentLevel = level;
-       
+        currentLevel = level;
+
         Reset();
     }
 
@@ -47,9 +38,9 @@ public class GameManager : GenericSingleton<GameManager>
     /// </summary>
     private void Reset()
     {
-        _birdsDestroyed = 0;
-        _enemiesKilled = 0;
-        _levelComplete = false;
+        birdsDestroyed = 0;
+        enemiesKilled = 0;
+        levelComplete = false;
         StartCoroutine(GameLoop());
     }
 
@@ -58,7 +49,7 @@ public class GameManager : GenericSingleton<GameManager>
     /// </summary>
     public void DestroyBird()
     {
-        _birdsDestroyed++;
+        birdsDestroyed++;
     }
 
     /// <summary>
@@ -66,7 +57,7 @@ public class GameManager : GenericSingleton<GameManager>
     /// </summary>
     public void KillEnemy()
     {
-        _enemiesKilled++;
+        enemiesKilled++;
     }
 
     /// <summary>
@@ -75,10 +66,10 @@ public class GameManager : GenericSingleton<GameManager>
     /// <returns></returns>
     IEnumerator GameLoop()
     {
-        CurrentState = GameState.InGame;
+        currentState = GameState.InGame;
 
         yield return GameRoutine();
-        if (!_levelComplete)
+        if (!levelComplete)
         {
             yield return LevelFailedRoutine();
         }
@@ -95,18 +86,18 @@ public class GameManager : GenericSingleton<GameManager>
     /// <returns></returns>
     IEnumerator GameRoutine()
     {
-        while (_birdsDestroyed < _currentLevel.Birds.Length && _enemiesKilled < _currentLevel.Enemies.Length)
+        while (birdsDestroyed < currentLevel.Birds.Length && enemiesKilled < currentLevel.Enemies.Length)
         {
             yield return null;
         }
 
-        if (_enemiesKilled == _currentLevel.Enemies.Length)
+        if (enemiesKilled == currentLevel.Enemies.Length)
         {
             //level complete
-            _levelComplete = true;
+            levelComplete = true;
         }
 
-        CurrentState = GameState.GameOver;
+        currentState = GameState.GameOver;
     }
 
     /// <summary>
@@ -116,7 +107,7 @@ public class GameManager : GenericSingleton<GameManager>
     IEnumerator LevelFailedRoutine()
     {
         //show gameOver UI
-        _currentLevel.UIControl.ToggleLevelFailed(true);
+        currentLevel.UIControl.ToggleLevelFailed(true);
         yield return null;
     }
 
@@ -127,7 +118,7 @@ public class GameManager : GenericSingleton<GameManager>
     IEnumerator LevelCompleteRoutine()
     {
         //show gameOver UI
-        _currentLevel.UIControl.ToggleLevelComplete(true);
+        currentLevel.UIControl.ToggleLevelComplete(true);
         yield return null;
     }
 
@@ -144,7 +135,7 @@ public class GameManager : GenericSingleton<GameManager>
     /// </summary>
     public void LoadNextScene()
     {
-        LoadScene(SceneManager.GetActiveScene().buildIndex+1);
+        LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
     }
 
     /// <summary>

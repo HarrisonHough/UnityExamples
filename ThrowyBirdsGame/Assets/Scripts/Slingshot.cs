@@ -1,7 +1,7 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
 using DG.Tweening;
+using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -13,48 +13,47 @@ using DG.Tweening;
 public class Slingshot : MonoBehaviour
 {
     //store reference to currently "loaded" bird
-    [SerializeField]
-    private Bird _birdToThrow;
-    public Bird BirdToThrow { get { return _birdToThrow; } }
+    [FormerlySerializedAs("_birdToThrow"), SerializeField]
+    private Bird birdToThrow;
+    public Bird BirdToThrow => birdToThrow;
 
     //reference to slingshot launch point
-    [SerializeField]
-    private Transform _launchPoint;
+    [FormerlySerializedAs("_launchPoint"), SerializeField]
+    private Transform launchPoint;
 
     //adjustable throw force
-    [SerializeField]
-    private float _throwForce = 6f;
-    private SlingshotState _state;
+    [FormerlySerializedAs("_throwForce"), SerializeField]
+    private float throwForce = 6f;
+    private SlingshotState state;
 
 
-    [SerializeField]
-    private float _dragThreshold = 1.5f;
+    [FormerlySerializedAs("_dragThreshold"), SerializeField]
+    private float dragThreshold = 1.5f;
 
     //used to keep track of current bird in bird array
-    private int _birdArrayIndex = 0;
+    private int birdArrayIndex;
 
-    [SerializeField]
-    private Level _level;
+    [FormerlySerializedAs("_level"), SerializeField]
+    private Level level;
 
     //time it takes for next bird to be loaded into slingshot
     [SerializeField]
     private float reloadTime = 2f;
 
-    [SerializeField]
-    private GameObject[] trailrenderers;
-    private int currentTrail = 0;
-    
-    // Start is called before the first frame update
-    void Start()
+    [FormerlySerializedAs("trailrenderers"), SerializeField]
+    private GameObject[] trailRenderers;
+    private int currentTrail;
+
+    private void Start()
     {
-        if (_level == null)
+        if (level == null)
         {
-            _level = FindObjectOfType<Level>();
+            level = FindObjectOfType<Level>();
         }
-        _state = SlingshotState.Idle;
-        
+        state = SlingshotState.Idle;
+
         //TODO possibly move somewhere better
-        _birdToThrow = _level.Birds[_birdArrayIndex];
+        birdToThrow = level.Birds[birdArrayIndex];
     }
 
     /// <summary>
@@ -62,9 +61,8 @@ public class Slingshot : MonoBehaviour
     /// </summary>
     public void OnMouseDown()
     {
-        //must be in idle state
-        if (_state == SlingshotState.Idle)
-            _state = SlingshotState.UserPulling;
+        if (state == SlingshotState.Idle)
+            state = SlingshotState.UserPulling;
     }
 
     /// <summary>
@@ -74,7 +72,7 @@ public class Slingshot : MonoBehaviour
     /// <param name="mousePosition">Takes in mouse position to calculate pullback</param>
     public void OnMouseHold(Vector3 mousePosition)
     {
-        if(_state == SlingshotState.UserPulling)
+        if (state == SlingshotState.UserPulling)
             PullBack(mousePosition);
     }
 
@@ -85,23 +83,22 @@ public class Slingshot : MonoBehaviour
     /// <param name="mousePosition"></param>
     public void OnMouseRelease(Vector3 mousePosition)
     {
-        if (_state != SlingshotState.UserPulling)
+        if (state != SlingshotState.UserPulling)
             return;
-        float distance = Vector3.Distance(_launchPoint.position, _birdToThrow.transform.position);
-        if (distance > _dragThreshold)
+        var distance = Vector3.Distance(launchPoint.position, birdToThrow.transform.position);
+        if (distance > dragThreshold)
         {
             ThrowBird(distance);
-            _state = SlingshotState.BirdFlying;
+            state = SlingshotState.BirdFlying;
             GetNextBird();
         }
         else
         {
             //cancel throw
             //TODO Move Back to position
-            _birdToThrow.transform.position = _launchPoint.position;
-            _state = SlingshotState.Idle;
+            birdToThrow.transform.position = launchPoint.position;
+            state = SlingshotState.Idle;
         }
-        
     }
 
     /// <summary>
@@ -112,46 +109,42 @@ public class Slingshot : MonoBehaviour
     public void ThrowBird(float distance)
     {
         //calculate velocity
-        Vector3 velocity = _launchPoint.position - _birdToThrow.transform.position;
+        Vector3 velocity = launchPoint.position - birdToThrow.transform.position;
         //apply multipliers
-        Vector2 throwVelocity = new Vector2(velocity.x, velocity.y) * _throwForce * distance;
+        Vector2 throwVelocity = new Vector2(velocity.x, velocity.y) * throwForce * distance;
 
         //clear all trails on through
         HideAllTrails();
-        _birdToThrow.OnThrow(throwVelocity,trailrenderers[currentTrail]);
+        birdToThrow.OnThrow(throwVelocity, trailRenderers[currentTrail]);
 
         currentTrail++;
-        if (currentTrail >= trailrenderers.Length)
+        if (currentTrail >= trailRenderers.Length)
         {
             currentTrail = 0;
         }
-
-        //if (birdThrown != null)
-            //birdThrown();
     }
 
     private void HideAllTrails()
     {
-        for (int i = 0; i < trailrenderers.Length; i++)
+        foreach (GameObject trailRenderer in trailRenderers)
         {
-            trailrenderers[i].GetComponent<TrailRenderer>().Clear();
+            trailRenderer.GetComponent<TrailRenderer>().Clear();
         }
     }
-
 
     public void PullBack(Vector3 mousePosition)
     {
         Vector3 position = mousePosition;
         position.z = 0;
 
-        if (Vector3.Distance(position, _launchPoint.position) > 1.5f)
+        if (Vector3.Distance(position, launchPoint.position) > 1.5f)
         {
-            Vector3 maxPosition = (position - _launchPoint.position).normalized * 1.5f + _launchPoint.position;
-            _birdToThrow.transform.position = maxPosition;
+            Vector3 maxPosition = (position - launchPoint.position).normalized * 1.5f + launchPoint.position;
+            birdToThrow.transform.position = maxPosition;
         }
         else
         {
-            _birdToThrow.transform.position = position;
+            birdToThrow.transform.position = position;
         }
     }
 
@@ -160,17 +153,17 @@ public class Slingshot : MonoBehaviour
     /// </summary>
     private void GetNextBird()
     {
-        _birdArrayIndex++;
+        birdArrayIndex++;
         //check if within array range
-        if (_birdArrayIndex >= _level.Birds.Length)
+        if (birdArrayIndex >= level.Birds.Length)
         {
             //no more birds
             //game over (wait for score)
             return;
         }
         //assign next bird
-        _birdToThrow = _level.Birds[_birdArrayIndex];
-        _state = SlingshotState.Reloading;
+        birdToThrow = level.Birds[birdArrayIndex];
+        state = SlingshotState.Reloading;
 
         //start reload process
         StartCoroutine(ReloadRoutine());
@@ -180,19 +173,19 @@ public class Slingshot : MonoBehaviour
     /// Coroutine the moves next bird into slingshot launch position
     /// </summary>
     /// <returns></returns>
-    IEnumerator ReloadRoutine()
+    private IEnumerator ReloadRoutine()
     {
         //move using DoTween move
         //TOOD fix below
-        _birdToThrow.transform.DOMove(_launchPoint.transform.position, reloadTime);
+        birdToThrow.transform.DOMove(launchPoint.transform.position, reloadTime);
         //calculate time to wait
-        float timeToWait = Time.time + reloadTime;
+        var timeToWait = Time.time + reloadTime;
         //wait until time passed
         while (timeToWait > Time.time)
         {
             yield return null;
         }
         //now ready to throw again
-        _state = SlingshotState.Idle;
+        state = SlingshotState.Idle;
     }
 }

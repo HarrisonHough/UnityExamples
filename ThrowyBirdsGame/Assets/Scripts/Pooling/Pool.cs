@@ -1,6 +1,6 @@
-﻿using System.Collections;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -12,19 +12,21 @@ using UnityEngine;
 /// <summary>
 /// 
 /// </summary>
-public class Pool : MonoBehaviour {
-    [SerializeField]
-    private GameObject _prefabToPool;
-    [SerializeField]
-    private int _poolSize = 50;
+public class Pool : MonoBehaviour
+{
 
-    private Queue<GameObject> _objectsQueue = new Queue<GameObject>();
-    private List<GameObject> _objectPool = new List<GameObject>();
+    [FormerlySerializedAs("_prefabToPool"), SerializeField]
+    private GameObject prefabToPool;
+    [FormerlySerializedAs("_poolSize"), SerializeField]
+    private int poolSize = 50;
+
+    private readonly Queue<GameObject> objectsQueue = new Queue<GameObject>();
+    private readonly List<GameObject> objectPool = new List<GameObject>();
 
     /// <summary>
     /// Use this for initialization
     /// </summary>
-    void Awake()
+    private void Awake()
     {
         GrowPool();
     }
@@ -35,12 +37,12 @@ public class Pool : MonoBehaviour {
     /// <returns></returns>
     public GameObject GetObject()
     {
-        if (_objectsQueue.Count == 0)
+        if (objectsQueue.Count == 0)
         {
             GrowPool();
         }
 
-        var pooledObject = _objectsQueue.Dequeue();
+        GameObject pooledObject = objectsQueue.Dequeue();
 
         return pooledObject;
     }
@@ -50,20 +52,19 @@ public class Pool : MonoBehaviour {
     /// </summary>
     private void GrowPool()
     {
-        int lastPoolSize = _objectPool.Count;
-        for (int i = 0; i < _poolSize; i++)
+        var lastPoolSize = objectPool.Count;
+        for (int i = 0; i < poolSize; i++)
         {
-            var pooledObject = Instantiate(_prefabToPool);
-            pooledObject.name += " " + (i + lastPoolSize );
+            GameObject pooledObject = Instantiate(prefabToPool);
+            pooledObject.name += " " + (i + lastPoolSize);
             pooledObject.transform.parent = transform;
             pooledObject.AddComponent<PoolMember>();
 
             //TODO maybe set on disable event
             pooledObject.GetComponent<PoolMember>().OnDestroyEvent += () => AddObjectToAvailable(pooledObject);
 
-
             //add to pool
-            _objectPool.Add(pooledObject);
+            objectPool.Add(pooledObject);
 
             pooledObject.SetActive(false);
         }
@@ -75,13 +76,11 @@ public class Pool : MonoBehaviour {
     /// <param name="pooledObject"></param>
     private void AddObjectToAvailable(GameObject pooledObject)
     {
-        _objectsQueue.Enqueue(pooledObject);
+        objectsQueue.Enqueue(pooledObject);
     }
 
     public void DisableAfterDelay(GameObject objectToDisable, float delay)
     {
 
     }
-
-    
 }

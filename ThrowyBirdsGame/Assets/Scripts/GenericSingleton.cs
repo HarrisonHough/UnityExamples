@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -15,10 +14,9 @@ using UnityEngine;
 /// <typeparam name="T"></typeparam>
 public class GenericSingleton<T> : MonoBehaviour where T : Component
 {
-        
-    private static T _instance;
-    [SerializeField]
-    private bool _destroyOnLoad = false;
+    private static T instance;
+    [FormerlySerializedAs("_destroyOnLoad"), SerializeField]
+    private bool destroyOnLoad = false;
 
     //publicly accessible reference to the instance
     public static T Instance
@@ -26,20 +24,20 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component
         get
         {
             //check if an instance already exists
-            if (_instance == null)
+            if (instance == null)
             {
                 //if not create new instance
-                _instance = FindObjectOfType<T>();
-                if (_instance == null)
+                instance = FindObjectOfType<T>();
+                if (instance == null)
                 {
                     GameObject obj = new GameObject();
                     obj.name = typeof(T).Name;
-                    _instance = obj.AddComponent<T>();
+                    instance = obj.AddComponent<T>();
                 }
-                
+
             }
             //if instance exists return instance
-            return _instance;
+            return instance;
         }
     }
 
@@ -48,18 +46,17 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component
     /// </summary>
     public virtual void Awake()
     {
-        if (_instance == null)
+        if (instance == null)
         {
-            _instance = this as T;
-            if (!_destroyOnLoad)
+            instance = this as T;
+            if (!destroyOnLoad)
             {
-                DontDestroyOnLoad(this.gameObject);
+                DontDestroyOnLoad(gameObject);
             }
         }
-        else if(_instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
     }
 }
-

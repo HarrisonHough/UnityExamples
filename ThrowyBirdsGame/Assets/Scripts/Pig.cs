@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,9 +7,9 @@ using UnityEngine;
 * SCRIPT: Pig Class
 */
 
-    /// <summary>
-    /// 
-    /// </summary>
+/// <summary>
+/// 
+/// </summary>
 public class Pig : MonoBehaviour
 {
 
@@ -20,7 +18,7 @@ public class Pig : MonoBehaviour
     /// </summary>
     void Start()
     {
-        
+
     }
 
 }

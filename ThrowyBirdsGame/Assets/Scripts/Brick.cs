@@ -1,6 +1,5 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
+using UnityEngine.Serialization;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -14,18 +13,10 @@ using UnityEngine;
 /// </summary>
 public class Brick : MonoBehaviour
 {
-    [SerializeField]
-    private float _health = 70f;
+    [FormerlySerializedAs("_health"), SerializeField]
+    private float health = 70f;
 
-    private float _damageMultiplier = 10f;
-
-    /// <summary>
-    /// Start is called before the first frame update
-    /// </summary>
-    void Start()
-    {
-        
-    }
+    private const float DAMAGE_MULTIPLIER = 10f;
 
     /// <summary>
     /// 
@@ -45,7 +36,7 @@ public class Brick : MonoBehaviour
     /// <param name="target"></param>
     private void HandleCollision(GameObject target)
     {
-        float damage = target.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * _damageMultiplier;
+        var damage = target.gameObject.GetComponent<Rigidbody2D>().velocity.magnitude * DAMAGE_MULTIPLIER;
 
         //check for high damage
         if (damage > 20)
@@ -55,15 +46,13 @@ public class Brick : MonoBehaviour
         }
 
         //decrease health
-        _health -= damage;
+        health -= damage;
 
         //check health
-        if (_health <= 0)
+        if (health <= 0)
         {
             //TODO possibly change
             gameObject.SetActive(false);
         }
-            
     }
-
 }

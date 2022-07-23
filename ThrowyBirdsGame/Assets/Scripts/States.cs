@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿
 
 
 /*
@@ -10,34 +8,24 @@ using UnityEngine;
 * SCRIPT: States Class
 */
 
-    /// <summary>
-    /// 
-    /// </summary>
 public enum SlingshotState
-    {
-        Idle,
-        UserPulling,
-        BirdFlying,
-        Reloading
-    }
+{
+    Idle,
+    UserPulling,
+    BirdFlying,
+    Reloading
+}
 
-/// <summary>
-/// 
-/// </summary>
-    public enum GameState
-    {
-        InMenu,
-        InGame,
-        GameOver
-    }
+public enum GameState
+{
+    InMenu,
+    InGame,
+    GameOver
+}
 
-/// <summary>
-/// 
-/// </summary>
-    public enum BirdState
-    {
-        Idle,
-        Ready,
-        Thrown
-    }
-
+public enum BirdState
+{
+    Idle,
+    Ready,
+    Thrown
+}
