@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -9,7 +7,7 @@ using UnityEngine;
 * SCRIPT: Goal Control Class 
 */
 
-public class GoalControl : MonoBehaviour 
+public class GoalControl : MonoBehaviour
 {
 
     [SerializeField]
@@ -17,8 +15,9 @@ public class GoalControl : MonoBehaviour
 
     private int positionIndex;
     private GoalTrigger goalTrigger;
-    
-	void Start () {
+
+    void Start()
+    {
         if (positions.Length < 1)
         {
             enabled = false;
@@ -28,7 +27,7 @@ public class GoalControl : MonoBehaviour
         CheckPositions();
         SetInitialPosition();
 
-	}
+    }
 
     void SetInitialPosition()
     {

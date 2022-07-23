@@ -1,5 +1,4 @@
-﻿using System;
-using UnityEngine.Events;
+﻿using UnityEngine.Events;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -8,14 +7,15 @@ using UnityEngine.Events;
 * SCRIPT: Game Manager Class 
 */
 
-public class GameManager : GenericSingleton<GameManager> 
+public class GameManager : GenericSingleton<GameManager>
 {
-    
+
     private UIControl uiControl;
     private int score = 0;
     public static UnityAction<int> OnScoreUpdated;
-    
-	public override void Awake () {
+
+    public override void Awake()
+    {
         base.Awake();
     }
 

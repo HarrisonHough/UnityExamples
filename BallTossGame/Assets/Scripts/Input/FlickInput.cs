@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class FlickInput : TouchInput
@@ -17,7 +15,7 @@ public class FlickInput : TouchInput
         HandleTouches();
 #endif
     }
-    
+
     private void HandleMouseInput()
     {
         if (Input.GetMouseButtonDown(MouseButtonIndex))
@@ -29,7 +27,7 @@ public class FlickInput : TouchInput
             lastTouchDuration = Time.time - touchStartTime;
             var delta = Input.mousePosition - lastFramePosition;
             Debug.Log($"Delta = {delta}");
-            TouchRelease(Input.mousePosition,  delta);
+            TouchRelease(Input.mousePosition, delta);
         }
 
         if (Input.GetMouseButton(MouseButtonIndex))
@@ -38,7 +36,7 @@ public class FlickInput : TouchInput
         }
         lastFramePosition = Input.mousePosition;
     }
-    
+
     protected override void HandleTouches()
     {
         var touches = Input.touches;
@@ -67,20 +65,20 @@ public class FlickInput : TouchInput
     protected override void TouchRelease(Vector3 touchPosition, Vector3 deltaPosition)
     {
         base.TouchRelease(touchPosition, deltaPosition);
-        var distanceY = (endPoint.y- startPoint.y) / Screen.height;
-        
+        var distanceY = (endPoint.y - startPoint.y) / Screen.height;
+
         var speedY = distanceY / lastTouchDuration;
-        
-        var distanceX = (endPoint.x - startPoint.x) / Screen.width ;
+
+        var distanceX = (endPoint.x - startPoint.x) / Screen.width;
 
         var speedX = Mathf.Abs(distanceX / lastTouchDuration);
-        
+
         Debug.Log($"speedY = {speedY} distanceY = {distanceY}");
         Debug.Log($"lastTouchDuration = {lastTouchDuration}");
         Debug.Log($"speedX = {speedY} distanceX = {distanceX}");
         ballIsGrabbed = false;
         var dragVector = CalculateDragVector();
-        dragVector.x = dragVector.x.Remap(0, Screen.width, 0,1) * (1 + speedX);
+        dragVector.x = dragVector.x.Remap(0, Screen.width, 0, 1) * (1 + speedX);
         dragVector.y = dragVector.y.Remap(0, Screen.height, 0, 1) * (1 + speedY);
         //dragVector.y += speedY;
         if (activeBall != null && Vector3.Distance(startPoint, endPoint) > minimumSwipeDistance)

@@ -8,16 +8,16 @@ using UnityEngine;
 * SCRIPT: Ball Recycle Class 
 */
 
-public class BallRecycle : MonoBehaviour 
+public class BallRecycle : MonoBehaviour
 {
     public float recycleTime = 3f;
     private Ball ball;
-    
-    
-	private void Awake () 
+
+
+    private void Awake()
     {
         ball = GetComponent<Ball>();
-	}
+    }
 
     public void StartRecycle()
     {

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using Random = UnityEngine.Random;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -8,11 +7,11 @@ using Random = UnityEngine.Random;
 * SCRIPT: WindZone Class 
 */
 
-public static class Wind 
+public static class Wind
 {
     private static readonly float minSpeed = 0f;
     private static readonly float maxSpeed = 2f;
-    
+
     private static readonly Vector3 windDirection = Vector3.right;
     private static float windSpeed = 0;
 
@@ -22,7 +21,7 @@ public static class Wind
         get => windSpeed;
         set => windSpeed = value;
     }
-    
+
     public static bool windActive = false;
 
     public static string GetReadableWindSpeed()
@@ -33,7 +32,7 @@ public static class Wind
 
     public static void RandomWindStrength(bool randomDirection)
     {
-        windSpeed = Random.Range(minSpeed,maxSpeed);
+        windSpeed = Random.Range(minSpeed, maxSpeed);
 
         if (randomDirection && Random.Range(0, 2) < 1)
         {

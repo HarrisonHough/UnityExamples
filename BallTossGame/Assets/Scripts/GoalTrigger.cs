@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 
@@ -19,7 +18,7 @@ public class GoalTrigger : MonoBehaviour
     {
         CheckBallCollision(other, true);
     }
-    
+
     private void HandleBallEnter(Ball ball)
     {
         if (!overlapBallList.Contains(ball))
@@ -28,18 +27,18 @@ public class GoalTrigger : MonoBehaviour
             OnGoalTrigger?.Invoke();
         }
     }
-    
+
     private void OnTriggerExit(Collider other)
-    {        
+    {
         CheckBallCollision(other, false);
     }
 
     private void CheckBallCollision(Collider collider, bool isEntering)
     {
         var ball = collider.gameObject.GetComponent<Ball>();
-        if (ball == null) 
+        if (ball == null)
             return;
-        
+
         if (isEntering)
         {
             HandleBallEnter(ball);

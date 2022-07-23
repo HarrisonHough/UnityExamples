@@ -9,11 +9,11 @@
 
 public class GenericSingleton<T> : MonoBehaviour where T : Component
 {
-        
+
     private static T instance;
     [SerializeField]
     private bool destroyOnLoad;
-    
+
     public static T Instance
     {
         get
@@ -43,7 +43,7 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component
         {
             SetInstance();
         }
-        else if(instance != this)
+        else if (instance != this)
         {
             Destroy(gameObject);
         }
@@ -58,4 +58,3 @@ public class GenericSingleton<T> : MonoBehaviour where T : Component
         }
     }
 }
-

@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class TouchInput : MonoBehaviour
@@ -14,8 +12,7 @@ public class TouchInput : MonoBehaviour
     public static Action<float, Vector3> OnTouchRelease;
     public static Action<Vector3> OnTouchStart;
 
-    
-    
+
     protected virtual void Update()
     {
         HandleTouches();

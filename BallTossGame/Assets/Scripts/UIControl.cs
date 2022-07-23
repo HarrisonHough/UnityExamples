@@ -1,7 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-using UnityEngine.Serialization;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 /*
@@ -11,7 +8,7 @@ using UnityEngine.UI;
 * SCRIPT: UI Control Class 
 */
 
-public class UIControl : MonoBehaviour 
+public class UIControl : MonoBehaviour
 {
     [SerializeField]
     private Slider windSlider;
@@ -23,7 +20,7 @@ public class UIControl : MonoBehaviour
     private Image windArrow;
 
     private const string ScorePrefix = "Score\n";
-    void Start () 
+    void Start()
     {
         Wind.RandomWindStrength(true);
         UpdateWindPanel();
@@ -38,18 +35,18 @@ public class UIControl : MonoBehaviour
 
     public void UpdateWindSlider()
     {
-        windSlider.value = Mathf.Abs( Wind.WindSpeed);
+        windSlider.value = Mathf.Abs(Wind.WindSpeed);
     }
 
     private void UpdateWindPanel()
     {
-        windArrow.transform.rotation = Wind.WindSpeed < 0 ? Quaternion.Euler(0,180,0) : Quaternion.Euler(0,0,0);
+        windArrow.transform.rotation = Wind.WindSpeed < 0 ? Quaternion.Euler(0, 180, 0) : Quaternion.Euler(0, 0, 0);
         windText.text = Wind.GetReadableWindSpeed();
     }
 
     public void UpdateScore(int score)
     {
-        scoreText.text = ScorePrefix + score; 
+        scoreText.text = ScorePrefix + score;
         Wind.RandomWindStrength(true);
         UpdateWindPanel();
     }
