@@ -2,91 +2,66 @@
 
 namespace Blockbreaker
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class Ball : MonoBehaviour
     {
+        private const string PLAYER_TAG = "Player";
+        private const string BREAKABLE_TAG = "Breakable";
         [SerializeField]
-        private float _constantSpeed = 10f;
+        private float constantSpeed = 10f;
 
-        private Vector3 _lastFrameVelocity;
-        private Rigidbody2D _rigidbody2D;
+        private Vector3 lastFrameVelocity;
+        private Rigidbody2D ballRigidbody;
 
-        private Player _player;
-        private Vector3 _playerOffset;
+        private Player player;
+        private Vector3 playerOffset;
 
-        private bool _active = false;
-
-        /// <summary>
-        /// 
-        /// </summary>
+        private bool active;
+        
         private void Start()
         {
-            _rigidbody2D = GetComponent<Rigidbody2D>();
+            ballRigidbody = GetComponent<Rigidbody2D>();
 
-            _player = FindObjectOfType<Player>();
-            _playerOffset = transform.position - _player.transform.position;
+            player = FindObjectOfType<Player>();
+            playerOffset = transform.position - player.transform.position;
             ResetBall();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void StartBallMovement()
         {
             transform.parent = null;
-            _rigidbody2D.velocity = new Vector3(_constantSpeed, _constantSpeed, 0);
-            _active = true;
+            ballRigidbody.velocity = new Vector3(constantSpeed, constantSpeed, 0);
+            active = true;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         private void Update()
         {
-            _lastFrameVelocity = _rigidbody2D.velocity;
+            lastFrameVelocity = ballRigidbody.velocity;
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="collision"></param>
+        
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            if (!_active)
+            if (!active)
                 return;
 
-            
+
             Bounce(collision.contacts[0].normal);
-            if (collision.gameObject.tag == "Player")
+            if (collision.gameObject.CompareTag(PLAYER_TAG))
             {
-                //set multiplier to 0
                 GameManager.Instance.ResetScoreMultiplier();
-                
             }
-            else if (collision.gameObject.tag == "Breakable")
+            else if (collision.gameObject.CompareTag(BREAKABLE_TAG))
             {
-                //add to multiplier
                 GameManager.Instance.IncreaseScoreMultiplier();
             }
-
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="collisionNormal"></param>
+        
         private void Bounce(Vector3 collisionNormal)
         {
-            
-            var direction = Vector3.Reflect(_lastFrameVelocity.normalized, collisionNormal);
+            var direction = Vector3.Reflect(lastFrameVelocity.normalized, collisionNormal);
 
-
-            //Debug.Log("Out Direction: " + direction);
             Vector3 velocity = Vector3.zero;
-            velocity.x = _constantSpeed;
-            velocity.y = _constantSpeed;
+            velocity.x = constantSpeed;
+            velocity.y = constantSpeed;
             if (direction.x < 0)
             {
                 velocity.x *= -1;
@@ -95,21 +70,16 @@ namespace Blockbreaker
             {
                 velocity.y *= -1;
             }
-            _rigidbody2D.velocity = velocity;
+            ballRigidbody.velocity = velocity;
             //rb.velocity = direction * Mathf.Max(speed, minVelocity);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void ResetBall()
         {
-            _active = false;
-            _rigidbody2D.velocity = Vector3.zero;
-            transform.position = _player.transform.position + _playerOffset;
-            transform.parent = _player.transform;
+            active = false;
+            ballRigidbody.velocity = Vector3.zero;
+            transform.position = player.transform.position + playerOffset;
+            transform.parent = player.transform;
         }
     }
-
-    
 }

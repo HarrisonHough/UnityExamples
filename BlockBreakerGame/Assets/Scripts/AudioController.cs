@@ -1,44 +1,32 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Blockbreaker
 {
-    /// <summary>
-    /// 
-    /// </summary>
+
     public class AudioController : GenericSingleton<AudioController>
     {
+        [SerializeField]
+        private AudioSource musicAudio;
+        [SerializeField]
+        private AudioSource sfxAudio;
         
-        [SerializeField]
-        private AudioSource _musicAudio;
-        [SerializeField]
-        private AudioSource _sfxAudio;
-
-        /// <summary>
-        /// Use this for initialization
-        /// </summary>
-        void Start()
+        private void Start()
         {
-            
-            if (_musicAudio == null)
+            if (musicAudio == null)
             {
-                _musicAudio = transform.GetChild(0).GetComponent<AudioSource>();
+                musicAudio = transform.GetChild(0).GetComponent<AudioSource>();
             }
-            if (_sfxAudio == null)
+            if (sfxAudio == null)
             {
-                _sfxAudio = transform.GetChild(1).GetComponent<AudioSource>();
+                sfxAudio = transform.GetChild(1).GetComponent<AudioSource>();
             }
 
             PlayMusic();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void PlayMusic()
+        
+        private void PlayMusic()
         {
-            _musicAudio.Play();
+            musicAudio.Play();
         }
 
     }

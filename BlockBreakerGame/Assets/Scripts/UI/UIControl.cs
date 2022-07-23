@@ -1,90 +1,79 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
 namespace Blockbreaker
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class UIControl : MonoBehaviour
     {
         [SerializeField]
-        private Text _startText;
+        private Text startText;
 
         [SerializeField]
-        private GameObject _startMenuPanel;
+        private GameObject startMenuPanel;
         [SerializeField]
-        private GameObject _tapToStartPanel;
+        private GameObject tapToStartPanel;
         [SerializeField]
-        private GameObject _autoplayPanel;
+        private GameObject autoplayPanel;
         [SerializeField]
-        private GameObject _gameOverPanel;
+        private GameObject gameOverPanel;
         [SerializeField]
-        private GameObject _winPanel;
+        private GameObject winPanel;
 
         [SerializeField]
-        private GameObject _scorePanel;
+        private GameObject scorePanel;
         [SerializeField]
-        private Text _scoreText;
+        private Text scoreText;
         [SerializeField]
-        private Text _multiplierText;
-
-        // Use this for initialization
-        void Start()
-        {
-
-        }
+        private Text multiplierText;
 
         public void HideStartText()
         {
-            _startText.enabled = false;
+            startText.enabled = false;
         }
 
         public void EnableStartText()
         {
-            _startText.enabled = true;
+            startText.enabled = true;
         }
 
-        public void ToggleTapToStartPanel(bool enabled)
+        public void ToggleTapToStartPanel(bool panelEnabled)
         {
-            _tapToStartPanel.SetActive(enabled);
+            tapToStartPanel.SetActive(panelEnabled);
         }
 
-        public void ToggleStartMenuPanel(bool enabled)
+        public void ToggleStartMenuPanel(bool panelEnabled)
         {
-            _startMenuPanel.SetActive(enabled);
+            startMenuPanel.SetActive(panelEnabled);
         }
 
-        public void ToggleGameOverPanel(bool enabled)
+        public void ToggleGameOverPanel(bool panelEnabled)
         {
-            _gameOverPanel.SetActive(enabled);
+            gameOverPanel.SetActive(panelEnabled);
         }
 
-        public void ToggleWinPanel(bool enabled)
+        public void ToggleWinPanel(bool panelEnabled)
         {
-            _winPanel.SetActive(enabled);
+            winPanel.SetActive(panelEnabled);
         }
 
-        public void ToggleAutoPlayPanel(bool enabled)
+        public void ToggleAutoPlayPanel(bool panelEnabled)
         {
-            _autoplayPanel.SetActive(true);
+            autoplayPanel.SetActive(panelEnabled);
         }
 
-        public void ToggleScorePanel(bool enabled)
+        public void ToggleScorePanel(bool panelEnabled)
         {
-            _scorePanel.SetActive(true);
+            scorePanel.SetActive(panelEnabled);
         }
 
         public void SetScoreText(int score)
         {
-            _scoreText.text = "" + score;
+            scoreText.text = "" + score;
         }
 
         public void SetMultiplierText(int score)
         {
-            _multiplierText.text = "x" + score;
+            multiplierText.text = "x" + score;
         }
     }
 }

@@ -1,29 +1,25 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
-public class ScreenOrientation : MonoBehaviour {
-
+public class ScreenOrientation : MonoBehaviour
+{
     public enum Orientation { Portrait, LandscapeLeft, LandscapeRight, Landscape }
     public Orientation screenOrientation;
 
     private PlaySpace playSpace;
 
-	// Use this for initialization
-	void Start () {
+    void Start()
+    {
         playSpace = FindObjectOfType<PlaySpace>();
-
         SetOrientation();
-	}
+    }
 
     void SetOrientation()
     {
-
         switch (screenOrientation)
         {
             case Orientation.Portrait:
                 Screen.orientation = UnityEngine.ScreenOrientation.Portrait;
-                if(UIDebugControl.Instance != null)
+                if (UIDebugControl.Instance != null)
                     UIDebugControl.Instance.AddDebugText("Setting to portrait mode");
                 if (Screen.width > Screen.height)
                 {
@@ -36,7 +32,7 @@ public class ScreenOrientation : MonoBehaviour {
                 Screen.orientation = UnityEngine.ScreenOrientation.LandscapeLeft;
                 if (Screen.width < Screen.height)
                 {
-                    SetResolution();   
+                    SetResolution();
                 }
                 break;
             case Orientation.LandscapeRight:
@@ -53,17 +49,14 @@ public class ScreenOrientation : MonoBehaviour {
 
         }
 
-        if (playSpace != null)
-            playSpace.SetupPlaySpace();
+        if (playSpace == null) return;
+        playSpace.SetupPlaySpace();
     }
 
     void SetResolution()
     {
-        int width = Screen.width;
-        int height = Screen.height;
+        var width = Screen.width;
+        var height = Screen.height;
         Screen.SetResolution(height, width, false);
-        Debug.Log("Setting resolution");
     }
-	
-
 }

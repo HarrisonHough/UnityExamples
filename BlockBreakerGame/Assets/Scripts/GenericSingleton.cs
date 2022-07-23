@@ -1,22 +1,11 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
-
+﻿using UnityEngine;
 
 namespace Blockbreaker
 {
-    /// <summary>
-    /// 
-    /// </summary>
-    /// <typeparam name="T"></typeparam>
     public class GenericSingleton<T> : MonoBehaviour where T : Component
     {
-
         private static T instance;
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public static T Instance
         {
             get
@@ -26,7 +15,7 @@ namespace Blockbreaker
                     instance = FindObjectOfType<T>();
                     if (instance == null)
                     {
-                        GameObject obj = new GameObject();
+                        var obj = new GameObject();
                         obj.name = typeof(T).Name;
                         instance = obj.AddComponent<T>();
                     }
@@ -34,10 +23,7 @@ namespace Blockbreaker
                 return instance;
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public virtual void Awake()
         {
             if (instance == null)

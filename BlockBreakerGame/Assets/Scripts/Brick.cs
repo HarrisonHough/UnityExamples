@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Blockbreaker
 {
@@ -11,96 +9,68 @@ namespace Blockbreaker
     {
 
         public static int BreakableCount = 0;
-        public GameObject Smoke;
+        public GameObject smoke;
 
         [SerializeField]
-        private Sprite[] _hitSprites;
-        private int _timesHit;
+        private Sprite[] hitSprites;
+        private int timesHit;
 
         [SerializeField]
-        private int _pointsForBreaking = 5;
+        private int pointsForBreaking = 5;
 
-        private SpriteRenderer _spriteRenderer;
-        private bool _isBreakable ;
+        private SpriteRenderer spriteRenderer;
+        private bool isBreakable;
 
-        /// <summary>
-        /// Use this for initialization
-        /// </summary>
-        void Start()
+        private void Start()
         {
-            _isBreakable = (this.tag == "Breakable");
-            _timesHit = 0;
-            _spriteRenderer = GetComponent<SpriteRenderer>();
+            isBreakable = CompareTag("Breakable");
+            timesHit = 0;
+            spriteRenderer = GetComponent<SpriteRenderer>();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="collision"></param>
+        
         private void OnCollisionEnter2D(Collision2D collision)
         {
-            
-            if (_isBreakable)
+            if (isBreakable)
             {
                 HandleHits();
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void HandleHits() {
-            _timesHit++;
-            int maxHits = _hitSprites.Length + 1;
-            if (_timesHit >= maxHits)
+        
+        private void HandleHits()
+        {
+            timesHit++;
+            int maxHits = hitSprites.Length + 1;
+            if (timesHit >= maxHits)
             {
-                //add score value
-                GameManager.Instance.AddToScore(_pointsForBreaking);
-
-                //kill block
+                GameManager.Instance.AddToScore(pointsForBreaking);
                 KillBlock();
-
             }
             else
             {
                 LoadSprites();
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        private void LoadSprites() {
-            int index = _timesHit - 1;
-            _spriteRenderer.sprite = _hitSprites[index];
+        
+        private void LoadSprites()
+        {
+            int index = timesHit - 1;
+            spriteRenderer.sprite = hitSprites[index];
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         private void KillBlock()
         {
-
             SpawnParticles();
-            //hide and disable block collisions
             GetComponent<BoxCollider2D>().enabled = false;
             GetComponent<SpriteRenderer>().enabled = false;
 
-            //Debug.Log("Count before subtraction" + breakableCount);
             BreakableCount--;
-            //Debug.Log(breakableCount);
-            
+
             GameManager.Instance.BrickDestroyed();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         private void SpawnParticles()
         {
-            //Instantiate(smoke, transform.position, Quaternion.identity);
             GameManager.Instance.ParticleControl.SpawnSmokeParticles(transform.position);
         }
-
     }
 }

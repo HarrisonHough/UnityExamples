@@ -1,78 +1,62 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Blockbreaker
 {
-    /// <summary>
-    /// 
-    /// </summary>
     public class GameManager : GenericSingleton<GameManager>
     {
         [SerializeField]
-        private LevelManager _levelManager;
+        private LevelManager levelManager;
         [SerializeField]
-        private Ball _ball;
-        public Ball Ball { get { return _ball; } }
-
-        [SerializeField]
-        private ParticleControl _particleControl;
-        public ParticleControl ParticleControl { get { return _particleControl; } }
+        private Ball ball;
+        public Ball Ball => ball;
 
         [SerializeField]
-        private UIControl _uiControl;
-        public UIControl UIControl { get { return _uiControl; } }
+        private ParticleControl particleControl;
+        public ParticleControl ParticleControl => particleControl;
 
-        public bool _waitingForInput = true;
+        [SerializeField]
+        private UIControl uiControl;
+        public UIControl UIControl => uiControl;
 
-        private PlayerInput _playerInput;
+        public bool waitingForInput = true;
 
-        private int _score = 0;
-        public int Score { get{ return _score; } }
+        private PlayerInput playerInput;
 
-        private int _scoreMultiplier = 0;
+        private int score;
+        public int Score => score;
 
-        //public bool WaitingForInput { get { return waitingForInput; } }
+        private int scoreMultiplier;
 
-        /// <summary>
-        /// Use this for initialization
-        /// </summary>
-        void Start()
+        private void Start()
         {
             CheckForNullReferences();
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void CheckForNullReferences()
+        private void CheckForNullReferences()
         {
-            if (_levelManager == null)
+            if (levelManager == null)
             {
-                _levelManager = FindObjectOfType<LevelManager>();
+                levelManager = FindObjectOfType<LevelManager>();
             }
-            if (_ball == null)
+            if (ball == null)
             {
-                _ball = FindObjectOfType<Ball>();
+                ball = FindObjectOfType<Ball>();
             }
             if (ParticleControl == null)
             {
-                _particleControl = FindObjectOfType<ParticleControl>();
+                particleControl = FindObjectOfType<ParticleControl>();
             }
-            if (_uiControl == null)
+            if (uiControl == null)
             {
-                _uiControl = FindObjectOfType<UIControl>();
+                uiControl = FindObjectOfType<UIControl>();
             }
-            if (_playerInput == null)
+            if (playerInput == null)
             {
-                _playerInput = FindObjectOfType<PlayerInput>();
+                playerInput = FindObjectOfType<PlayerInput>();
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void BrickDestroyed()
         {
             if (Brick.BreakableCount <= 0)
@@ -80,106 +64,73 @@ namespace Blockbreaker
                 LevelComplete();
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="scoreToAdd"></param>
+        
         public void AddToScore(int scoreToAdd)
         {
             //TODO add in score multiplier
-            if (_scoreMultiplier > 0)
-                _score += scoreToAdd * _scoreMultiplier;
+            if (scoreMultiplier > 0)
+                score += scoreToAdd * scoreMultiplier;
             else
-                _score += scoreToAdd;
-            //update score
-            _uiControl.SetScoreText(_score);
+                score += scoreToAdd;
+            uiControl.SetScoreText(score);
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
         public void IncreaseScoreMultiplier()
         {
-            _scoreMultiplier++;
-            _uiControl.SetMultiplierText(_scoreMultiplier);
+            scoreMultiplier++;
+            uiControl.SetMultiplierText(scoreMultiplier);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void ResetScoreMultiplier()
         {
-            _scoreMultiplier = 0;
-            _uiControl.SetMultiplierText(_scoreMultiplier);
+            scoreMultiplier = 0;
+            uiControl.SetMultiplierText(scoreMultiplier);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="win"></param>
+        
         public void GameOver(bool win)
         {
-            //disable player input
-            _playerInput.enabled = false;
-            _uiControl.ToggleAutoPlayPanel(false);
+            playerInput.enabled = false;
+            uiControl.ToggleAutoPlayPanel(false);
             if (win)
             {
                 //update save score
                 //Do game over lost things
-                
-                _uiControl.ToggleWinPanel(true);
+
+                uiControl.ToggleWinPanel(true);
                 return;
             }
 
-            //update save score
-            //Display game over 
-            _uiControl.ToggleGameOverPanel(true);
-            //Do game over lost things
+            uiControl.ToggleGameOverPanel(true);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="name"></param>
+        
         public void LoadScene(string name)
         {
             Debug.Log("New Level load: " + name);
             SceneManager.LoadScene(name);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="index"></param>
+        
         public void LoadScene(int index)
         {
             SceneManager.LoadScene(index);
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void QuitRequest()
         {
             Debug.Log("Quit requested");
             Application.Quit();
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
+        
         public void LevelComplete()
         {
 
             // TODO stop ball movement
-            _ball.ResetBall();
+            ball.ResetBall();
             //show wave complete and score
 
             // wait a while then load next level
-            _levelManager.LoadNextLevel();
+            levelManager.LoadNextLevel();
 
-            _waitingForInput = true;
+            waitingForInput = true;
 
             UIControl.ToggleTapToStartPanel(true);
         }

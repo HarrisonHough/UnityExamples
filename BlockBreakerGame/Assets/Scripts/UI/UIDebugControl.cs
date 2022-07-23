@@ -1,16 +1,16 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 using UnityEngine.UI;
 
-public class UIDebugControl : MonoBehaviour {
+public class UIDebugControl : MonoBehaviour
+{
 
     public static UIDebugControl Instance;
 
     [SerializeField]
-    private Text _debugText;
-	// Use this for initialization
-	void Awake () {
+    private Text debugText;
+    
+    private void Awake()
+    {
         if (Instance != null)
         {
             Destroy(this);
@@ -20,7 +20,7 @@ public class UIDebugControl : MonoBehaviour {
         {
             Instance = this;
         }
-	}
+    }
 
     public void ClearDebugText()
     {
@@ -29,6 +29,6 @@ public class UIDebugControl : MonoBehaviour {
 
     public void AddDebugText(string textToAdd)
     {
-        _debugText.text += "\n" + textToAdd;
+        debugText.text += "\n" + textToAdd;
     }
 }

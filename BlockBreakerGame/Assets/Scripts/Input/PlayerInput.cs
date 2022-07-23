@@ -1,6 +1,4 @@
-﻿using System.Collections;
-using System.Collections.Generic;
-using UnityEngine;
+﻿using UnityEngine;
 
 namespace Blockbreaker
 {
@@ -11,42 +9,33 @@ namespace Blockbreaker
     {
         private enum InputType { MouseKeyboard, MouseJoystick, Touch, TouchJoystick };
         [SerializeField]
-        private InputType _inputType;
+        private InputType inputType;
         [SerializeField]
-        private Player _player;
+        private Player player;
+
+
+        private Vector3 startMousePos;
         
-
-        private Vector3 _startMousePos;
-
-        /// <summary>
-        /// Use this for initialization
-        /// </summary>
-        void Start()
+        private void Start()
         {
-            if (_player == null)
+            if (player == null)
             {
-                _player = FindObjectOfType<Player>();
+                player = FindObjectOfType<Player>();
             }
         }
-
-        /// <summary>
-        /// Update is called once per frame
-        /// </summary>
-        void Update()
+        
+        private void Update()
         {
-            if (_player.AutoPlayActive)
+            if (player.autoPlayActive)
                 return;
 
             InputCheck();
 
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void InputCheck()
+        
+        private void InputCheck()
         {
-            switch (_inputType)
+            switch (inputType)
             {
                 case InputType.MouseKeyboard:
                     MouseKeyboardCheck();
@@ -60,36 +49,27 @@ namespace Blockbreaker
                 case InputType.TouchJoystick:
                     TouchJoystickCheck();
                     break;
-
-                default:
-                    break;
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void MouseKeyboardCheck()
+        private void MouseKeyboardCheck()
         {
             if (Input.GetMouseButton(0))
             {
-                _player.Move(Camera.main.ScreenToWorldPoint(Input.mousePosition));
+                player.Move(Camera.main.ScreenToWorldPoint(Input.mousePosition));
             }
 
-            if (Input.GetMouseButtonUp(0) && GameManager.Instance._waitingForInput)
+            if (Input.GetMouseButtonUp(0) && GameManager.Instance.waitingForInput)
             {
-                GameManager.Instance._waitingForInput = false;
+                GameManager.Instance.waitingForInput = false;
                 //click detected while waiting for input
                 GameManager.Instance.Ball.StartBallMovement();
                 GameManager.Instance.UIControl.ToggleTapToStartPanel(false);
-                
+
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void MouseJoystick()
+        
+        private void MouseJoystick()
         {
             if (Input.mousePosition.y < Screen.height * 0.8)
             {
@@ -108,29 +88,23 @@ namespace Blockbreaker
             }
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void TouchCheck()
+        private void TouchCheck()
         {
             if (Input.touchCount > 0)
             {
 
-                _player.Move(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position));
+                player.Move(Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position));
                 //Vector3 targetPosition = Camera.main.ScreenToWorldPoint(Input.GetTouch(0).position);
 
                 //paddle.transform.position = Vector3.Lerp(paddle.transform.position, targetPosition, );
             }
             else
             {
-                _player.Stop();
+                player.Stop();
             }
         }
-
-        /// <summary>
-        /// 
-        /// </summary>
-        void TouchJoystickCheck()
+        
+        private void TouchJoystickCheck()
         {
             foreach (Touch touch in Input.touches)
             {
@@ -140,7 +114,7 @@ namespace Blockbreaker
                 }
                 else if (touch.phase == TouchPhase.Moved)
                 {
-                    _player.Move(touch.deltaPosition);
+                    player.Move(touch.deltaPosition);
                     //TouchMoved(touch.deltaPosition);
 
                 }
@@ -148,35 +122,26 @@ namespace Blockbreaker
         }
 
         //TODO remove this
-        void TouchBegan()
+        private void TouchBegan()
         {
 
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void MouseDown()
+        private void MouseDown()
         {
-            _startMousePos = Input.mousePosition;
+            startMousePos = Input.mousePosition;
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void MouseHold()
+        private void MouseHold()
         {
-            float deltaX = Input.mousePosition.x - _startMousePos.x;
+            var deltaX = Input.mousePosition.x - startMousePos.x;
             deltaX = Mathf.Clamp(deltaX, -2, 2);
             Vector2 delta = new Vector2(deltaX, 0f);
-            _player.Move(delta);
+            player.Move(delta);
             Debug.Log("moving with mouse");
         }
 
-        /// <summary>
-        /// 
-        /// </summary>
-        void MouseUp()
+        static void MouseUp()
         {
 
         }

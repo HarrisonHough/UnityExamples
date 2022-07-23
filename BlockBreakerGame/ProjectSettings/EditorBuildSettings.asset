@@ -6,5 +6,6 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Blockbreaker/Scenes/BlockBreaker.unity
+    path: Assets/Scenes/BlockBreaker.unity
     guid: 899932776dafbfb4abbf0eff9c302cd1
+  m_configObjects: {}
