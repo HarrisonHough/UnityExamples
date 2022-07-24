@@ -36,10 +36,10 @@ public class UIController : MonoBehaviour
     private void Start()
     {
         highScores = FindObjectOfType<HighScores>();
-        InitalizeText();
+        InitializeText();
     }
 
-    private void InitalizeText()
+    private void InitializeText()
     {
         UpdateScoreText(0);
         UpdateCoinsText(0);

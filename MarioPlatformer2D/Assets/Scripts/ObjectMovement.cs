@@ -26,6 +26,11 @@ public class ObjectMovement : MonoBehaviour
 
     private void Awake()
     {
+        if (localWaypoints.Length < 1)
+        {
+            enabled = false;
+            return;
+        }
         globalWaypoints = new Vector3[localWaypoints.Length];
         for (var i = 0; i < globalWaypoints.Length; i++)
         {
@@ -89,9 +94,10 @@ public class ObjectMovement : MonoBehaviour
 
     private void OnDrawGizmos()
     {
+        if (localWaypoints.Length == 0 && globalWaypoints.Length == 0) return;
         Gizmos.color = Color.red;
         const float size = 0.3f;
-
+        
         for (var i = 0; i < localWaypoints.Length; i++)
         {
             Vector3 globalWaypointPosition = (Application.isPlaying) ? globalWaypoints[i] : (Vector3) localWaypoints[i] + transform.position;
