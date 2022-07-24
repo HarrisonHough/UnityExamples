@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 public class PaddleMotor : MonoBehaviour
 {
@@ -10,6 +9,7 @@ public class PaddleMotor : MonoBehaviour
     private BoxCollider2D paddleCollider;
 
     private float directionX;
+    private float directionY;
     private Vector3 destination;
 
     private void Start()
@@ -23,11 +23,22 @@ public class PaddleMotor : MonoBehaviour
     {
         paddleRigidbody2D.MovePosition(destination);
     }
+    
+    public void SetDirectionY(float yAxisInput)
+    {
+        directionY = yAxisInput;
+        MoveInDirectionY(directionY);
+    }
+    public void MoveInDirectionY(float moveDirection)
+    {
+        destination = transform.position + transform.up * moveDirection * moveSpeed * Time.deltaTime;
+        destination.y = Mathf.Clamp(destination.y, PlaySpace.MinY + (paddleCollider.size.y / 2), PlaySpace.MaxY - (paddleCollider.size.y / 2));
+    }
 
-    public void SetDirection(float xAxisInput)
+    public void SetDirectionX(float xAxisInput)
     {
         directionX = xAxisInput;
-        MoveInDirection(directionX);
+        MoveInDirectionX(directionX);
     }
 
     public void MoveToPosition(Vector3 position)
@@ -37,9 +48,9 @@ public class PaddleMotor : MonoBehaviour
         destination.x = Mathf.Clamp(destination.x, PlaySpace.MinX + (paddleCollider.size.x / 2), PlaySpace.MaxX - (paddleCollider.size.x / 2));
     }
 
-    public void MoveInDirection(float MoveDirection)
+    public void MoveInDirectionX(float moveDirection)
     {
-        destination = transform.position + transform.right * MoveDirection * moveSpeed * Time.deltaTime;
+        destination = transform.position + transform.right * moveDirection * moveSpeed * Time.deltaTime;
         destination.x = Mathf.Clamp(destination.x, PlaySpace.MinX + (paddleCollider.size.x / 2), PlaySpace.MaxX - (paddleCollider.size.x / 2));
     }
 }

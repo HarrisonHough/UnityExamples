@@ -1,6 +1,5 @@
 ﻿using System.Collections;
 using UnityEngine;
-using UnityEngine.Serialization;
 
 public enum GameState { InMenu, InGame, Finished }
 public enum PlayerID { P1, P2 };
@@ -25,7 +24,7 @@ public class GameManager : MonoBehaviour
             Destroy(gameObject);
         }
     }
-    
+
     public void OnGameSceneStart(GameScene newGameScene)
     {
 
@@ -51,7 +50,7 @@ public class GameManager : MonoBehaviour
             gameScene.Player2.AddToScore();
 
         }
-        
+
         gameScene.GameUI.UpdateScores(gameScene.Player1.Score, gameScene.Player2.Score);
     }
 
@@ -61,7 +60,6 @@ public class GameManager : MonoBehaviour
         yield return RunCountdown();
         yield return WaitForWinner();
         yield return GameOver();
-
     }
 
     private IEnumerator WaitForStart()
@@ -74,9 +72,10 @@ public class GameManager : MonoBehaviour
 
     private IEnumerator RunCountdown()
     {
-        yield return new WaitForSeconds(1);
-        yield return new WaitForSeconds(1);
-        yield return new WaitForSeconds(1);
+        for (int i = 0; i < 3; i++)
+        {
+            yield return new WaitForSeconds(1);
+        }
     }
 
     private IEnumerator WaitForWinner()

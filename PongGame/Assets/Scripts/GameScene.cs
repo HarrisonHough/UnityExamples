@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 public class GameScene : MonoBehaviour
 {
@@ -14,7 +13,7 @@ public class GameScene : MonoBehaviour
     public Ball Ball => ball;
     [SerializeField]
     private GameUI gameUI;
-    public GameUI GameUI { get { return gameUI; } }
+    public GameUI GameUI => gameUI;
 
     private void Start()
     {

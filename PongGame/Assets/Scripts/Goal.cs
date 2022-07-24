@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 public class Goal : MonoBehaviour
 {
@@ -19,5 +18,4 @@ public class Goal : MonoBehaviour
         ball.Disable();
         GameManager.Instance.AddToPlayerScore(id);
     }
-
 }

@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using UnityEngine.Serialization;
 
 [RequireComponent(typeof(PaddleMotor))]
 public class PaddleAIBasic : MonoBehaviour
@@ -32,17 +31,17 @@ public class PaddleAIBasic : MonoBehaviour
     {
         if (Vector3.Distance(ball.transform.position, transform.position) < precision)
         {
-            motor.SetDirection(0);
+            motor.SetDirectionX(0);
             return;
         }
 
         if (ball.transform.position.x < transform.position.x)
         {
-            motor.SetDirection(-1);
+            motor.SetDirectionX(-1);
         }
         if (ball.transform.position.x > transform.position.x)
         {
-            motor.SetDirection(1);
+            motor.SetDirectionX(1);
         }
     }
 }

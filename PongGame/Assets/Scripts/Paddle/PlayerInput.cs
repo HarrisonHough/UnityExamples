@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
+using UnityEngine.Events;
 
 [RequireComponent(typeof(PaddleMotor))]
 public class PlayerInput : MonoBehaviour
 {
     private PaddleMotor motor;
+    public static UnityAction OnActionButton;
 
     private void Start()
     {
@@ -17,6 +19,11 @@ public class PlayerInput : MonoBehaviour
 
     private void GetInput()
     {
-        motor.SetDirection(Input.GetAxis("Horizontal"));
+        motor.SetDirectionY(Input.GetAxis("Vertical"));
+        
+        if (Input.GetButtonDown("Fire1"))
+        {
+            OnActionButton?.Invoke();
+        }
     }
 }
