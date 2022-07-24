@@ -38,7 +38,7 @@ public class TouchInput : MonoBehaviour
             }
         }
 
-        if (playerMovement.IsGrounded())
+        if (playerMovement.IsGrounded)
         {
             playerMovement.GlideRecharge();
             playerMovement.SetMoveDirection();

@@ -9,7 +9,6 @@
 
 public class KeyboardInput : MonoBehaviour
 {
-
     public PlayerMovement playerMovement;
 
     private void Start()
@@ -42,7 +41,7 @@ public class KeyboardInput : MonoBehaviour
         }
         if (playerMovement == null) return;
         //Debug.Log("is grounded = " + playerMovement.IsGrounded());
-        if (playerMovement.IsGrounded())
+        if (playerMovement.IsGrounded)
         {
 
             //playerMovement.ResetGlidePower();

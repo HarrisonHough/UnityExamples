@@ -31,11 +31,13 @@ public class SoundManager : MonoBehaviour
     public void PlayCoinCollect()
     {
         //TODO make this refer to dictionary
+        if (sfxClips[0] == null) return;
         sfxAudio.PlayOneShot(sfxClips[0]);
     }
 
     public void PlayDeath()
     {
+        if (sfxClips[1] == null) return;
         sfxAudio.PlayOneShot(sfxClips[1]);
     }
 }

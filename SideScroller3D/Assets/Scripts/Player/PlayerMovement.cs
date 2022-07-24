@@ -1,5 +1,4 @@
-﻿using System.Collections;
-using UnityEngine;
+﻿using UnityEngine;
 
 /*
 * AUTHOR: Harrison Hough   
@@ -12,13 +11,16 @@ public class PlayerMovement : MonoBehaviour
 {
 
     private CharacterController controller;
+    private GroundCheck groundCheck;
     [SerializeField]
-    public float moveSpeed = 0.2f;
-    [SerializeField]
-    public float jumpSpeed = 0.5f;
-    [SerializeField]
-    public float gravity = 1f;
+    private float moveSpeed = 0.2f;
+    private float gravity = -1f;
     private const float GLIDE_SPEED = 2f;
+    [SerializeField]
+    private float jumpHeight = 3f;
+    [SerializeField]
+    private float timeToApex =0.4f;
+    private float jumpVelocity = 4f;
     [SerializeField]
     private float glidePowerMax = 2f;
     private bool glide;
@@ -27,11 +29,13 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 moveDirection;
     public LayerMask mask;
     private UIController uiControl;
-
-    [SerializeField] private float minJumpVelocity = 0.1f;
+    public bool IsGrounded => groundCheck.IsGrounded();
 
     private void Start()
     {
+        gravity = -(2 * jumpHeight) / Mathf.Pow(timeToApex, 2);
+        jumpVelocity = Mathf.Abs(gravity) * timeToApex;
+        groundCheck = GetComponent<GroundCheck>();
         controller = GetComponent<CharacterController>();
         uiControl = FindObjectOfType<UIController>();
         moveDirection = new Vector3(0, 0, 0);
@@ -47,20 +51,24 @@ public class PlayerMovement : MonoBehaviour
     {
         if (moveDirection.y < 0 && glide)
         {
-            moveDirection.y = -GLIDE_SPEED * Time.deltaTime;
+            moveDirection.y = -GLIDE_SPEED;
             Glide();
         }
         else
         {
-            moveDirection.y -= gravity * Time.deltaTime;
+            moveDirection.y += gravity * Time.deltaTime;
+        }
+        if (groundCheck.IsGrounded() && moveDirection.y < 0)
+        {
+            moveDirection.y = -1f;
         }
 
-        controller.Move(moveDirection);
+        controller.Move(moveDirection * Time.deltaTime);
     }
 
     public void JumpPressed()
     {
-        if (IsGrounded())
+        if (groundCheck.IsGrounded())
             Jump();
         GlideSwitch(true);
     }
@@ -101,12 +109,8 @@ public class PlayerMovement : MonoBehaviour
 
     private void Jump()
     {
-        moveDirection.y += jumpSpeed;
-    }
-
-    public bool IsGrounded()
-    {
-        return controller.isGrounded;
+        moveDirection.y = jumpVelocity;
+        Debug.Log($"jump vel = {jumpVelocity} move direction = {moveDirection.y}");
     }
 
     public void OnCollisionEnter(Collision collision)
@@ -118,12 +122,8 @@ public class PlayerMovement : MonoBehaviour
             moveDirection.y = 0;
     }
 
-    private IEnumerator ConstantMove()
+    private void Update()
     {
-        while (true)
-        {
-            Move();
-            yield return null;
-        }
+        Move();
     }
 }
