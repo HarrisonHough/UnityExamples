@@ -12,5 +12,6 @@ EditorBuildSettings:
     path: Assets/Scenes/ArcadeHoops 1.unity
     guid: 73e9f7598ecdd23409c5dc7cec2618ba
   - enabled: 1
-    path: Assets/Scenes/ArcadeHoops 2.unity
+    path: Assets/Scenes/1-Level.unity
     guid: 9a24079a3dd748f488c4dd6d8bfadef6
+  m_configObjects: {}
