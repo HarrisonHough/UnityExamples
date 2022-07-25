@@ -35,9 +35,9 @@ public class Ball : MonoBehaviour
 
     private void Awake()
     {
+        ballRigidbody = GetComponent<Rigidbody>();
         startPosition = transform.position;
         startRotation = transform.rotation;
-        ballRigidbody = GetComponent<Rigidbody>();
     }
 
     public void Shoot()
@@ -59,22 +59,22 @@ public class Ball : MonoBehaviour
     {
         Vector3 targetPosition = goalTransform.position;
         Vector3 ballPosition = transform.position;
-        float gravity = Physics.gravity.magnitude;
-        float angle = initialAngle * Mathf.Deg2Rad;
+        var gravity = Physics.gravity.magnitude;
+        var angle = initialAngle * Mathf.Deg2Rad;
 
         // Positions of this object and the target on the same plane
-        Vector3 planarTarget = new Vector3(targetPosition.x, 0, targetPosition.z);
-        Vector3 planarPosition = new Vector3(ballPosition.x, 0, ballPosition.z);
+        var planarTarget = new Vector3(targetPosition.x, 0, targetPosition.z);
+        var planarPosition = new Vector3(ballPosition.x, 0, ballPosition.z);
 
-        float distance = Vector3.Distance(planarTarget, planarPosition);
-        float yOffset = ballPosition.y - targetPosition.y;
+        var distance = Vector3.Distance(planarTarget, planarPosition);
+        var yOffset = ballPosition.y - targetPosition.y;
 
-        float initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset));
+        var initialVelocity = (1 / Mathf.Cos(angle)) * Mathf.Sqrt((0.5f * gravity * Mathf.Pow(distance, 2)) / (distance * Mathf.Tan(angle) + yOffset));
 
-        Vector3 velocity = new Vector3(0, initialVelocity * Mathf.Sin(angle), initialVelocity * Mathf.Cos(angle));
+        var velocity = new Vector3(0, initialVelocity * Mathf.Sin(angle), initialVelocity * Mathf.Cos(angle));
 
         // Rotate our velocity to match the direction between the two objects
-        float angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPosition);
+        var angleBetweenObjects = Vector3.Angle(Vector3.forward, planarTarget - planarPosition);
         Vector3 finalVelocity = Quaternion.AngleAxis(angleBetweenObjects, Vector3.up) * velocity;
 
 
@@ -90,10 +90,13 @@ public class Ball : MonoBehaviour
         }
         hasScored = false;
         ballRigidbody.useGravity = true;
-
         ballRigidbody.AddForce(CalculateTargetForce(force) * ballRigidbody.mass, ForceMode.Impulse);
-        //AddForce(CalculateForce(force));
         Wind.WindActive = true;
+        Recycle();
+    }
+
+    private void Recycle()
+    {
         var ballRecycle = GetComponent<BallRecycle>();
         if (ballRecycle)
         {

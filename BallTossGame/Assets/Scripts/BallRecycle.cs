@@ -23,7 +23,7 @@ public class BallRecycle : MonoBehaviour
         StartCoroutine(RecycleTimer());
     }
 
-    IEnumerator RecycleTimer()
+    private IEnumerator RecycleTimer()
     {
         yield return new WaitForSeconds(recycleTime);
         Recycle();

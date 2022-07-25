@@ -55,6 +55,7 @@ public class TouchInput : MonoBehaviour
 
     protected virtual void TouchHold(Vector3 touchPosition)
     {
+        
     }
 
     protected Vector3 CalculateDragVector()

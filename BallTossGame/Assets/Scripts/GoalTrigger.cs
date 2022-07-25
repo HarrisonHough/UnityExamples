@@ -33,7 +33,7 @@ public class GoalTrigger : MonoBehaviour
         CheckBallCollision(other, false);
     }
 
-    private void CheckBallCollision(Collider otherCollider, bool isEntering)
+    private void CheckBallCollision(Component otherCollider, bool isEntering)
     {
         var ball = otherCollider.gameObject.GetComponent<Ball>();
         if (ball == null)
